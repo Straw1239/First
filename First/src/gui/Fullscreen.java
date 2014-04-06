@@ -32,7 +32,7 @@ public class Fullscreen
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setUndecorated(true);
-		frame.setBackground(Color.cyan);
+		frame.setBackground(new Color(0x17,0x4F,0x20));
 		frame.add(game);
 		frame.setVisible(true);
 		game.setPreferredSize(frame.getSize());
@@ -47,22 +47,28 @@ public class Fullscreen
 		@Override
 		public void keyPressed(KeyEvent e) 
 		{
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void keyReleased(KeyEvent e) 
-		{
 			if(e.getKeyCode() == KeyEvent.VK_ESCAPE) System.exit(0);
 			if(e.getKeyCode() == KeyEvent.VK_ENTER)
 			{
 				if(game.isSolved() && input.hasNextLine())
 				{
 					game.setWord(input.nextLine());
-					frame.repaint();
 				}
 			}
+			if(e.getKeyCode() == KeyEvent.VK_ADD)
+			{
+				game.addSize(10);
+			}
+			if(e.getKeyCode() == KeyEvent.VK_SUBTRACT)
+			{
+				game.addSize(-10);
+			}
+			frame.repaint();
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e) 
+		{
 			
 		}
 

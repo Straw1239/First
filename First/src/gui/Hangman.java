@@ -10,15 +10,17 @@ import javax.swing.JPanel;
 public class Hangman extends JPanel
 {
 	private static final long serialVersionUID = 0L;
+	private static final String alphabet = "abcdefghijklmnopqrstuvwxyz";
 	private String word;
 	private char[] guesses;
 	private String usedLetters = "";
+	private int textSize = 100;
 	
 	public Hangman()
 	{
 		
 	}	
-	
+
 	public Hangman(String word, int size)
 	{
 		this();
@@ -31,6 +33,10 @@ public class Hangman extends JPanel
 		resetGuesses();
 	}
 	
+	public void addSize(int size)
+	{
+		textSize += size;
+	}
 	private void resetGuesses()
 	{
 		for(int i = 0; i < guesses.length;i++)
@@ -50,26 +56,31 @@ public class Hangman extends JPanel
 	
 	public void guess(char c)
 	{
+		c = Character.toLowerCase(c);
 		if(usedLetters.indexOf(c) != -1) return;
 		for(int i = 0; i < word.length();i++)
 		{
 			if(Character.toLowerCase(word.charAt(i)) == Character.toLowerCase(c)) guesses[i] = word.charAt(i);
 		}
-		usedLetters += c;
-		char[] sort = usedLetters.toCharArray();
-		Arrays.sort(sort);
-		usedLetters = new String(sort).toLowerCase();
+		if(alphabet.indexOf(c) != -1)
+		{
+			usedLetters += c;
+			char[] sort = usedLetters.toCharArray();
+			Arrays.sort(sort);
+			usedLetters = new String(sort).toLowerCase();
+		}
 	}
 	
 	public boolean isSolved()
 	{
 		return word.equalsIgnoreCase(new String(guesses));
 	}
+	
 	public void paintComponent(Graphics g)
 	{
 		if(word == null) return;
-		int size = 100;
-		g.setFont(new Font("Arial", Font.BOLD, size));
+		int size = textSize;
+		g.setFont(new Font("Arial", Font.BOLD, (int)Math.round(size * .8)));
 		double spacing = .8 * size;
 		String[] words = word.split(" ");
 		String[] guessed = new String(guesses).split(" ");
@@ -90,17 +101,25 @@ public class Hangman extends JPanel
 				g.setColor(Color.black);
 				if(x == '"' || x == '\'' || x == ',')
 				{
-					g.drawString(Character.toString(x).toUpperCase(), spaceUsed - (int)(Math.round(spacing * .0)), height);
-					spaceUsed += spacing * .4;
+					g.drawString(Character.toString(x).toUpperCase(), spaceUsed - (int)(Math.round(spacing * -.1)), height);
+					spaceUsed += spacing * .7;
 				}
 				else 
 				{
 					if(c != '0')
 					{
-						double constant = 0;
-						if(Character.toUpperCase(c) == 'I')
+						double constant = .1;
+						char u = Character.toUpperCase(c);
+						switch(u)
 						{
-							constant = .2;
+						case 'I': constant += .325; break;
+						case 'M': constant += -.01; break;
+						case 'Y':
+						case 'V':
+						case 'A': constant += .05; break;
+						case 'T': constant += .1; break;
+						case 'W': constant += -.05;break;
+						default: 
 						}
 						String print = Character.toString(c).toUpperCase();
 						g.drawString(print, spaceUsed + (int)Math.round((constant * spacing)), height);
@@ -108,13 +127,20 @@ public class Hangman extends JPanel
 					if(x != ' ')
 					{
 						g.setColor(Color.white);
-						g.drawRect(spaceUsed, (int)Math.round(height - spacing * .95), (int)Math.round(spacing), (int)Math.round(spacing));
+						g.drawRect(spaceUsed , (int)Math.round(height - spacing * .9), (int)Math.round(spacing), (int)Math.round(spacing));
 					}
 					spaceUsed += spacing;
 				}
 			}
 			spaceUsed += spacing;
 		}
-		
+		drawUsedLetters(g,size/2);
+	}
+	
+	private void drawUsedLetters(Graphics g, int size)
+	{
+		g.setColor(Color.white);
+		g.setFont(new Font("Arial",Font.PLAIN,size));
+		g.drawString(usedLetters.toUpperCase(), getWidth()/2 - (usedLetters.length() * size)/3, getHeight()-size/3);
 	}
 }
