@@ -1,14 +1,11 @@
 package numbers;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.io.FileNotFoundException;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Scanner;
+import java.awt.*;
+import java.io.*;
+import java.util.*;
+import javax.swing.*;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+
 
 public class FastSolver 
 {
@@ -353,7 +350,7 @@ public class FastSolver
 			this.state = state;
 			setSize(size, size);
 			setVisible(true);
-			setPreferredSize(getSize());
+			setPreferredSize(new Dimension(size,size));
 		}
 		
 		public void paintComponent(Graphics g)

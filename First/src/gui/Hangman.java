@@ -1,7 +1,6 @@
 package gui;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.util.Arrays;
@@ -10,9 +9,11 @@ import javax.swing.JPanel;
 
 public class Hangman extends JPanel
 {
+	private static final long serialVersionUID = 0L;
 	private String word;
 	private char[] guesses;
 	private String usedLetters = "";
+	
 	public Hangman()
 	{
 		
@@ -34,7 +35,8 @@ public class Hangman extends JPanel
 	{
 		for(int i = 0; i < guesses.length;i++)
 		{
-			guesses[i] = ' ';
+			char c = word.charAt(i);
+			guesses[i] = (c == ' ' || c == '\'' || c == '"') ? c : '0';
 		}
 		usedLetters = "";
 	}
@@ -66,39 +68,53 @@ public class Hangman extends JPanel
 	public void paintComponent(Graphics g)
 	{
 		if(word == null) return;
-		//super.paintComponent(g);
-		int fontSize = (int)Math.round(1.3 * (getWidth()/word.length()));
-		drawChars(g,fontSize);
-	}
-	
-	private void drawChars(Graphics g, int size)
-	{
-		g.setFont(new Font("TimesRoman", Font.BOLD, size));
-		double shift = .8*size;
-		int offset = (int)Math.round((shift * word.length())/2);
-		int position = getWidth()/2 - offset;
-		for(int i = 0; i < word.length();i++)
+		int size = 100;
+		g.setFont(new Font("Arial", Font.BOLD, size));
+		double spacing = .8 * size;
+		String[] words = word.split(" ");
+		String[] guessed = new String(guesses).split(" ");
+		int height = getHeight()/3;
+		int start = (int)Math.round(spacing * .5);
+		int spaceUsed = start;
+		for(int i = 0; i < words.length;i++)
 		{
-			int constant = 0;
-			g.setColor(Color.black);
-			if(word.charAt(i) == 'l' || word.charAt(i) == 'i') constant = 5;
-			if(word.charAt(i) == 'm') constant = -8;
-			if(word.charAt(i) == '"' || word.charAt(i) == '\'')
+			if((words[i].length() * spacing) > (getWidth() - spaceUsed))	
 			{
-				
+				height += size;
+				spaceUsed = start;
 			}
-			else if(word.charAt(i) == ' ')
+			for(int j = 0; j < words[i].length();j++)
 			{
-				position += shift;
+				char c = guessed[i].charAt(j);
+				char x = words[i].charAt(j);
+				g.setColor(Color.black);
+				if(x == '"' || x == '\'' || x == ',')
+				{
+					g.drawString(Character.toString(x).toUpperCase(), spaceUsed - (int)(Math.round(spacing * .0)), height);
+					spaceUsed += spacing * .4;
+				}
+				else 
+				{
+					if(c != '0')
+					{
+						double constant = 0;
+						if(Character.toUpperCase(c) == 'I')
+						{
+							constant = .2;
+						}
+						String print = Character.toString(c).toUpperCase();
+						g.drawString(print, spaceUsed + (int)Math.round((constant * spacing)), height);
+					}
+					if(x != ' ')
+					{
+						g.setColor(Color.white);
+						g.drawRect(spaceUsed, (int)Math.round(height - spacing * .95), (int)Math.round(spacing), (int)Math.round(spacing));
+					}
+					spaceUsed += spacing;
+				}
 			}
-			else
-			{
-				String print = Character.toString(guesses[i]);
-				g.drawString(print, position + constant, getHeight()/2);
-				g.setColor(Color.white);
-				g.drawRect(position - 5 , getHeight()/2 - (3*size)/4, (size*31)/40, size);
-				position += shift;
-			}
+			spaceUsed += spacing;
 		}
+		
 	}
 }
