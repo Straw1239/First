@@ -17,16 +17,23 @@ public class Fullscreen
 	public static JFrame frame = new JFrame();
 	public static Hangman game = new Hangman();
 	public static Scanner input;
+	public static Scanner console = new Scanner(System.in);
 	
 	public static void main(String[] args) 
 	{
+		String filename = "hangman.txt";
+		File f = new File(filename);
+		while(!f.exists())
+		{
+			System.out.print("Enter file name : ");
+			f = new File(console.next());
+		}
 		try 
 		{
-			input = new Scanner(new BufferedInputStream(new FileInputStream(new File("hangman.txt"))));
+			input = new Scanner(new BufferedInputStream(new FileInputStream(f)));
 		} 
 		catch (FileNotFoundException e) 
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
