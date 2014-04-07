@@ -12,6 +12,7 @@ public class FastSolver
 	public static long evalTime = 0;
 	private static boolean[] evalTable;
 	private static long positions = 0;
+	
 	public static void main(String[] args) throws FileNotFoundException, InterruptedException 
 	{
 		//Scanner console = new Scanner(System.in);
