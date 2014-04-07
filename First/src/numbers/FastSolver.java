@@ -343,6 +343,7 @@ public class FastSolver
 		
 		public ThreadedEvaluator(FastState s, int depth, double currentBest)
 		{
+			super();
 			this.state = s;
 			this.depth = depth;
 			this.currentBest = currentBest;
