@@ -49,8 +49,8 @@ public class Hangman extends JPanel
 	{
 		for(int i = 0; i < guesses.length;i++)
 		{
-			char c = word.charAt(i);
-			guesses[i] = (c == ' ' || c == '\'' || c == '"') ? c : '0';
+			char c = Character.toLowerCase(word.charAt(i));
+			guesses[i] = (alphabet.indexOf(c) == -1) ? c : '0';
 		}
 		usedLetters = "";
 	}
@@ -161,7 +161,7 @@ public class Hangman extends JPanel
 		}
 		drawUsedLetters(g,size/2);
 		if(description != null)
-			writeDescription(g,(size/2) * 3);
+			writeDescription(g,(size/2) * 2);
 	}
 	
 	private void drawUsedLetters(Graphics g, int size)
@@ -175,6 +175,6 @@ public class Hangman extends JPanel
 	{
 		g.setColor(new Color(0xE0,0xB2,0x28));
 		g.setFont(new Font("Arial",Font.PLAIN,size));
-		g.drawString(description,getWidth()/2 - (description.length() * size)/3 , getHeight()-((size/3) * 2));
+		g.drawString(description,getWidth()/2 - (description.length() * size)/4 , getHeight()-((size/3) * 2));
 	}
 }
