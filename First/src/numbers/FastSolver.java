@@ -14,7 +14,7 @@ public class FastSolver
 	private static long positions = 0;
 	public static void main(String[] args) throws FileNotFoundException, InterruptedException 
 	{
-		Scanner console = new Scanner(System.in);
+		//Scanner console = new Scanner(System.in);
 		initialize();
 		/*
 		byte[][] test = new byte[4][4];
@@ -125,7 +125,7 @@ public class FastSolver
 		
 
 	}
-	private static int getDepth(int moves)
+	public static int getDepth(int moves)
 	{
 		int depth;
 		
@@ -296,7 +296,7 @@ public class FastSolver
 		return score;
 	}
 	
-	private static int max(int a, int b)
+	public static int max(int a, int b)
 	{
 		return (a > b) ? a : b;
 	}
@@ -336,14 +336,17 @@ public class FastSolver
 	{
 		public static final long serialVersionUID = 0L;
 		private FastState state;
+		
 		public StatePainter()
 		{
 			this(600);
 		}
+		
 		public StatePainter(int size)
 		{
 			this(size,null);
 		}
+		
 		public StatePainter(int size, FastState state)
 		{
 			super();
