@@ -20,7 +20,7 @@ public class Hangman extends JPanel
 	
 	public Hangman()
 	{
-		
+		super();
 	}	
 
 	public Hangman(String word, int size)
