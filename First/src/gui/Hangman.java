@@ -112,7 +112,7 @@ public class Hangman extends JPanel
 						char u = Character.toUpperCase(c);
 						switch(u)
 						{
-						case 'I': constant += .325; break;
+						case 'I': constant += .28; break;
 						case 'M': constant += -.01; break;
 						case 'Y':
 						case 'V':
