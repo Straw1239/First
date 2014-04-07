@@ -15,6 +15,7 @@ public class Hangman extends JPanel
 	private char[] guesses;
 	private String usedLetters = "";
 	private int textSize = 100;
+	private int startHeight = 300;
 	
 	public Hangman()
 	{
@@ -33,10 +34,16 @@ public class Hangman extends JPanel
 		resetGuesses();
 	}
 	
-	public void addSize(int size)
+	public void adjustSize(int size)
 	{
 		textSize += size;
 	}
+	
+	public void adjustHeight(int size)
+	{
+		startHeight += size;
+	}
+	
 	private void resetGuesses()
 	{
 		for(int i = 0; i < guesses.length;i++)
@@ -84,7 +91,7 @@ public class Hangman extends JPanel
 		double spacing = .8 * size;
 		String[] words = word.split(" ");
 		String[] guessed = new String(guesses).split(" ");
-		int height = getHeight()/3;
+		int height = startHeight ;
 		int start = (int)Math.round(spacing * .5);
 		int spaceUsed = start;
 		for(int i = 0; i < words.length;i++)

@@ -57,11 +57,19 @@ public class Fullscreen
 			}
 			if(e.getKeyCode() == KeyEvent.VK_ADD)
 			{
-				game.addSize(10);
+				game.adjustSize(10);
 			}
 			if(e.getKeyCode() == KeyEvent.VK_SUBTRACT)
 			{
-				game.addSize(-10);
+				game.adjustSize(-10);
+			}
+			if(e.getKeyCode() == KeyEvent.VK_UP)
+			{
+				game.adjustHeight(-20);
+			}
+			if(e.getKeyCode() == KeyEvent.VK_DOWN)
+			{
+				game.adjustHeight(20);
 			}
 			frame.repaint();
 		}
