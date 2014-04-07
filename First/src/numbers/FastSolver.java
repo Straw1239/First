@@ -332,6 +332,39 @@ public class FastSolver
 		return ordering;
 	}
 	
+	private static class ThreadedEvaluator extends Thread
+	{
+		private double eval;
+		private FastState state;
+		private int depth;
+		private double currentBest;
+		private boolean hasRun = false;
+		
+		public ThreadedEvaluator(FastState s, int depth, double currentBest)
+		{
+			this.state = s;
+			this.depth = depth;
+			this.currentBest = currentBest;
+		}
+		
+		public void run()
+		{
+			eval = bestWorstCase(state,depth,currentBest);
+			hasRun = true;
+		}
+		
+		public boolean hasRun()
+		{
+			return hasRun;
+		}
+		
+		public double getEvaluation()
+		{
+			if(!hasRun) throw new IllegalStateException("Evaluation has not run yet");
+			return eval;
+		}
+	}
+	
 	private static class StatePainter extends JPanel
 	{
 		public static final long serialVersionUID = 0L;
