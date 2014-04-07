@@ -45,6 +45,7 @@ public class Fullscreen
 		game.setPreferredSize(frame.getSize());
 		game.setFocusable(true);
 		game.addKeyListener(new Listener());
+		game.setDescription(input.nextLine());
 		game.setWord(input.nextLine());
 	}
 	
@@ -59,6 +60,7 @@ public class Fullscreen
 			{
 				if(game.isSolved() && input.hasNextLine())
 				{
+					game.setDescription(input.nextLine());
 					game.setWord(input.nextLine());
 				}
 			}

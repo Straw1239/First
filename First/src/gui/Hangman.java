@@ -16,6 +16,7 @@ public class Hangman extends JPanel
 	private String usedLetters = "";
 	private int textSize = 100;
 	private int startHeight = 300;
+	private String description; 
 	
 	public Hangman()
 	{
@@ -78,6 +79,11 @@ public class Hangman extends JPanel
 		}
 	}
 	
+	public void setDescription(String description)
+	{
+		this.description = description;
+	}
+	
 	public boolean isSolved()
 	{
 		return word.equalsIgnoreCase(new String(guesses));
@@ -113,6 +119,11 @@ public class Hangman extends JPanel
 				}
 				else 
 				{
+					if(x != ' ')
+					{
+						g.setColor(Color.white);
+						g.fillRect(spaceUsed , (int)Math.round(height - spacing * .875), (int)Math.round(spacing), (int)Math.round(spacing));
+					}
 					if(c != '0')
 					{
 						double constant = .1;
@@ -125,16 +136,23 @@ public class Hangman extends JPanel
 						case 'V':
 						case 'A': constant += .05; break;
 						case 'T': constant += .1; break;
-						case 'W': constant += -.05;break;
+						case 'W': constant += -.07;break;
 						default: 
 						}
 						String print = Character.toString(c).toUpperCase();
+						g.setColor(Color.black);
 						g.drawString(print, spaceUsed + (int)Math.round((constant * spacing)), height);
 					}
 					if(x != ' ')
 					{
-						g.setColor(Color.white);
-						g.drawRect(spaceUsed , (int)Math.round(height - spacing * .875), (int)Math.round(spacing), (int)Math.round(spacing));
+						g.setColor(Color.black);
+						int xC,y,width,heightC;
+						xC = spaceUsed;
+						y = (int)Math.round(height - spacing * .875);
+						width = (int)Math.round(spacing);
+						heightC = (int)Math.round(spacing);
+						g.drawRect(xC,y,width,heightC);
+						g.drawRect(xC - 1, y - 1, width + 2, heightC + 2);
 					}
 					spaceUsed += spacing;
 				}
@@ -142,6 +160,8 @@ public class Hangman extends JPanel
 			spaceUsed += spacing;
 		}
 		drawUsedLetters(g,size/2);
+		if(description != null)
+			writeDescription(g,(size/2) * 3);
 	}
 	
 	private void drawUsedLetters(Graphics g, int size)
@@ -149,5 +169,12 @@ public class Hangman extends JPanel
 		g.setColor(Color.white);
 		g.setFont(new Font("Arial",Font.PLAIN,size));
 		g.drawString(usedLetters.toUpperCase(), getWidth()/2 - (usedLetters.length() * size)/3, getHeight()-size/3);
+	}
+	
+	private void writeDescription(Graphics g, int size)
+	{
+		g.setColor(new Color(0xE0,0xB2,0x28));
+		g.setFont(new Font("Arial",Font.PLAIN,size));
+		g.drawString(description,getWidth()/2 - (description.length() * size)/3 , getHeight()-((size/3) * 2));
 	}
 }
