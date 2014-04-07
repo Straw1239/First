@@ -134,7 +134,7 @@ public class Hangman extends JPanel
 					if(x != ' ')
 					{
 						g.setColor(Color.white);
-						g.drawRect(spaceUsed , (int)Math.round(height - spacing * .9), (int)Math.round(spacing), (int)Math.round(spacing));
+						g.drawRect(spaceUsed , (int)Math.round(height - spacing * .875), (int)Math.round(spacing), (int)Math.round(spacing));
 					}
 					spaceUsed += spacing;
 				}
