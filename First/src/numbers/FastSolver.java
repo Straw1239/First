@@ -12,46 +12,12 @@ import javax.swing.*;
 public class FastSolver 
 {
 	public static long evalTime = 0;
-	private static boolean[] evalTable;
 	private static long positions = 0;
 	public static final int MAX_THREADS = Runtime.getRuntime().availableProcessors();
 	public static ExecutorService executor = Executors.newFixedThreadPool(MAX_THREADS);
 	
-	
-	
 	public static void main(String[] args) throws FileNotFoundException, InterruptedException 
 	{
-		//Scanner console = new Scanner(System.in);
-		initialize();
-		
-		/*
-		byte[][] test = new byte[4][4];
-		test[0] = new byte[]{1,4,3,0};
-		test[1] = new byte[]{6,1,2,0};
-		test[2] = new byte[]{9,4,5,2};
-		test[3] = new byte[]{6,1,2,2};
-		long a = System.nanoTime();
-		FastState s = new FastState(test);
-		long b = System.nanoTime();
-		System.out.println((b-a)/1000000000.0);
-		s = new FastState(new File("2048.txt"));
-		a = System.nanoTime();
-		Direction d = bestMove(s,6);
-		b = System.nanoTime();
-		System.out.println((time)* 100.0/(double)(b-a) + "%");
-		System.out.println((b-a)/1000000000.0);
-		System.out.println(positions);
-		System.out.println();
-		System.out.println(d);
-		s = s.move(d);
-		PrintStream p = new PrintStream(new BufferedOutputStream(new FileOutputStream(new File("2048.txt"))));
-		s.print(p);
-		s.print(System.out);
-		*/
-		
-		
-		//DrawingPanel panel = new DrawingPanel(600,600);
-		//Graphics g = panel.getGraphics();
 		JFrame frame = new JFrame("Auto Solver");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setBackground(Color.white);
@@ -79,16 +45,11 @@ public class FastSolver
 			long targetTime = (long)(target * 10000000000.0);
 			while(true)
 			{
-				
-				//state.draw(g, 600);
 				painter.setState(state);
-				frame.repaint();
-				//depth = 3;
+				frame.repaint();			
 				long a = System.nanoTime();
 				Direction d = bestMove(state,depth);
 				long b = System.nanoTime() - a;
-				//System.out.println(evalTime * 100.0/b);
-				//System.out.println(positions/1000);
 				totalPositions += positions;
 				System.out.println("TPPS: " + ((totalPositions* 1000000.0)/(System.nanoTime() - startTime)) );
 				positions = 0;
@@ -98,12 +59,9 @@ public class FastSolver
 				System.out.println(d);
 				System.out.println();
 				state = state.move(d);
-				
-				
 				state = state.addRandomTile(true);
 				moves++;
-				System.out.println(moves);
-				
+				System.out.println(moves);				
 				if(moves % 10 == 0)
 				{
 					if(time * 5 < targetTime)
@@ -124,9 +82,6 @@ public class FastSolver
 				}
 				
 				System.out.println(depth);
-				
-				
-				//console.next();
 			}
 			System.out.println(state.score());
 			score += state.score();
@@ -134,59 +89,15 @@ public class FastSolver
 		System.out.println(score);
 		executor.shutdown();
 	}
-	public static int getDepth(int moves)
-	{
-		int depth;
-		
-		if(moves < 100)
-		{
-			depth = 3;
-		}
-		else if(moves < 400)
-		{
-			depth = 4;
-		}
-		else if( moves < 700)depth = 5;
-		else if(moves < 800)depth = 6;
-		else if(moves < 1000)depth = 7;
-		else if( moves < 1500)depth = 8;
-		else depth = 9;
-		return depth;
-	}
+	
 	
 	public static int getIndex(byte a, byte b, byte c, byte d)
 	{
 		return (((int)a) << 12) + (((int)b) << 8) + (((int)c) << 4) + ((int)d);
 	}
 	
-	private static void initialize()
-	{
-		evalTable = new boolean[65536];
-		for(byte i = 0; i < 16; i++)
-		{
-			for(byte j = 0; j < 16;j++)
-			{
-				for(byte k = 0; k < 16; k++)
-				{
-					for(byte m = 0; m < 16; m++)
-					{
-						int index = getIndex(i,j,k,m);
-						byte max = max(max(i,j),max(k,m));
-						if( max == i || max == m)
-						{
-							evalTable[index] = true;
-						}
-					}
-				}
-			}
-		}
-		
-	}
 	
-	private static byte max(byte a, byte b)
-	{
-		return a > b ? a : b;
-	}
+	
 	
 	public static Direction bestMove(FastState s, int depth)
 	{
@@ -329,10 +240,7 @@ public class FastSolver
 		return score;
 	}
 	
-	public static int max(int a, int b)
-	{
-		return (a > b) ? a : b;
-	}
+	
 	
 	private static byte max(byte... arg)
 	{
@@ -343,10 +251,12 @@ public class FastSolver
 		}
 		return max;
 	}
+	
 	private static int abs(int arg)
 	{
 		return (arg > 0) ? arg : -arg;
 	}
+	
 	private static int ordering(byte... sequence)
 	{
 		int ordering = 0;
