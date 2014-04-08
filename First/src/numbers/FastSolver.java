@@ -3,6 +3,7 @@ package numbers;
 import java.awt.*;
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.*;
 
 import javax.swing.*;
 
@@ -13,14 +14,16 @@ public class FastSolver
 	public static long evalTime = 0;
 	private static boolean[] evalTable;
 	private static long positions = 0;
-	public static final int MAX_THREADS = 1;
-	public static volatile int threads = 1;
+	public static final int MAX_THREADS = 4;
+	public static ExecutorService executor = Executors.newFixedThreadPool(MAX_THREADS);
+	
 	
 	
 	public static void main(String[] args) throws FileNotFoundException, InterruptedException 
 	{
 		//Scanner console = new Scanner(System.in);
 		initialize();
+		
 		/*
 		byte[][] test = new byte[4][4];
 		test[0] = new byte[]{1,4,3,0};
@@ -67,8 +70,8 @@ public class FastSolver
 		for(int i = 0; i < 10;i++)
 		{
 			FastState state = new FastState();
-			state = state.addRandomTile(false);
-			state = state.addRandomTile(false);
+			state = state.addRandomTile(true);
+			state = state.addRandomTile(true);
 			int moves = 0;
 			long time = 0;
 			int depth = 3;
@@ -190,7 +193,7 @@ public class FastSolver
 	{
 		if(depth == 0) throw new IllegalArgumentException();
 			double best = Double.NEGATIVE_INFINITY;
-		ArrayList<ThreadedEvaluator> threadList = new ArrayList<>(MAX_THREADS);
+		
 		Direction result = null;
 		for(Direction d : Direction.values())
 		{
@@ -200,19 +203,12 @@ public class FastSolver
 				Collection<FastState> possibleStates = after.possibleRandomAdditions();
 				Iterator<FastState> it = possibleStates.iterator();
 				double worstCase = Double.POSITIVE_INFINITY;
+				ArrayList<Future<Double>> results = new ArrayList<>(possibleStates.size());
 				while(it.hasNext())
 				{
 					double temp;
-					if(threads < MAX_THREADS)
-					{
-						ThreadedEvaluator newThread = new ThreadedEvaluator(it.next(),depth-1,best);
-						//System.out.println("Created new Thread");
-						//newThread.setDaemon(true);
-						threadList.add(newThread);
-						newThread.start();
-						//System.out.println("Started calculation in new thread");
-					}
-					else
+					results.add(executor.submit(new Evaluator(it.next(),depth-1,best)));
+					/*
 					{
 						temp = bestWorstCase(it.next(),depth-1,best);
 						worstCase = Math.min(worstCase, temp);
@@ -221,23 +217,25 @@ public class FastSolver
 							break;
 						}
 					}
+					*/
 					
 				}
-				for(int i = 0; i < threadList.size();i++)
+				for(int i = 0; i < results.size();i++)
 				{
-					//threads--;
-					try 
-					{
-						
-						threadList.get(i).join();
-					} 
-					catch (InterruptedException e) 
-					{
+					double temp = Double.POSITIVE_INFINITY;
+					try {
+						temp = results.get(i).get();
+					} catch (InterruptedException | ExecutionException e) {
+						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					//threads++;
-					worstCase = Math.min(worstCase, threadList.get(i).finalEvaluation());
+					worstCase = Math.min(worstCase, temp);
+					if(temp < best)
+					{
+						break;
+					}
 				}
+				
 				best = Math.max(best, worstCase);
 				if(best == worstCase) result = d;
 			}
@@ -248,8 +246,8 @@ public class FastSolver
 	private static double bestWorstCase(FastState s, int depth, double currentBest)
 	{
 		if(depth == 0) return evaluate(s);
-			double bestCase = Double.NEGATIVE_INFINITY;
-			ArrayList<ThreadedEvaluator> threadList = new ArrayList<>(MAX_THREADS );
+		double bestCase = Double.NEGATIVE_INFINITY;
+			
 		for(int i = 0; i < Direction.values().length;i++)
 		{
 			FastState after = s.move(Direction.values()[i]);
@@ -260,14 +258,8 @@ public class FastSolver
 				double worstCase = Double.POSITIVE_INFINITY;
 				while(it.hasNext())
 				{
-					if(threads < MAX_THREADS)
-					{
-						ThreadedEvaluator newThread = new ThreadedEvaluator(it.next(),depth-1,currentBest);
-						//newThread.setDaemon(true);
-						threadList.add(newThread);
-						newThread.run();
-					}
-					else
+				
+					
 					{
 						double temp = bestWorstCase(it.next(),depth-1,currentBest);
 						worstCase = Math.min(worstCase, temp);
@@ -277,20 +269,7 @@ public class FastSolver
 						}
 					}
 				}
-				for(int k = 0; k < threadList.size();k++)
-				{
-					//threads--;
-					try 
-					{
-						threadList.get(k).join();
-					} 
-					catch (InterruptedException e) 
-					{
-						e.printStackTrace();
-					}
-					//threads++;
-					worstCase = Math.min(worstCase, threadList.get(k).finalEvaluation());
-				}
+				
 				bestCase = Math.max(bestCase, worstCase);
 				currentBest = Math.max(currentBest, bestCase);
 			}
@@ -343,7 +322,7 @@ public class FastSolver
 			}
 		}
 		//Add points for ordering
-		double monotonicityWeight = .125;
+		double monotonicityWeight = .11;
 		int horizontal = 0, vertical = 0;
 		for(int i = 0; i < s.size();i++)
 		{
@@ -396,42 +375,25 @@ public class FastSolver
 		return ordering;
 	}
 	
-	private static class ThreadedEvaluator extends Thread
+	
+	private static class Evaluator implements Callable<Double>
 	{
-		private double eval;
-		private FastState state;
-		private int depth;
-		private double currentBest;
-		private volatile boolean hasRun = false;
+		FastState state;
+		int depth;
+		double currentBest;
 		
-		public ThreadedEvaluator(FastState s, int depth, double currentBest)
+		public Evaluator(FastState state, int depth, double currentBest) 
 		{
-			super();
-			this.state = s;
+			this.state = state;
 			this.depth = depth;
 			this.currentBest = currentBest;
-			threads++;
 		}
 		
-		public void run()
+		@Override
+		public Double call() throws Exception 
 		{
-			eval = bestWorstCase(state,depth,currentBest);
-			hasRun = true;
-			return;
+			return bestWorstCase(state,depth,currentBest);
 		}
-		
-		public boolean hasRun()
-		{
-			return hasRun;
-		}
-		
-		public double finalEvaluation()
-		{
-			if(!hasRun) throw new IllegalStateException("Evaluation has not run yet");
-			threads--;
-			return eval;
-		}
-		
 	}
 	
 	private static class StatePainter extends JPanel
