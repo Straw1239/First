@@ -161,6 +161,7 @@ public class FastSolver
 	{
 		return (((int)a) << 12) + (((int)b) << 8) + (((int)c) << 4) + ((int)d);
 	}
+	
 	private static void initialize()
 	{
 		evalTable = new boolean[65536];
@@ -184,6 +185,7 @@ public class FastSolver
 		}
 		
 	}
+	
 	private static byte max(byte a, byte b)
 	{
 		return a > b ? a : b;
@@ -192,8 +194,7 @@ public class FastSolver
 	public static Direction bestMove(FastState s, int depth)
 	{
 		if(depth == 0) throw new IllegalArgumentException();
-			double best = Double.NEGATIVE_INFINITY;
-		
+		double best = Double.NEGATIVE_INFINITY;
 		Direction result = null;
 		for(Direction d : Direction.values())
 		{
@@ -206,27 +207,26 @@ public class FastSolver
 				ArrayList<Future<Double>> results = new ArrayList<>(possibleStates.size());
 				while(it.hasNext())
 				{
-					double temp;
 					results.add(executor.submit(new Evaluator(it.next(),depth-1,best)));
 					/*
+					double temp;
+					temp = bestWorstCase(it.next(),depth-1,best);
+					worstCase = Math.min(worstCase, temp);
+					if(temp < best)
 					{
-						temp = bestWorstCase(it.next(),depth-1,best);
-						worstCase = Math.min(worstCase, temp);
-						if(temp < best)
-						{
-							break;
-						}
+						break;
 					}
-					*/
-					
+					*/	
 				}
 				for(int i = 0; i < results.size();i++)
 				{
 					double temp = Double.POSITIVE_INFINITY;
-					try {
+					try 
+					{
 						temp = results.get(i).get();
-					} catch (InterruptedException | ExecutionException e) {
-						// TODO Auto-generated catch block
+					} 
+					catch (InterruptedException | ExecutionException e) 
+					{
 						e.printStackTrace();
 					}
 					worstCase = Math.min(worstCase, temp);
@@ -235,7 +235,6 @@ public class FastSolver
 						break;
 					}
 				}
-				
 				best = Math.max(best, worstCase);
 				if(best == worstCase) result = d;
 			}
@@ -258,24 +257,18 @@ public class FastSolver
 				double worstCase = Double.POSITIVE_INFINITY;
 				while(it.hasNext())
 				{
-				
-					
+					double temp = bestWorstCase(it.next(),depth-1,currentBest);
+					worstCase = Math.min(worstCase, temp);
+					if(temp < currentBest)
 					{
-						double temp = bestWorstCase(it.next(),depth-1,currentBest);
-						worstCase = Math.min(worstCase, temp);
-						if(temp < currentBest)
-						{
-							break;
-						}
+						break;
 					}
 				}
-				
 				bestCase = Math.max(bestCase, worstCase);
 				currentBest = Math.max(currentBest, bestCase);
 			}
 		}
 		return bestCase;
-		
 	}
 	
 	private static double evaluate(FastState s)
