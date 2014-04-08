@@ -279,6 +279,19 @@ public class ForkSolver
 		else
 			return after.possibleRandomAdditions();
 	}
+	
+	private static double min(Collection<Double> args)
+	{
+		if(args.size() == 0) throw new IllegalArgumentException();
+		Iterator<Double> it = args.iterator();
+		double min = it.next();
+		while(it.hasNext())
+		{
+			min = Math.min(min, it.next());
+		}
+		return min;
+	}
+	
 	private static class EvalTask extends RecursiveTask<Double>
 	{
 		private FastState state;
@@ -313,20 +326,31 @@ public class ForkSolver
 		@Override
 		protected Double compute() 
 		{
-			ArrayList<RecursiveTask<Double>> forks = new ArrayList<>();
 			if(depth == 0)
 			{
 				RecursiveTask<Double> task = new EvalTask(state);
-				forks.add(task);
 				task.fork();
+				return task.join();
 			}
 			else
 			{
+				ArrayList<RecursiveTask<Double>>[] forks = new ArrayList[4];
 				for(Direction d : Direction.values())
 				{
 					Collection<FastState> states = states(state,d);
-					
-					
+					Iterator<FastState> it = states.iterator();
+					while(it.hasNext())
+					{
+						SearchEvalTask task = new SearchEvalTask(it.next(),depth-1,currentBest);
+						forks[d.ordinal()].add(task);
+						task.fork();
+					}
+				}
+				double bestCase = Double.NEGATIVE_INFINITY;
+				for(int i = 0; i < forks.length;i++)
+				{
+					ArrayList<RecursiveTask<Double>> list = forks[i];
+					bestCase = Math.max(bestCase, min(list))
 				}
 			}
 		}

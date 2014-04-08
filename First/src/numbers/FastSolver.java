@@ -14,7 +14,7 @@ public class FastSolver
 	public static long evalTime = 0;
 	private static boolean[] evalTable;
 	private static long positions = 0;
-	public static final int MAX_THREADS = 4;
+	public static final int MAX_THREADS = Runtime.getRuntime().availableProcessors();
 	public static ExecutorService executor = Executors.newFixedThreadPool(MAX_THREADS);
 	
 	
@@ -375,7 +375,7 @@ public class FastSolver
 		public Evaluator(FastState state, int depth, double currentBest) 
 		{
 			this.state = state;
-			this.depth = depth;
+			this.depth = depth;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
 			this.currentBest = currentBest;
 		}
 		
