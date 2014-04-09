@@ -350,8 +350,14 @@ public class ForkSolver
 				for(int i = 0; i < forks.length;i++)
 				{
 					ArrayList<RecursiveTask<Double>> list = forks[i];
-					bestCase = Math.max(bestCase, min(list))
+					double worstCase = list.get(0).join();
+					for(int j = 1; j < list.size();j++)
+					{
+						worstCase = Math.min(worstCase, list.get(i).join());
+					}
+					bestCase = Math.max(bestCase,worstCase );
 				}
+				return bestCase;
 			}
 		}
 		
