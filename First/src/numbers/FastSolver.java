@@ -13,7 +13,7 @@ public class FastSolver
 {
 	public static long evalTime = 0;
 	private static long positions = 0;
-	public static final int MAX_THREADS = Runtime.getRuntime().availableProcessors();
+	public static final int MAX_THREADS = 1;//Runtime.getRuntime().availableProcessors();
 	public static ExecutorService executor = Executors.newFixedThreadPool(MAX_THREADS);
 	
 	public static void main(String[] args) throws FileNotFoundException, InterruptedException 
@@ -140,6 +140,7 @@ public class FastSolver
 					worstCase = Math.min(worstCase, temp);
 					if(temp < best)
 					{
+						
 						break;
 					}
 				}
