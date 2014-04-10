@@ -1,30 +1,54 @@
+//Rajan Troll
+//Straw1239@gmail.com
+
 package chapter8;
 
 public class PlaceInformation {
 
-	public PlaceInformation(String string, String string2, String string3,
-			double d, double e) {
-		// TODO Auto-generated constructor stub
+	private String name,address,tag;
+	private GeoLocation location;
+	
+	public PlaceInformation(String name, String address, String tag, double latitude, double longtitude) 
+	{
+		this.name = name;
+		this.address = address;
+		this.tag = tag;
+		location = new GeoLocation(latitude,longtitude);
 	}
 
-	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getName() 
+	{
+		return name;
 	}
 
-	public String getAddress() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getAddress() 
+	{
+		return address;
 	}
 
-	public String getTag() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getTag() 
+	{
+		return tag;
+	}
+	
+	public double getLatitude()
+	{
+		return location.getLatitude();
+	}
+	
+	public double getLongtitude()
+	{
+		return location.getLongitude();
 	}
 
-	public double distanceFrom(GeoLocation london) {
-		// TODO Auto-generated method stub
-		return 0;
+	public double distanceFrom(GeoLocation location) 
+	{
+		return this.location.distanceFrom(location);
+	}
+	
+	public String toString()
+	{
+		return name + ", " + address;
 	}
 
 }
