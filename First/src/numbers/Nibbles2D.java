@@ -11,7 +11,7 @@ public class Nibbles2D
 	
 	public byte getSquare(byte row, byte column)
 	{
-		
+		return getSquare(getIndex(row,column));
 	}
 	
 	public long getData()
@@ -21,7 +21,7 @@ public class Nibbles2D
 	
 	public void setSquare(byte value,byte row, byte column)
 	{
-		
+		setSquare(value,getIndex(row,column));
 	}
 	
 	public int index(boolean row, byte number)
@@ -52,7 +52,12 @@ public class Nibbles2D
 	
 	private void setSquare(byte value, byte index)
 	{
-		
+		//TODO implement index-based nibble setting
+	}
+	
+	private byte getIndex(byte row, byte column)
+	{
+		return (byte) ((row << 2) ^ column);
 	}
 	
 }
