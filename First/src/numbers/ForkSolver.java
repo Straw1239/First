@@ -12,10 +12,9 @@ import javax.swing.*;
 public class ForkSolver 
 {
 	public static long evalTime = 0;
-	private static boolean[] evalTable;
 	private static long positions = 0;
-	public static final int MAX_THREADS = 4;
-	public static ExecutorService executor = Executors.newFixedThreadPool(MAX_THREADS);
+	
+	
 	
 	
 	
@@ -43,7 +42,7 @@ public class ForkSolver
 			int moves = 0;
 			long time = 0;
 			int depth = 3;
-			double target = .05;
+			double target = .1;
 			long targetTime = (long)(target * 10000000000.0);
 			while(true)
 			{
@@ -82,7 +81,7 @@ public class ForkSolver
 			score += state.score();
 		}
 		System.out.println(score);
-		executor.shutdown();
+		
 	}
 	
 	public static int getIndex(byte a, byte b, byte c, byte d)
@@ -173,8 +172,8 @@ public class ForkSolver
 				}
 			}
 		}
-		score = Math.sqrt(score) * 2.5;
-		double smoothWeight = .5;
+		score = Math.sqrt(score) * 3;
+		double smoothWeight = .3;
 		//Subtract points for sharp transitions
 		for(int i = 1; i < s.size();i++)
 		{
@@ -184,6 +183,10 @@ public class ForkSolver
 				byte second = s.getSquare(i,j);
 				if(first != 0 && second != 0)
 				{
+					if( (j == 0 || j == 3) && (i == 1 || i == 3))
+					{
+						
+					}
 					int diff = second - first;
 					diff = (diff > 0)? diff : -diff;
 					//diff *= max(first,second);
@@ -201,7 +204,7 @@ public class ForkSolver
 			}
 		}
 		//Add points for ordering
-		double monotonicityWeight = .11;
+		double monotonicityWeight = .125;
 		int horizontal = 0, vertical = 0;
 		for(int i = 0; i < s.size();i++)
 		{

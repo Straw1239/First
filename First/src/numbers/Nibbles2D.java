@@ -53,6 +53,7 @@ public class Nibbles2D
 	private void setSquare(byte value, byte index)
 	{
 		//TODO implement index-based nibble setting
+		
 	}
 	
 	private byte getIndex(byte row, byte column)
