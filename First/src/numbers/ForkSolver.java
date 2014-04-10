@@ -108,11 +108,10 @@ public class ForkSolver
 				Collection<FastState> possibleStates = after.possibleRandomAdditions();
 				Iterator<FastState> it = possibleStates.iterator();
 				double worstCase = Double.POSITIVE_INFINITY;
-				ArrayList<Future<Double>> results = new ArrayList<>(possibleStates.size());
 				while(it.hasNext())
 				{
-					results.add(executor.submit(new Evaluator(it.next(),depth-1,best)));
-					/*
+					//results.add(executor.submit(new Evaluator(it.next(),depth-1,best)));
+					
 					double temp;
 					temp = bestWorstCase(it.next(),depth-1,best);
 					worstCase = Math.min(worstCase, temp);
@@ -120,24 +119,7 @@ public class ForkSolver
 					{
 						break;
 					}
-					*/	
-				}
-				for(int i = 0; i < results.size();i++)
-				{
-					double temp = Double.POSITIVE_INFINITY;
-					try 
-					{
-						temp = results.get(i).get();
-					} 
-					catch (InterruptedException | ExecutionException e) 
-					{
-						e.printStackTrace();
-					}
-					worstCase = Math.min(worstCase, temp);
-					if(temp < best)
-					{
-						break;
-					}
+					
 				}
 				best = Math.max(best, worstCase);
 				if(best == worstCase) result = d;
