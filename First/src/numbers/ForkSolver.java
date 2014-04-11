@@ -172,8 +172,7 @@ public class ForkSolver
 				}
 			}
 		}
-		score = Math.sqrt(score) * 3;
-		double smoothWeight = .3;
+		double smoothWeight = 1.0;
 		//Subtract points for sharp transitions
 		for(int i = 1; i < s.size();i++)
 		{
@@ -181,25 +180,30 @@ public class ForkSolver
 			{
 				byte first = s.getSquare(i - 1,j);
 				byte second = s.getSquare(i,j);
+				int diff = second - first;
+				diff = (diff > 0)? diff : -diff;
+				boolean ignore = false;
 				if(first != 0 && second != 0)
 				{
-					if( (j == 0 || j == 3) && (i == 1 || i == 3))
+					
 					{
+						if(i == 1 && first > second) ignore = true;
 						
+						if(i == 3 && second > first) ignore = true;
 					}
-					int diff = second - first;
-					diff = (diff > 0)? diff : -diff;
+					
+					
 					//diff *= max(first,second);
-					score -= diff * smoothWeight;
+					if(!ignore) score -= diff * smoothWeight;
 				}
 				first = s.getSquare(j,i-1);
 				second = s.getSquare(j,i);
 				if(first != 0 && second != 0)
 				{
-					int diff = second - first;
+					diff = second - first;
 					diff = (diff > 0)? diff : -diff;
 					//diff *= max(first,second);
-					score -= diff * smoothWeight;
+					if(!ignore) score -= diff * smoothWeight;
 				}
 			}
 		}
@@ -368,7 +372,7 @@ public class ForkSolver
 		}
 	}
 	
-	private static class StatePainter extends JPanel
+	private static class StatePainter extends JComponent
 	{
 		public static final long serialVersionUID = 0L;
 		private FastState state;
