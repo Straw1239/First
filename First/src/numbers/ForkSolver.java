@@ -186,11 +186,11 @@ public class ForkSolver
 				if(first != 0 && second != 0)
 				{
 					
-					{
+					
 						if(i == 1 && first > second) ignore = true;
 						
 						if(i == 3 && second > first) ignore = true;
-					}
+					
 					
 					
 					//diff *= max(first,second);
