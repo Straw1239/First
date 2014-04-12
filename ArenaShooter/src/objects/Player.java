@@ -2,7 +2,7 @@ package objects;
 
 public class Player extends Entity
 {
-
+	
 	public Player(double x, double y) 
 	{
 		super(x, y);
@@ -21,6 +21,11 @@ public class Player extends Entity
 	public boolean collidesWith(GameObject entity) 
 	{
 		return false;
+	}
+	
+	public static class Action
+	{
+		
 	}
 	
 }

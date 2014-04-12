@@ -8,13 +8,12 @@ import core.Display;
 
 public class Window 
 {
-	private JFrame frame; 
-	private Renderer renderer; 
+	private JFrame frame = new JFrame(); 
+	private Renderer renderer = new Renderer(); 
+	private KeyTracker tracker = new KeyTracker();
 	
 	public Window()
 	{
-		frame = new JFrame();
-		renderer = new Renderer();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		frame.setUndecorated(true);
@@ -24,6 +23,7 @@ public class Window
 		renderer.setSize(frame.getSize());
 		frame.setVisible(true);
 		renderer.requestFocusInWindow();
+		addKeyListener(tracker);
 	}
 	
 	public int getWidth()
@@ -36,13 +36,19 @@ public class Window
 		return frame.getHeight();
 	}
 	
+	public boolean isKeyPressed(int keyCode)
+	{
+		return tracker.isKeyPressed(keyCode);
+	}
+	
 	public void refresh(Display display)
 	{
+		//GIVE DATA TO RENDERER FOR OUTPUT TO SCREEN!!!
 		frame.repaint();
 	}
 	
 	public void addKeyListener(KeyListener k)
 	{
-		
+		renderer.addKeyListener(k);
 	}
 }

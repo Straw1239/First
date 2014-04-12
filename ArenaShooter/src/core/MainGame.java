@@ -2,9 +2,8 @@ package core;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 
 import javax.swing.SwingUtilities;
 
@@ -148,50 +147,28 @@ public class MainGame
 		
 		
 	}
-	private static class MouseListen implements MouseListener,MouseMotionListener
+	private static class MouseListen extends MouseAdapter
 	{
-
-		@Override
-		public void mouseDragged(MouseEvent arg0) {
-			// TODO Auto-generated method stub
+		public void mouseClicked(MouseEvent e)
+		{
 			
 		}
-
-		@Override
-		public void mouseMoved(MouseEvent arg0) {
-			// TODO Auto-generated method stub
+		
+		public void mousePressed(MouseEvent e)
+		{
 			
 		}
-
-		@Override
-		public void mouseClicked(MouseEvent arg0) {
-			// TODO Auto-generated method stub
+		
+		public void mouseReleased(MouseEvent e)
+		{
 			
 		}
-
-		@Override
-		public void mouseEntered(MouseEvent arg0) {
-			// TODO Auto-generated method stub
+		
+		public void mouseMoved(MouseEvent e)
+		{
 			
 		}
-
-		@Override
-		public void mouseExited(MouseEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mousePressed(MouseEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mouseReleased(MouseEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
+		
 		
 	}
 	
