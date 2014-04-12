@@ -1,6 +1,6 @@
 package objects;
 
-public abstract class Entity extends GameObject 
+public abstract class Entity extends GameObject implements EntityDataHolder
 {
 	protected Entity(double x, double y) 
 	{
@@ -18,6 +18,16 @@ public abstract class Entity extends GameObject
 	public boolean isDead()
 	{
 		return health == 0;
+	}
+	
+	public double health()
+	{
+		return health;
+	}
+	
+	public double maxHealth()
+	{
+		return maxHealth;
 	}
 	
 	public void damage(double damage)

@@ -5,7 +5,7 @@ import java.awt.Color;
 import core.MainGame;
 import utils.Utils;
 
-public class Bullet extends GameObject 
+public class Bullet extends GameObject implements BulletDataHolder
 {
 	public Color color;
 	public double damage = 1;
@@ -82,6 +82,18 @@ public class Bullet extends GameObject
 	public boolean collidesWith(GameObject entity) 
 	{
 		return false;
+	}
+
+	@Override
+	public double getRadius() 
+	{
+		return radius;
+	}
+
+	@Override
+	public Color getColor() 
+	{
+		return color;
 	}
 	
 

@@ -1,6 +1,6 @@
 package objects;
 
-public abstract class GameObject 
+public abstract class GameObject implements ObjectDataHolder
 {
 	protected double x,y;
 	protected Faction faction;
@@ -29,5 +29,10 @@ public abstract class GameObject
 	public double getY()
 	{
 		return y;
+	}
+	
+	public Faction getFaction()
+	{
+		return faction;
 	}
 }
