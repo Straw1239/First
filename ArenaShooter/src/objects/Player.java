@@ -7,6 +7,8 @@ public class Player extends Entity
 	{
 		super(x, y);
 		faction = Faction.Player;
+		maxHealth = 10;
+		health = maxHealth;
 	}
 
 	@Override

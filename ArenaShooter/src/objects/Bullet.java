@@ -8,11 +8,12 @@ import utils.Utils;
 public class Bullet extends GameObject 
 {
 	public Color color;
+	public double damage = 1;
 	
 	private double dx,dy;
 	private double radius;
 	private long startTime;
-	private double damage;
+	
 	
 	private Bullet(double x, double y)
 	{
@@ -23,6 +24,7 @@ public class Bullet extends GameObject
 	private Bullet(GameObject entity)
 	{
 		this(entity.x, entity.y);
+		faction = entity.faction;
 	}
 	
 	public Bullet(double x, double y, double dx, double dy, double radius, Color color)
@@ -64,6 +66,10 @@ public class Bullet extends GameObject
 		this.color = color;
 	}
 	
+	public boolean hasHitWall(double width, double height)
+	{
+		return (x + radius >= width || x - radius <= 0 || y + radius >= height || y - radius  <= 0);
+	}
 	
 	@Override
 	public void update() 
@@ -77,5 +83,6 @@ public class Bullet extends GameObject
 	{
 		return false;
 	}
+	
 
 }
