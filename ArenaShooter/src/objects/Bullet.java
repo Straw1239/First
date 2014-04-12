@@ -12,17 +12,12 @@ public class Bullet extends GameObject
 	private double dx,dy;
 	private double radius;
 	private long startTime;
-	
-	private Bullet()
-	{
-		startTime = MainGame.getTime();
-	}
+	private double damage;
 	
 	private Bullet(double x, double y)
 	{
-		this();
-		super.x = x;
-		super.y = y;
+		super(x,y);
+		startTime = MainGame.getTime();
 	}
 	
 	private Bullet(GameObject entity)

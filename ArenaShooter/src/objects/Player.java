@@ -1,7 +1,13 @@
 package objects;
 
-public class Player extends GameObject
+public class Player extends Entity
 {
+
+	public Player(double x, double y) 
+	{
+		super(x, y);
+		faction = Faction.Player;
+	}
 
 	@Override
 	public void update() 

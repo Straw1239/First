@@ -1,6 +1,12 @@
 package objects;
 
-public abstract class Enemy extends GameObject 
+public abstract class Enemy extends Entity 
 {
+
+	protected Enemy(double x, double y) 
+	{
+		super(x, y);
+		faction = Faction.Enemy;
+	}
 	
 }

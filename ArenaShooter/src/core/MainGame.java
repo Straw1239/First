@@ -5,6 +5,8 @@ import java.awt.Graphics;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
+import ui.Renderer;
+
 public class MainGame 
 {
 	private static JFrame frame = new JFrame();
