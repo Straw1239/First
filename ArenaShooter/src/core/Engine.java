@@ -56,6 +56,11 @@ public class Engine implements Serializable
 		return null;
 	}
 	
+	public void setPlayerAction(Player.Action action)
+	{
+		
+	}
+	
 	
 	
 	
