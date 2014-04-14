@@ -219,9 +219,7 @@ public class MainGame
 		
 		public void mouseMoved(MouseEvent e)
 		{
-			clicked = true;
-			x = e.getX();
-			y = e.getY();
+			
 		}
 		
 		
