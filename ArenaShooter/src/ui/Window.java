@@ -43,7 +43,7 @@ public class Window
 	
 	public void refresh(Display display)
 	{
-		//GIVE DATA TO RENDERER FOR OUTPUT TO SCREEN!!!
+		renderer.setDisplay(display);
 		frame.repaint();
 	}
 	

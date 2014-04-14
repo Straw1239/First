@@ -48,7 +48,7 @@ public class Engine implements Serializable
 			}
 		}
 		isDisplaying = true;
-		Display state = new Display(player,enemies,bullets.values());
+		Display state = new Display(player,enemies,bullets.values(), width, height);
 		isDisplaying = false;
 		return state;
 	}
@@ -95,6 +95,11 @@ public class Engine implements Serializable
 	private void executePlayerAction()
 	{
 		if(playerAction == null) return;
+		int moveSpeed = 1;
+		if(playerAction.isDown()) player.move(0, moveSpeed);
+		if(playerAction.isUp()) player.move(0, -moveSpeed);
+		if(playerAction.isRight()) player.move(moveSpeed, 0);
+		if(playerAction.isLeft()) player.move(-moveSpeed, 0);
 		
 	}
 	

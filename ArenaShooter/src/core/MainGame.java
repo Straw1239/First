@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.SwingUtilities;
 
+import objects.Player;
 import ui.Window;
 
 public class MainGame 
@@ -70,6 +71,7 @@ public class MainGame
 					else
 					{
 						startFrameTime = System.nanoTime();
+						engine.setPlayerAction(getPlayerAction());
 						engine.update();
 						while(System.nanoTime() - startFrameTime < frameNanoTime)
 						{
@@ -124,6 +126,15 @@ public class MainGame
 		window = new Window();
 		engine = new Engine(window.getWidth(),window.getHeight());
 		window.addKeyListener(keyListener);
+	}
+	
+	private static Player.Action getPlayerAction()
+	{
+		boolean up = window.isKeyPressed(KeyEvent.VK_W);
+		boolean down = window.isKeyPressed(KeyEvent.VK_S);
+		boolean right = window.isKeyPressed(KeyEvent.VK_D);
+		boolean left = window.isKeyPressed(KeyEvent.VK_A);
+		return new Player.Action(up, down, left, right);
 	}
 	
 	private static class KeyListen implements KeyListener

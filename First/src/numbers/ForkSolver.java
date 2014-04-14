@@ -42,7 +42,7 @@ public class ForkSolver
 			int moves = 0;
 			long time = 0;
 			int depth = 3;
-			double target = .1;
+			double target = .05;
 			long targetTime = (long)(target * 10000000000.0);
 			while(true)
 			{
@@ -172,7 +172,7 @@ public class ForkSolver
 				}
 			}
 		}
-		double smoothWeight = 1.0;
+		double smoothWeight = 1.2;
 		//Subtract points for sharp transitions
 		for(int i = 1; i < s.size();i++)
 		{

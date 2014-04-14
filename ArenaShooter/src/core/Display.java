@@ -16,12 +16,16 @@ public class Display
 	public final ImmutableCollection<? extends EnemyDataHolder> enemies;
 	public final ImmutableCollection<? extends BulletDataHolder> bullets;
 	public final PlayerDataHolder player;
+	public final double width, height;
 	
-	public Display(PlayerDataHolder player, Collection<? extends EnemyDataHolder> enemies, Collection<? extends BulletDataHolder> bullets)
+	
+	public Display(PlayerDataHolder player, Collection<? extends EnemyDataHolder> enemies, Collection<? extends BulletDataHolder> bullets, double width, double height)
 	{
 		this.enemies = ImmutableList.copyOf(enemies);
 		this.bullets = ImmutableList.copyOf(bullets);
 		this.player = new ImmutablePlayerDataHolder(player);
+		this.width = width;
+		this.height = height;
 	}
 	
 	private static class ImmutablePlayerDataHolder implements PlayerDataHolder
