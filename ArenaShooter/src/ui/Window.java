@@ -1,6 +1,7 @@
 package ui;
 
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
 
 import javax.swing.JFrame;
 
@@ -50,5 +51,12 @@ public class Window
 	public void addKeyListener(KeyListener k)
 	{
 		renderer.addKeyListener(k);
+	}
+	
+	public void addMouseListener(MouseAdapter m)
+	{
+		renderer.addMouseListener(m);
+		renderer.addMouseMotionListener(m);
+		renderer.addMouseWheelListener(m);
 	}
 }

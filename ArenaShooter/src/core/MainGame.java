@@ -8,16 +8,18 @@ import java.awt.event.MouseEvent;
 import javax.swing.SwingUtilities;
 
 import objects.Player;
+import objects.Player.Action;
 import ui.Window;
 
 public class MainGame 
 {
 	private static final double FPS = 30;
 	private static final double UPS = 60;
-	private static Window window;
-	private static Engine engine;
+	private static volatile Window window;
+	private static volatile Engine engine;
 	private static KeyListen keyListener = new KeyListen();
-	private static long time = 0;
+	private static MouseListen mouseListener = new MouseListen();
+	private static volatile long time = 0;
 	private static volatile boolean paused = false;
 	
 	
@@ -37,7 +39,7 @@ public class MainGame
 		}
 		catch (InterruptedException e) 
 		{
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 		runEngine();
 		runGraphics();
@@ -64,8 +66,7 @@ public class MainGame
 						} 
 						catch (InterruptedException e) 
 						{
-							e.printStackTrace();
-							System.exit(-1);
+							throw new RuntimeException(e);
 						}
 					}
 					else
@@ -73,16 +74,16 @@ public class MainGame
 						startFrameTime = System.nanoTime();
 						engine.setPlayerAction(getPlayerAction());
 						engine.update();
+						time++;
 						while(System.nanoTime() - startFrameTime < frameNanoTime)
 						{
 							try 
 							{
-								Thread.sleep((frameNanoTime - (System.nanoTime() - startFrameTime)) / 1000);
+								Thread.sleep(1);
 							} 
 							catch (InterruptedException e) 
 							{
-								e.printStackTrace();
-								System.exit(-1);
+								throw new RuntimeException(e);
 							}
 						}
 					}
@@ -105,12 +106,11 @@ public class MainGame
 			{
 				try 
 				{
-					Thread.sleep((frameNanoTime - (System.nanoTime() - startFrameTime)) / 1000);
+					Thread.sleep(1);
 				} 
 				catch (InterruptedException e) 
 				{
-					e.printStackTrace();
-					System.exit(-1);
+					throw new RuntimeException(e);
 				}
 			}
 		}
@@ -126,6 +126,7 @@ public class MainGame
 		window = new Window();
 		engine = new Engine(window.getWidth(),window.getHeight());
 		window.addKeyListener(keyListener);
+		window.addMouseListener(mouseListener);
 	}
 	
 	private static Player.Action getPlayerAction()
@@ -134,6 +135,13 @@ public class MainGame
 		boolean down = window.isKeyPressed(KeyEvent.VK_S);
 		boolean right = window.isKeyPressed(KeyEvent.VK_D);
 		boolean left = window.isKeyPressed(KeyEvent.VK_A);
+		if(mouseListener.hasClicked())
+		{
+			double gameX, gameY;
+			Player.Action action = new Player.Action(up, down, left, right, mouseListener.getX(), mouseListener.getY());
+			mouseListener.reset();
+			return action;
+		}
 		return new Player.Action(up, down, left, right);
 	}
 	
@@ -160,11 +168,39 @@ public class MainGame
 		
 		
 	}
+	
 	private static class MouseListen extends MouseAdapter
 	{
+		private boolean clicked = false;
+		private double x,y;
+		
+		public boolean hasClicked()
+		{
+			return clicked;
+		}
+		
+		public double getX()
+		{
+			if(!clicked) throw new IllegalStateException();
+			return x;
+		}
+		
+		public double getY()
+		{
+			if(!clicked) throw new IllegalStateException();
+			return y;
+		}
+		
+		public void reset()
+		{
+			clicked = false;
+		}
+		
 		public void mouseClicked(MouseEvent e)
 		{
-			
+			clicked = true;
+			x = e.getX();
+			y = e.getY();
 		}
 		
 		public void mousePressed(MouseEvent e)

@@ -1,15 +1,19 @@
 package core;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 import objects.Bullet;
 import objects.Enemy;
 import objects.Faction;
+import objects.GameObject;
 import objects.Player;
+import utils.Utils;
 
-import com.google.common.collect.HashMultimap;
+import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Multimap;
 
 
@@ -21,10 +25,10 @@ public class Engine implements Serializable
 	
 	private volatile boolean isDisplaying = false, isUpdating = false;
 	
-	private Player player;
-	private Player.Action playerAction;
+	private volatile Player player;
+	private volatile Player.Action playerAction;
 	private List<Enemy> enemies = new LinkedList<>();
-	private Multimap<Faction, Bullet> bullets = HashMultimap.create();
+	private Multimap<Faction, Bullet> bullets = LinkedListMultimap.create();
 	
 	public Engine(double width, double height)
 	{
@@ -36,7 +40,7 @@ public class Engine implements Serializable
 	
 	public Display getDisplay() 
 	{
-		while(isUpdating )
+		while(isUpdating)
 		{
 			try 
 			{
@@ -82,8 +86,18 @@ public class Engine implements Serializable
 
 	private void updateBullets()
 	{
-		
-		
+		Collection<Bullet> allBullets = bullets.values();
+		Iterator<Bullet> it = allBullets.iterator();
+		while(it.hasNext())
+		{
+			Bullet b = it.next();
+			b.update();
+			if(b.hasHitWall(width, height))
+			{
+				it.remove();
+			}
+			
+		}
 		
 	}
 	
@@ -95,13 +109,22 @@ public class Engine implements Serializable
 	private void executePlayerAction()
 	{
 		if(playerAction == null) return;
-		int moveSpeed = 1;
+		int moveSpeed = 10;
 		if(playerAction.isDown()) player.move(0, moveSpeed);
 		if(playerAction.isUp()) player.move(0, -moveSpeed);
 		if(playerAction.isRight()) player.move(moveSpeed, 0);
 		if(playerAction.isLeft()) player.move(-moveSpeed, 0);
+		if(playerAction.isShooting())
+		{
+			double x = playerAction.targetX(), y = playerAction.targetY();
+			double distance = Utils.distance(player.getX(), player.getY(), x, y);
+			double speed = 1;
+			bullets.put(Faction.Player, new Bullet(player,x * speed / distance, y  * speed / distance,5,Player.color));
+		}
 		
 	}
+	
+	
 	
 	
 	

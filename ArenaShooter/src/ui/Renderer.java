@@ -2,9 +2,11 @@ package ui;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.Iterator;
 
 import javax.swing.JComponent;
 
+import objects.BulletDataHolder;
 import objects.Player;
 import objects.PlayerDataHolder;
 import core.Display;
@@ -29,6 +31,7 @@ public class Renderer extends JComponent
 	{
 		if(display == null) return;
 		drawPlayer(g);
+		drawBullets(g);
 	}
 	
 	private void drawPlayer(Graphics g)
@@ -36,6 +39,17 @@ public class Renderer extends JComponent
 		g.setColor(Player.color);
 		PlayerDataHolder player = display.player;
 		g.fillOval(getX(player.getX() - Player.radius), getY(player.getY() - Player.radius), getX(Player.radius * 2), getY(Player.radius * 2));
+	}
+	
+	private void drawBullets(Graphics g)
+	{
+		Iterator<? extends BulletDataHolder> it = display.bullets.iterator();
+		while(it.hasNext())
+		{
+			BulletDataHolder bullet = it.next();
+			g.setColor(bullet.getColor());
+			g.fillOval(getX(bullet.getX() - bullet.getRadius()), getY(bullet.getY() - bullet.getRadius()), getX(bullet.getRadius() * 2), getY(bullet.getRadius() * 2));
+		}
 	}
 	
 	private int getX(double gameX)

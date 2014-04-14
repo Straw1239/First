@@ -54,8 +54,9 @@ public class Player extends Entity implements PlayerDataHolder
 		private boolean shoot = false;
 		private double targetX, targetY;
 		
-		public Action(double targetX, double targetY)
+		public Action(boolean up, boolean down, boolean left, boolean right, double targetX, double targetY)
 		{
+			this(up ,down, left, right);
 			this.targetX = targetX;
 			this.targetY = targetY;
 			shoot = true;
