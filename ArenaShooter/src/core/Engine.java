@@ -118,8 +118,9 @@ public class Engine implements Serializable
 		{
 			double x = playerAction.targetX(), y = playerAction.targetY();
 			double distance = Utils.distance(player.getX(), player.getY(), x, y);
-			double speed = 1;
-			bullets.put(Faction.Player, new Bullet(player,x * speed / distance, y  * speed / distance,5,Player.color));
+			double speed = 10;
+			double ratio = speed / distance;
+			bullets.put(Faction.Player, new Bullet(player, (x - player.getX()) * ratio, (y - player.getY())  * ratio,5,Player.color));
 		}
 		
 	}

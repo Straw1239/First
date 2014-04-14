@@ -41,6 +41,8 @@ public class MainGame
 		{
 			throw new RuntimeException(e);
 		}
+		window.addKeyListener(keyListener);
+		window.addMouseListener(mouseListener);
 		runEngine();
 		runGraphics();
 		
@@ -125,8 +127,6 @@ public class MainGame
 	{
 		window = new Window();
 		engine = new Engine(window.getWidth(),window.getHeight());
-		window.addKeyListener(keyListener);
-		window.addMouseListener(mouseListener);
 	}
 	
 	private static Player.Action getPlayerAction()
@@ -137,7 +137,12 @@ public class MainGame
 		boolean left = window.isKeyPressed(KeyEvent.VK_A);
 		if(mouseListener.hasClicked())
 		{
-			double gameX, gameY;
+			double gameX = mouseListener.getX(), gameY = mouseListener.getY();
+			gameX /= window.getWidth();
+			gameY /= window.getHeight();
+			gameX *= engine.width;
+			gameY *= engine.height;
+			System.out.printf("%f %f\n",gameX, gameY);
 			Player.Action action = new Player.Action(up, down, left, right, mouseListener.getX(), mouseListener.getY());
 			mouseListener.reset();
 			return action;
@@ -198,14 +203,14 @@ public class MainGame
 		
 		public void mouseClicked(MouseEvent e)
 		{
-			clicked = true;
-			x = e.getX();
-			y = e.getY();
+			
 		}
 		
 		public void mousePressed(MouseEvent e)
 		{
-			
+			clicked = true;
+			x = e.getX();
+			y = e.getY();
 		}
 		
 		public void mouseReleased(MouseEvent e)
