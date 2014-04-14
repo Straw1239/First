@@ -13,7 +13,7 @@ import ui.Window;
 
 public class MainGame 
 {
-	private static final double FPS = 30;
+	private static final double FPS = 60;
 	private static final double UPS = 60;
 	private static volatile Window window;
 	private static volatile Engine engine;
@@ -146,7 +146,8 @@ public class MainGame
 			mouseListener.reset();
 			return action;
 		}
-		return new Player.Action(up, down, left, right);
+		return new Player.Action(up, down, left, right,window.mouseX(), window.mouseY());
+		//return new Player.Action(up, down, left, right);
 	}
 	
 	private static class KeyListen implements KeyListener

@@ -7,6 +7,7 @@ import java.util.Iterator;
 import javax.swing.JComponent;
 
 import objects.BulletDataHolder;
+import objects.EnemyDataHolder;
 import objects.Player;
 import objects.PlayerDataHolder;
 import core.Display;
@@ -32,6 +33,7 @@ public class Renderer extends JComponent
 		if(display == null) return;
 		drawPlayer(g);
 		drawBullets(g);
+		drawEnemies(g);
 	}
 	
 	private void drawPlayer(Graphics g)
@@ -49,6 +51,15 @@ public class Renderer extends JComponent
 			BulletDataHolder bullet = it.next();
 			g.setColor(bullet.getColor());
 			g.fillOval(getX(bullet.getX() - bullet.getRadius()), getY(bullet.getY() - bullet.getRadius()), getX(bullet.getRadius() * 2), getY(bullet.getRadius() * 2));
+		}
+	}
+	
+	private void drawEnemies(Graphics g)
+	{
+		Iterator<? extends EnemyDataHolder> it = display.enemies.iterator();
+		while(it.hasNext())
+		{
+			
 		}
 	}
 	

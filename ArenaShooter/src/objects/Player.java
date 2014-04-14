@@ -11,7 +11,7 @@ import utils.Utils;
 public class Player extends Entity implements PlayerDataHolder
 {
 	public static double radius = 30;
-	public static Color color = Color.green;
+	public static Color color = new Color(170,0,170);
 	
 	public Player(double x, double y) 
 	{
