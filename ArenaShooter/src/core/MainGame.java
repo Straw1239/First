@@ -4,12 +4,13 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Random;
 
 import javax.swing.SwingUtilities;
 
 import objects.Player;
-import objects.Player.Action;
 import ui.Window;
+import utils.XRandom;
 
 public class MainGame 
 {
@@ -21,6 +22,7 @@ public class MainGame
 	private static MouseListen mouseListener = new MouseListen();
 	private static volatile long time = 0;
 	private static volatile boolean paused = false;
+	public static final Random rand = new XRandom(System.nanoTime());
 	
 	
 	public static void main(String[] args)
@@ -146,8 +148,9 @@ public class MainGame
 			mouseListener.reset();
 			return action;
 		}
-		return new Player.Action(up, down, left, right,window.mouseX(), window.mouseY());
-		//return new Player.Action(up, down, left, right);
+		if(window.isClicked(1))
+			return new Player.Action(up, down, left, right,window.mouseX(), window.mouseY());
+		return new Player.Action(up, down, left, right);
 	}
 	
 	private static class KeyListen implements KeyListener

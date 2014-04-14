@@ -13,4 +13,6 @@ public class Utils
 	{
 		return distance(g1.getX(),g1.getY(),g2.getX(),g2.getY());
 	}
+	
+	
 }

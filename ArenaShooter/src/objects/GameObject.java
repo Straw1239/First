@@ -21,6 +21,12 @@ public abstract class GameObject implements ObjectDataHolder
 	
 	public abstract boolean collidesWith(GameObject entity);
 	
+	public abstract boolean collidesWithPlayer(Player p);
+	
+	public abstract boolean collidesWithBullet(Bullet b);
+	
+	public abstract boolean collidesWithEnemy(Enemy e);
+	
 	public double getX()
 	{
 		return x;

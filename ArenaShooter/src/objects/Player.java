@@ -41,11 +41,7 @@ public class Player extends Entity implements PlayerDataHolder
 	@Override
 	public boolean collidesWith(GameObject entity) 
 	{
-		if(entity instanceof CircleCollider)
-		{
-			return Utils.distance(this, entity) < (radius + ((CircleCollider)entity).getRadius());
-		}
-		return new CircleCollider(x, y, radius){}.collidesWith(entity);
+		return entity.collidesWithPlayer(this);
 	}
 	
 	public static class Action
@@ -115,6 +111,25 @@ public class Player extends Entity implements PlayerDataHolder
 		
 		
 		
+	}
+
+	@Override
+	public boolean collidesWithPlayer(Player p) 
+	{
+		//Only relevant if multiplayer is added, not for a long time
+		return false;
+	}
+
+	@Override
+	public boolean collidesWithBullet(Bullet b) 
+	{
+		
+	}
+
+	@Override
+	public boolean collidesWithEnemy(Enemy e) 
+	{
+		return false;
 	}
 	
 }
