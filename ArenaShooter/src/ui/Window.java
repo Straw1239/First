@@ -12,6 +12,7 @@ public class Window
 	private JFrame frame = new JFrame(); 
 	private Renderer renderer = new Renderer(); 
 	private KeyTracker tracker = new KeyTracker();
+	private MouseTracker mouse = new MouseTracker();
 	
 	public Window()
 	{
@@ -25,6 +26,7 @@ public class Window
 		frame.setVisible(true);
 		renderer.requestFocusInWindow();
 		addKeyListener(tracker);
+		addMouseListener(mouse);
 	}
 	
 	public int getWidth()
@@ -40,6 +42,21 @@ public class Window
 	public boolean isKeyPressed(int keyCode)
 	{
 		return tracker.isKeyPressed(keyCode);
+	}
+	
+	public boolean isClicked(int button)
+	{
+		return mouse.isClicked(button);
+	}
+	
+	public double mouseX()
+	{
+		return mouse.getX();
+	}
+	
+	public double mouseY()
+	{
+		return mouse.getY();
 	}
 	
 	public void refresh(Display display)

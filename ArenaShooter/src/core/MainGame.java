@@ -142,8 +142,7 @@ public class MainGame
 			gameY /= window.getHeight();
 			gameX *= engine.width;
 			gameY *= engine.height;
-			System.out.printf("%f %f\n",gameX, gameY);
-			Player.Action action = new Player.Action(up, down, left, right, mouseListener.getX(), mouseListener.getY());
+			Player.Action action = new Player.Action(up, down, left, right, gameX, gameY);
 			mouseListener.reset();
 			return action;
 		}
@@ -186,13 +185,13 @@ public class MainGame
 		
 		public double getX()
 		{
-			if(!clicked) throw new IllegalStateException();
+			if(!clicked) throw new IllegalStateException("Mouse has not been clicked");
 			return x;
 		}
 		
 		public double getY()
 		{
-			if(!clicked) throw new IllegalStateException();
+			if(!clicked) throw new IllegalStateException("Mouse has not been clicked");
 			return y;
 		}
 		
@@ -220,7 +219,9 @@ public class MainGame
 		
 		public void mouseMoved(MouseEvent e)
 		{
-			
+			clicked = true;
+			x = e.getX();
+			y = e.getY();
 		}
 		
 		
