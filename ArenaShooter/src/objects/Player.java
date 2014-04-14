@@ -2,7 +2,7 @@ package objects;
 
 import java.util.Arrays;
 
-public class Player extends Entity
+public class Player extends Entity implements PlayerDataHolder
 {
 	
 	public Player(double x, double y) 

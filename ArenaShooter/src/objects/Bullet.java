@@ -95,6 +95,63 @@ public class Bullet extends GameObject implements BulletDataHolder
 	{
 		return color;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((color == null) ? 0 : color.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(damage);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(dx);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(dy);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(radius);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + (int) (startTime ^ (startTime >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (!(obj instanceof Bullet)) {
+			return false;
+		}
+		Bullet other = (Bullet) obj;
+		if (color == null) {
+			if (other.color != null) {
+				return false;
+			}
+		} else if (!color.equals(other.color)) {
+			return false;
+		}
+		if (Double.doubleToLongBits(damage) != Double
+				.doubleToLongBits(other.damage)) {
+			return false;
+		}
+		if (Double.doubleToLongBits(dx) != Double.doubleToLongBits(other.dx)) {
+			return false;
+		}
+		if (Double.doubleToLongBits(dy) != Double.doubleToLongBits(other.dy)) {
+			return false;
+		}
+		if (Double.doubleToLongBits(radius) != Double
+				.doubleToLongBits(other.radius)) {
+			return false;
+		}
+		if (startTime != other.startTime) {
+			return false;
+		}
+		return true;
+	}
 	
 
 }
