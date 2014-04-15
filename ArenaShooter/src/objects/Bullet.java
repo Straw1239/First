@@ -156,22 +156,20 @@ public class Bullet extends GameObject implements BulletDataHolder
 	@Override
 	public boolean collidesWithPlayer(Player p) 
 	{
-		// TODO Auto-generated method stub
-		return false;
+		return p.collidesWithBullet(this);
 	}
 
 	@Override
 	public boolean collidesWithBullet(Bullet b) 
 	{
-		// TODO Auto-generated method stub
+		// Should Bullets collide? for now, no.
 		return false;
 	}
 
 	@Override
 	public boolean collidesWithEnemy(Enemy e) 
 	{
-		// TODO Auto-generated method stub
-		return false;
+		return e.collidesWithBullet(this);
 	}
 	
 

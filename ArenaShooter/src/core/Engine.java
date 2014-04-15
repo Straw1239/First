@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import objects.BasicEnemy;
 import objects.Bullet;
 import objects.Enemy;
 import objects.Faction;
@@ -25,6 +26,7 @@ public class Engine implements Serializable
 	
 	private volatile boolean isDisplaying = false, isUpdating = false;
 	
+	private long updates = 0;
 	private volatile Player player;
 	private volatile Player.Action playerAction;
 	private List<Enemy> enemies = new LinkedList<>();
@@ -35,7 +37,6 @@ public class Engine implements Serializable
 		this.width = width;
 		this.height = height;
 		player = new Player(width / 2, height / 2);
-		
 	}
 	
 	public Display getDisplay() 
@@ -76,34 +77,96 @@ public class Engine implements Serializable
 			}
 		}
 		isUpdating = true;
-		player.update();
-		executePlayerAction();
+		if(updates % 60 == 0) addRandomBasicEnemy();
+		updatePlayer();
+		if(!player.isDead())
+		{
+			executePlayerAction();
+		}
 		updateEnemies();
 		updateBullets();
+		updates++;
 		isUpdating = false;
 		
 	}
-
+	
+	private void updatePlayer()
+	{
+		player.update();
+	}
+	
 	private void updateBullets()
 	{
-		Collection<Bullet> allBullets = bullets.values();
-		Iterator<Bullet> it = allBullets.iterator();
-		while(it.hasNext())
+		for(Faction f : Faction.values())
 		{
-			Bullet b = it.next();
-			b.update();
-			if(b.hasHitWall(width, height))
+			Collection<Bullet> fBullets = bullets.get(f);
+			Iterator<Bullet> it = fBullets.iterator();
+			while(it.hasNext())
 			{
-				it.remove();
+				Bullet b = it.next();
+				b.update();
+				if(b.hasHitWall(width, height))
+				{
+					it.remove();
+				}
+				else
+				{
+					switch (f)
+					{
+					case Neutral:
+					case Enemy:
+						if(player.collidesWithBullet(b))
+						{
+							it.remove();
+							player.hitByBullet(b);
+						}
+						if(f == Faction.Enemy)break;
+					
+					case Player:
+						Iterator<Enemy> et = enemies.iterator();
+						while(et.hasNext())
+						{
+							Enemy e = et.next();
+							if(e.collidesWithBullet(b))
+							{
+								it.remove();
+								e.hitByBullet(b);
+							}
+						}
+					}
+				}
 			}
-			
 		}
 		
 	}
 	
 	private void updateEnemies()
 	{
-		
+		Iterator<Enemy> it = enemies.iterator();
+		while(it.hasNext())
+		{
+			Enemy e = it.next();
+			e.update();
+			if(e.isDead()) 
+			{
+				it.remove();
+			}
+			else
+			{
+				 if(e.collidesWithPlayer(player))
+				 {
+					 e.collideWithPlayer(player);
+				 }
+				 
+			}
+		}
+	}
+	
+	private void addRandomBasicEnemy()
+	{
+		double x = MainGame.rand.nextDouble() * width;
+		double y = MainGame.rand.nextDouble() * height;
+		enemies.add(new BasicEnemy(x,y));
 	}
 	
 	private void executePlayerAction()

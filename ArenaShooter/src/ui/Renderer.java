@@ -1,6 +1,7 @@
 package ui;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.util.Iterator;
 
@@ -16,6 +17,7 @@ public class Renderer extends JComponent
 {
 	private static final long serialVersionUID = 0L;
 	private Display display;
+	private Transformer converter = new ScreenMapper();
 
 	public Renderer()
 	{
@@ -40,7 +42,11 @@ public class Renderer extends JComponent
 	{
 		g.setColor(Player.color);
 		PlayerDataHolder player = display.player;
-		g.fillOval(getX(player.getX() - Player.radius), getY(player.getY() - Player.radius), getX(Player.radius * 2), getY(Player.radius * 2));
+		g.fillOval(converter.screenX(player.getX() - Player.radius), converter.screenY(player.getY() - Player.radius), 
+				converter.pixels(Player.radius * 2), converter.pixels((Player.radius * 2)));
+		g.setColor(Color.black);
+		g.setFont(new Font("Arial",Font.BOLD,36));
+		g.drawString("Health " + player.health(), 20, 30);
 	}
 	
 	private void drawBullets(Graphics g)
@@ -50,7 +56,8 @@ public class Renderer extends JComponent
 		{
 			BulletDataHolder bullet = it.next();
 			g.setColor(bullet.getColor());
-			g.fillOval(getX(bullet.getX() - bullet.getRadius()), getY(bullet.getY() - bullet.getRadius()), getX(bullet.getRadius() * 2), getY(bullet.getRadius() * 2));
+			g.fillOval(converter.screenX((bullet.getX() - bullet.getRadius())), converter.screenY((bullet.getY() - bullet.getRadius())),
+					converter.pixels(bullet.getRadius() * 2), converter.pixels(bullet.getRadius() * 2));
 		}
 	}
 	
@@ -59,19 +66,30 @@ public class Renderer extends JComponent
 		Iterator<? extends EnemyDataHolder> it = display.enemies.iterator();
 		while(it.hasNext())
 		{
-			
+			it.next().draw(g, converter);
 		}
 	}
 	
-	private int getX(double gameX)
+	private class ScreenMapper implements Transformer
 	{
-		return (int) (gameX * getWidth() / display.width);
-	}
-	
-	
-	
-	private int getY(double gameY)
-	{
-		return (int) (gameY * getHeight() / display.height);
+
+		@Override
+		public int screenX(double gameX) 
+		{
+			return (int) (gameX * getWidth() / display.width);
+		}
+
+		@Override
+		public int screenY(double gameY) 
+		{
+			return (int) (gameY * getHeight() / display.height);
+		}
+
+		@Override
+		public int pixels(double gameLength) 
+		{
+			return (int) (gameLength * getWidth() / display.width);
+		}
+		
 	}
 }

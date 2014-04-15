@@ -123,13 +123,20 @@ public class Player extends Entity implements PlayerDataHolder
 	@Override
 	public boolean collidesWithBullet(Bullet b) 
 	{
-		
+		if(b.faction == Faction.Player) return false;
+		return Utils.circleCollide(this, b, radius + b.getRadius());
 	}
 
 	@Override
 	public boolean collidesWithEnemy(Enemy e) 
 	{
-		return false;
+		return e.collidesWithPlayer(this);
+	}
+
+	@Override
+	public void hitByBullet(Bullet b) 
+	{
+		damage(b.damage);
 	}
 	
 }
