@@ -148,7 +148,7 @@ public class MainGame
 			return action;
 		}
 		if(window.isClicked(1))
-			return new Player.Action(up, down, left, right,window.mouseX(), window.mouseY());
+			return new Player.Action(up, down, left, right, window.mouseX(), window.mouseY());
 		return new Player.Action(up, down, left, right);
 	}
 	
