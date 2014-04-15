@@ -21,10 +21,10 @@ public class Bullet extends GameObject implements BulletDataHolder
 		startTime = MainGame.getTime();
 	}
 	
-	private Bullet(GameObject entity)
+	private Bullet(ObjectDataHolder entity)
 	{
-		this(entity.x, entity.y);
-		faction = entity.faction;
+		this(entity.getX(), entity.getY());
+		faction = entity.getFaction();
 	}
 	
 	public Bullet(double x, double y, double dx, double dy, double radius, Color color)
@@ -51,17 +51,18 @@ public class Bullet extends GameObject implements BulletDataHolder
 		this(x,y,dx,dy,radius,Color.red);
 	}
 	
-	public Bullet(GameObject source, double dx, double dy, double radius,Color color)
+	public Bullet(ObjectDataHolder source, double dx, double dy, double radius,Color color)
 	{
-		this(source.x,source.y,dx,dy,radius,color);
+		this(source.getX(),source.getY(),dx,dy,radius,color);
+		faction = source.getFaction();
 	}
 	
-	public Bullet(GameObject source, GameObject target, double speed, double radius, Color color)
+	public Bullet(ObjectDataHolder source, ObjectDataHolder target, double speed, double radius, Color color)
 	{
 		this(source);
 		double distance = Utils.distance(source,target);
-		dx = speed * (target.x - x) / distance;
-		dy = speed * (target.y - y) / distance;
+		dx = speed * (target.getX() - x) / distance;
+		dy = speed * (target.getY() - y) / distance;
 		this.radius = radius;
 		this.color = color;
 	}

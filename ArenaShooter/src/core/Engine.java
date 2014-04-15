@@ -51,8 +51,6 @@ public class Engine implements Serializable
 	
 	public void update()
 	{
-		
-		
 		if(updates % 60 == 0) addRandomBasicEnemy();
 		updatePlayer();
 		if(!player.isDead())
@@ -61,9 +59,8 @@ public class Engine implements Serializable
 		}
 		updateEnemies();
 		updateBullets();
+		view = new Display(player, enemies, bullets.values(), width, height);
 		updates++;
-		
-		
 	}
 	
 	public long getTime()
@@ -139,7 +136,11 @@ public class Engine implements Serializable
 				 {
 					 e.collideWithPlayer(player);
 				 }
-				 
+				 Bullet b = e.shot(view);
+				 if(b != null)
+				 {
+					 bullets.put(Faction.Enemy, b);
+				 }
 			}
 		}
 	}

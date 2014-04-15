@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import core.Display;
+import core.MainGame;
 import ui.Transformer;
 import utils.Utils;
 
@@ -12,7 +13,9 @@ public class BasicEnemy extends Enemy
 	public static final double radius = 20;
 	public static final double contactDamage = 2;
 	public static final double startHealth = 10;
+	public static final long fireTime = 60;
 	
+	private long shotTime = MainGame.getTime();
 	
 	public BasicEnemy(double x, double y) 
 	{
@@ -75,8 +78,10 @@ public class BasicEnemy extends Enemy
 	@Override
 	public Bullet shot(Display d) 
 	{
-		// TODO Auto-generated method stub
-		return null;
+		if(MainGame.getTime() < shotTime + fireTime) return null;
+		shotTime = MainGame.getTime();
+		return new Bullet(this, d.player, 10, 5, Color.green);
+		
 	}
 
 }
