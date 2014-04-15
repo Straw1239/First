@@ -24,38 +24,24 @@ public class Engine implements Serializable
 	
 	public final double width, height;
 	
-	private volatile boolean isDisplaying = false, isUpdating = false;
-	
 	private long updates = 0;
 	private volatile Player player;
 	private volatile Player.Action playerAction;
 	private List<Enemy> enemies = new LinkedList<>();
 	private Multimap<Faction, Bullet> bullets = LinkedListMultimap.create();
+	private Display view;
 	
 	public Engine(double width, double height)
 	{
 		this.width = width;
 		this.height = height;
 		player = new Player(width / 2, height / 2);
+		view = new Display(player, enemies, bullets.values(), width, height);
 	}
 	
 	public Display getDisplay() 
 	{
-		while(isUpdating)
-		{
-			try 
-			{
-				Thread.sleep(0,500);
-			} 
-			catch (InterruptedException e) 
-			{
-				throw new RuntimeException(e);
-			}
-		}
-		isDisplaying = true;
-		Display state = new Display(player,enemies,bullets.values(), width, height);
-		isDisplaying = false;
-		return state;
+		return view;
 	}
 	
 	public void setPlayerAction(Player.Action action)
@@ -65,18 +51,8 @@ public class Engine implements Serializable
 	
 	public void update()
 	{
-		while(isDisplaying)
-		{
-			try 
-			{
-				Thread.sleep(0,500);
-			} 
-			catch (InterruptedException e) 
-			{
-				throw new RuntimeException(e);
-			}
-		}
-		isUpdating = true;
+		
+		
 		if(updates % 60 == 0) addRandomBasicEnemy();
 		updatePlayer();
 		if(!player.isDead())
@@ -86,8 +62,13 @@ public class Engine implements Serializable
 		updateEnemies();
 		updateBullets();
 		updates++;
-		isUpdating = false;
 		
+		
+	}
+	
+	public long getTime()
+	{
+		return updates;
 	}
 	
 	private void updatePlayer()
@@ -173,11 +154,21 @@ public class Engine implements Serializable
 	private void executePlayerAction()
 	{
 		if(playerAction == null) return;
-		int moveSpeed = 10;
-		if(playerAction.isDown()) player.move(0, moveSpeed);
-		if(playerAction.isUp()) player.move(0, -moveSpeed);
-		if(playerAction.isRight()) player.move(moveSpeed, 0);
-		if(playerAction.isLeft()) player.move(-moveSpeed, 0);
+		int moveSpeed = 5;
+		double dx = 0, dy = 0;
+		
+		if(playerAction.isDown()) dy++;
+		if(playerAction.isUp()) dy--;
+		if(playerAction.isRight()) dx++;
+		if(playerAction.isLeft()) dx--;
+		
+		if(dx != 0 && dy != 0)
+		{
+			double sqrt2 = Math.sqrt(2);
+			dx /= sqrt2;
+			dy /= sqrt2;
+		}
+		player.move(dx * moveSpeed, dy * moveSpeed);
 		if(playerAction.isShooting())
 		{
 			double x = playerAction.targetX(), y = playerAction.targetY();
@@ -188,6 +179,8 @@ public class Engine implements Serializable
 		}
 		
 	}
+	
+	
 	
 	
 	

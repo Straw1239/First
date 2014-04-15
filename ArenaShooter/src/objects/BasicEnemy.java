@@ -3,6 +3,7 @@ package objects;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import core.Display;
 import ui.Transformer;
 import utils.Utils;
 
@@ -69,6 +70,13 @@ public class BasicEnemy extends Enemy
 	{
 		g.setColor(new Color(50, 200, 80));
 		g.fillOval(t.screenX(x - radius), t.screenY(y - radius), t.pixels(2 * radius), t.pixels(2 * radius));
+	}
+
+	@Override
+	public Bullet shot(Display d) 
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

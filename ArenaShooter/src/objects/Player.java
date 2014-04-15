@@ -107,10 +107,6 @@ public class Player extends Entity implements PlayerDataHolder
 		{
 			return right;
 		}
-		
-		
-		
-		
 	}
 
 	@Override

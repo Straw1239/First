@@ -20,7 +20,6 @@ public class MainGame
 	private static volatile Engine engine;
 	private static KeyListen keyListener = new KeyListen();
 	private static MouseListen mouseListener = new MouseListen();
-	private static volatile long time = 0;
 	private static volatile boolean paused = false;
 	public static final Random rand = new XRandom(System.nanoTime());
 	
@@ -78,7 +77,7 @@ public class MainGame
 						startFrameTime = System.nanoTime();
 						engine.setPlayerAction(getPlayerAction());
 						engine.update();
-						time++;
+						
 						while(System.nanoTime() - startFrameTime < frameNanoTime)
 						{
 							try 
@@ -122,7 +121,7 @@ public class MainGame
 	
 	public static long getTime()
 	{
-		return time;
+		return engine.getTime();
 	}
 	
 	private static void createWindow()

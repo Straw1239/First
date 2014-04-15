@@ -3,6 +3,7 @@ package objects;
 import java.awt.Graphics;
 
 import ui.Transformer;
+import core.Display;
 
 
 public abstract class Enemy extends Entity implements EnemyDataHolder
@@ -17,6 +18,7 @@ public abstract class Enemy extends Entity implements EnemyDataHolder
 	
 	public abstract void draw(Graphics g, Transformer t);
 	
+	public abstract Bullet shot(Display d);	
 		
 	
 	
