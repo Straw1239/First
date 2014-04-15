@@ -131,6 +131,7 @@ public class Engine implements Serializable
 							{
 								it.remove();
 								e.hitByBullet(b);
+								break;
 							}
 						}
 					}
