@@ -156,19 +156,24 @@ public class MainGame
 	{
 
 		@Override
-		public void keyPressed(KeyEvent arg0) 
+		public void keyPressed(KeyEvent e) 
 		{
+			if(e.getKeyCode() == KeyEvent.VK_R)
+			{
+				engine = new Engine(window.getWidth(), window.getHeight());
+				System.gc();
+			}
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e)
+		{
+			
 			
 		}
 
 		@Override
-		public void keyReleased(KeyEvent arg0) 
-		{
-			
-		}
-
-		@Override
-		public void keyTyped(KeyEvent arg0) 
+		public void keyTyped(KeyEvent e) 
 		{	
 			
 		}

@@ -79,6 +79,7 @@ public class BasicEnemy extends Enemy
 	public Bullet shot(Display d) 
 	{
 		if(MainGame.getTime() < shotTime + fireTime) return null;
+		if(d.player.isDead()) return null;
 		shotTime = MainGame.getTime();
 		return new Bullet(this, d.player, 5, 5, Color.green);
 		
