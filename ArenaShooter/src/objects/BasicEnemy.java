@@ -13,7 +13,7 @@ public class BasicEnemy extends Enemy
 	public static final double radius = 20;
 	public static final double contactDamage = 2;
 	public static final double startHealth = 10;
-	public static final long fireTime = 60;
+	public static final long fireTime = 70;
 	
 	private long shotTime = MainGame.getTime();
 	
@@ -80,7 +80,7 @@ public class BasicEnemy extends Enemy
 	{
 		if(MainGame.getTime() < shotTime + fireTime) return null;
 		shotTime = MainGame.getTime();
-		return new Bullet(this, d.player, 10, 5, Color.green);
+		return new Bullet(this, d.player, 5, 5, Color.green);
 		
 	}
 
