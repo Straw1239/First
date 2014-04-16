@@ -1,12 +1,9 @@
 package objects;
 
 import java.awt.Color;
-import java.util.Arrays;
-
-
-
 
 import utils.Utils;
+import core.Display;
 
 public class Player extends Entity implements PlayerDataHolder
 {
@@ -22,7 +19,7 @@ public class Player extends Entity implements PlayerDataHolder
 	}
 
 	@Override
-	public void update() 
+	public void update(Display d) 
 	{
 			
 	}
@@ -42,6 +39,32 @@ public class Player extends Entity implements PlayerDataHolder
 	public boolean collidesWith(GameObject entity) 
 	{
 		return entity.collidesWithPlayer(this);
+	}
+	
+	@Override
+	public boolean collidesWithPlayer(Player p) 
+	{
+		//Only relevant if multiplayer is added, not for a long time
+		return false;
+	}
+
+	@Override
+	public boolean collidesWithBullet(Bullet b) 
+	{
+		if(b.faction == Faction.Player) return false;
+		return Utils.circleCollide(this, b, radius + b.getRadius());
+	}
+
+	@Override
+	public boolean collidesWithEnemy(Enemy e) 
+	{
+		return e.collidesWithPlayer(this);
+	}
+
+	@Override
+	public void hitByBullet(Bullet b) 
+	{
+		damage(b.damage);
 	}
 	
 	public static class Action
@@ -107,32 +130,5 @@ public class Player extends Entity implements PlayerDataHolder
 		{
 			return right;
 		}
-	}
-
-	@Override
-	public boolean collidesWithPlayer(Player p) 
-	{
-		//Only relevant if multiplayer is added, not for a long time
-		return false;
-	}
-
-	@Override
-	public boolean collidesWithBullet(Bullet b) 
-	{
-		if(b.faction == Faction.Player) return false;
-		return Utils.circleCollide(this, b, radius + b.getRadius());
-	}
-
-	@Override
-	public boolean collidesWithEnemy(Enemy e) 
-	{
-		return e.collidesWithPlayer(this);
-	}
-
-	@Override
-	public void hitByBullet(Bullet b) 
-	{
-		damage(b.damage);
-	}
-	
+	}	
 }

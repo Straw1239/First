@@ -70,7 +70,7 @@ public class Engine implements Serializable
 	
 	private void updatePlayer()
 	{
-		player.update();
+		player.update(view);
 	}
 	
 	private void updateBullets()
@@ -82,7 +82,7 @@ public class Engine implements Serializable
 			while(it.hasNext())
 			{
 				Bullet b = it.next();
-				b.update();
+				b.update(view);
 				if(b.hasHitWall(width, height))
 				{
 					it.remove();
@@ -125,7 +125,7 @@ public class Engine implements Serializable
 		while(it.hasNext())
 		{
 			Enemy e = it.next();
-			e.update();
+			e.update(view);
 			if(e.isDead()) 
 			{
 				it.remove();

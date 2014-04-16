@@ -3,10 +3,10 @@ package objects;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import core.Display;
-import core.MainGame;
 import ui.Transformer;
 import utils.Utils;
+import core.Display;
+import core.MainGame;
 
 public class BasicEnemy extends Enemy 
 {
@@ -25,7 +25,7 @@ public class BasicEnemy extends Enemy
 	}
 
 	@Override
-	public void update() 
+	public void update(Display d) 
 	{	
 		
 	}

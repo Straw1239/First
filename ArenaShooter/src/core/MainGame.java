@@ -4,6 +4,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Calendar;
 import java.util.Random;
 
 import javax.swing.SwingUtilities;
@@ -21,7 +22,7 @@ public class MainGame
 	private static KeyListen keyListener = new KeyListen();
 	private static MouseListen mouseListener = new MouseListen();
 	private static volatile boolean paused = false;
-	public static final Random rand = new XRandom(System.nanoTime());
+	public static final Random rand = new XRandom(((System.nanoTime() + Runtime.getRuntime().hashCode() * 7) + Thread.currentThread().hashCode()) * 31 + Calendar.getInstance().hashCode());
 	
 	
 	public static void main(String[] args)
@@ -46,9 +47,6 @@ public class MainGame
 		window.addMouseListener(mouseListener);
 		runEngine();
 		runGraphics();
-		
-	
-		
 	}
 	
 	private static void runEngine() 
@@ -154,7 +152,6 @@ public class MainGame
 	
 	private static class KeyListen implements KeyListener
 	{
-
 		@Override
 		public void keyPressed(KeyEvent e) 
 		{
@@ -162,6 +159,7 @@ public class MainGame
 			{
 				engine = new Engine(window.getWidth(), window.getHeight());
 				System.gc();
+				System.runFinalization();
 			}
 		}
 
@@ -176,9 +174,7 @@ public class MainGame
 		public void keyTyped(KeyEvent e) 
 		{	
 			
-		}
-		
-		
+		}	
 	}
 	
 	private static class MouseListen extends MouseAdapter
@@ -229,13 +225,5 @@ public class MainGame
 		{
 			
 		}
-		
-		
-	}
-	
-	
-	
-	
-	
-	
+	}	
 }

@@ -1,5 +1,7 @@
 package objects;
 
+import core.Display;
+
 public abstract class GameObject implements ObjectDataHolder
 {
 	protected double x,y;
@@ -17,7 +19,7 @@ public abstract class GameObject implements ObjectDataHolder
 		this.faction = faction;
 	}
 	
-	public abstract void update();
+	public abstract void update(Display d);
 	
 	public abstract boolean collidesWith(GameObject entity);
 	

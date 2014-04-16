@@ -2,8 +2,9 @@ package objects;
 
 import java.awt.Color;
 
-import core.MainGame;
 import utils.Utils;
+import core.Display;
+import core.MainGame;
 
 public class Bullet extends GameObject implements BulletDataHolder
 {
@@ -73,7 +74,7 @@ public class Bullet extends GameObject implements BulletDataHolder
 	}
 	
 	@Override
-	public void update() 
+	public void update(Display d) 
 	{
 		x += dx;
 		y += dy;
