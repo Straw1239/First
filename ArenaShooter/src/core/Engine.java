@@ -10,8 +10,8 @@ import objects.BasicEnemy;
 import objects.Bullet;
 import objects.Enemy;
 import objects.Faction;
-import objects.GameObject;
 import objects.Player;
+import objects.events.GameEvent;
 import utils.Utils;
 
 import com.google.common.collect.LinkedListMultimap;
@@ -28,6 +28,7 @@ public class Engine implements Serializable
 	private volatile Player player;
 	private volatile Player.Action playerAction;
 	private List<Enemy> enemies = new LinkedList<>();
+	private List<GameEvent> events = new LinkedList<>();
 	private Multimap<Faction, Bullet> bullets = LinkedListMultimap.create();
 	private Display view;
 	
@@ -66,6 +67,29 @@ public class Engine implements Serializable
 	public long getTime()
 	{
 		return updates;
+	}
+	
+	public void addEvent(GameEvent e)
+	{
+		if(e.hasExpired()) throw new IllegalArgumentException();
+		events.add(e);
+	}
+	
+	private void executeEvents()
+	{
+		Iterator<GameEvent> it = events.iterator();
+		while(it.hasNext())
+		{
+			GameEvent e = it.next();
+			if(e.hasExpired())
+			{
+				it.remove();
+			}
+			else
+			{
+				e.effects(player, bullets, enemies, events);
+			}
+		}
 	}
 	
 	private void updatePlayer()
