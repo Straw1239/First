@@ -3,6 +3,7 @@ package objects.events;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Collection;
+import java.util.Iterator;
 
 import objects.Bullet;
 import objects.Enemy;
@@ -45,46 +46,59 @@ public class Explosion extends GameEvent implements ObjectDataHolder
 	@Override
 	public void playerEffects(Player p)
 	{
-		if(MainGame.getTime() - startTime() <= 1)
+		if(faction != Faction.Player)
+		if(MainGame.getTime() - startTime() <= 0)
 		if(Utils.circleCollide(this, p, radius + Player.radius))
 		{
-			
+			p.damage(damage);
 		}
 	}
 
 	@Override
 	public void bulletEffects(Multimap<Faction, Bullet> bullets)
 	{
-		// TODO Auto-generated method stub
-
+		//Currently explosions do not affect bullets
 	}
 
 	@Override
 	public void enemyEffects(Collection<? extends Enemy> enemies)
 	{
-		// TODO Auto-generated method stub
-
+		if(faction != Faction.Enemy)
+		if(MainGame.getTime() - startTime() <= 0)
+		{
+			Iterator<? extends Enemy> it = enemies.iterator();
+			while(it.hasNext())
+			{
+				Enemy e = it.next();
+				if(Utils.circleCollide(this, e, radius + Player.radius))
+				{
+					e.damage(damage);
+				}	
+			}
+		}
 	}
 
 	@Override
 	public void eventEffects(Collection<? extends GameEvent> events)
 	{
-		// TODO Auto-generated method stub
+		// Currently explosions do not affect other events
 
 	}
 
 	@Override
 	public void draw(Graphics g, Transformer t)
 	{
-		// TODO Auto-generated method stub
-
+		g.setColor(color);
+		long time = MainGame.getTime() - startTime();
+		double radius = this.radius * (time / (double) DURATION);
+		int temp = t.pixels(2 * radius);
+		g.fillOval(t.screenX(x - radius), t.screenY(y - radius), temp, temp);
 	}
 
 	@Override
 	public boolean hasExpired()
 	{
-		// TODO Auto-generated method stub
-		return false;
+		return (MainGame.getTime() - startTime()) > DURATION;
 	}
 
 }

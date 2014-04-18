@@ -11,6 +11,7 @@ import core.Display;
 public class MouseTracker extends MouseAdapter
 {
 	private boolean[] buttons = new boolean[MouseInfo.getNumberOfButtons()];
+	private double x, y;
 	
 	public boolean isClicked(int button)
 	{

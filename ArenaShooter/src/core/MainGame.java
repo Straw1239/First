@@ -9,7 +9,9 @@ import java.util.Random;
 
 import javax.swing.SwingUtilities;
 
+import objects.Faction;
 import objects.Player;
+import objects.events.Explosion;
 import ui.Window;
 import utils.XRandom;
 
@@ -17,8 +19,8 @@ public class MainGame
 {
 	private static final double FPS = 60;
 	private static final double UPS = 60;
-	private static volatile Window window;
-	private static volatile Engine engine;
+	private static Window window;
+	private static Engine engine;
 	private static KeyListen keyListener = new KeyListen();
 	private static MouseListen mouseListener = new MouseListen();
 	private static volatile boolean paused = false;
@@ -74,6 +76,7 @@ public class MainGame
 					{
 						startFrameTime = System.nanoTime();
 						engine.setPlayerAction(getPlayerAction());
+						engine.setCursorLocation(window.mouseX(), window.mouseY());
 						engine.update();
 						
 						while(System.nanoTime() - startFrameTime < frameNanoTime)
@@ -175,7 +178,7 @@ public class MainGame
 		{	
 			
 		}	
-	}
+	} 
 	
 	private static class MouseListen extends MouseAdapter
 	{
@@ -211,9 +214,12 @@ public class MainGame
 		
 		public void mousePressed(MouseEvent e)
 		{
+			if(e.getButton() == MouseEvent.BUTTON1)
 			clicked = true;
 			x = e.getX();
 			y = e.getY();
+			if(e.getButton() == MouseEvent.BUTTON3)
+			engine.addEvent(new Explosion(e.getX(), e.getY(), Faction.Player, 200, 5));
 		}
 		
 		public void mouseReleased(MouseEvent e)

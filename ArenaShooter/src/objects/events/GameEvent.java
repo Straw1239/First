@@ -13,7 +13,7 @@ import objects.Player;
 import ui.Transformer;
 import core.MainGame;
 
-public abstract class GameEvent implements ObjectDataHolder
+public abstract class GameEvent implements ObjectDataHolder, EventDataHolder
 {
 	protected double x, y;
 	protected Faction faction;
@@ -69,6 +69,6 @@ public abstract class GameEvent implements ObjectDataHolder
 	
 	public long startTime()
 	{
-		return startTime();
+		return startTime;
 	}
 }

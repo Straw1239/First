@@ -11,6 +11,7 @@ import objects.BulletDataHolder;
 import objects.EnemyDataHolder;
 import objects.Player;
 import objects.PlayerDataHolder;
+import objects.events.EventDataHolder;
 import core.Display;
 
 public class Renderer extends JComponent 
@@ -21,7 +22,7 @@ public class Renderer extends JComponent
 
 	public Renderer()
 	{
-		setBackground(Color.white);
+		
 	}
 	
 	public void setDisplay(Display d)
@@ -32,10 +33,14 @@ public class Renderer extends JComponent
 	
 	public void paintComponent(Graphics g)
 	{
+		//g.setColor(Color.black);
+		//g.fillRect(0, 0, getWidth(), getHeight());
 		if(display == null) return;
+		drawEvents(g);
 		drawPlayer(g);
 		drawBullets(g);
 		drawEnemies(g);
+		display.mouse.draw(g, converter);
 	}
 	
 	private void drawPlayer(Graphics g)
@@ -64,6 +69,15 @@ public class Renderer extends JComponent
 	private void drawEnemies(Graphics g)
 	{
 		Iterator<? extends EnemyDataHolder> it = display.enemies.iterator();
+		while(it.hasNext())
+		{
+			it.next().draw(g, converter);
+		}
+	}
+	
+	private void drawEvents(Graphics g)
+	{
+		Iterator<? extends EventDataHolder> it = display.events.iterator();
 		while(it.hasNext())
 		{
 			it.next().draw(g, converter);

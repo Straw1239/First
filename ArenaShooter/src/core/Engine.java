@@ -8,9 +8,11 @@ import java.util.List;
 
 import objects.BasicEnemy;
 import objects.Bullet;
+import objects.Cursor;
 import objects.Enemy;
 import objects.Faction;
 import objects.Player;
+import objects.events.Explosion;
 import objects.events.GameEvent;
 import utils.Utils;
 
@@ -26,6 +28,7 @@ public class Engine implements Serializable
 	
 	private long updates = 0;
 	private volatile Player player;
+	private Cursor cursor = new Cursor(500,500);
 	private volatile Player.Action playerAction;
 	private List<Enemy> enemies = new LinkedList<>();
 	private List<GameEvent> events = new LinkedList<>();
@@ -37,7 +40,7 @@ public class Engine implements Serializable
 		this.width = width;
 		this.height = height;
 		player = new Player(width / 2, height / 2);
-		view = new Display(player, enemies, bullets.values(), width, height);
+		view = new Display(player, enemies, bullets.values(), events, cursor, width, height);
 	}
 	
 	public Display getDisplay() 
@@ -50,9 +53,19 @@ public class Engine implements Serializable
 		playerAction = action;
 	}
 	
+	public void setCursorLocation(double x, double y)
+	{
+		cursor = new Cursor(x, y);
+	}
+	
 	public void update()
 	{
-		if(updates % 60 == 0) addRandomBasicEnemy();
+		if(updates % 60 == 0) 
+		{
+			addRandomBasicEnemy();
+		}
+	
+		executeEvents();
 		updatePlayer();
 		if(!player.isDead())
 		{
@@ -60,7 +73,7 @@ public class Engine implements Serializable
 		}
 		updateEnemies();
 		updateBullets();
-		view = new Display(player, enemies, bullets.values(), width, height);
+		view = new Display(player, enemies, bullets.values(), events, cursor, width, height);
 		updates++;
 	}
 	
