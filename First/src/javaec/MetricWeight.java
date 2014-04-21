@@ -1,6 +1,6 @@
 package javaec;
 
-public class MetricWeight
+public class MetricWeight implements Comparable<MetricWeight>
 {
 	private static final long RATIO = 1000;
 	
@@ -115,6 +115,12 @@ public class MetricWeight
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public int compareTo(MetricWeight o)
+	{
+		return Long.compare(grams, o.grams);
 	}
 	
 	

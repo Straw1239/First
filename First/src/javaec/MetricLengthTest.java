@@ -36,5 +36,15 @@ public class MetricLengthTest
 		m1.divide(2);
 		assertEquals(m1.toString(), "5m 18cm 2mm");	
 	}
+	
+	@Test
+	public void testCompare()
+	{
+		MetricLength m1 = new MetricLength(11, 37, 5);
+		MetricLength m2 = new MetricLength(10, 36, 4);
+		assertEquals(m2.compareTo(m1), -1);
+		assertEquals(m1.compareTo(m2), 1);
+		assertEquals(m1.compareTo(m1), 0);
+	}
 
 }

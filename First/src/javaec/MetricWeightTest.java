@@ -38,5 +38,15 @@ public class MetricWeightTest
 		m1.divide(2);
 		assertEquals(m1.toString(), "5t 18kg 2g");	
 	}
+	
+	@Test
+	public void testCompare()
+	{
+		MetricWeight m1 = new MetricWeight(10, 37, 5);
+		MetricWeight m2 = new MetricWeight(10, 36, 4);
+		assertEquals(m2.compareTo(m1), -1);
+		assertEquals(m1.compareTo(m2), 1);
+		assertEquals(m1.compareTo(m1), 0);
+	}
 
 }
