@@ -132,8 +132,9 @@ public class Engine implements Serializable
 					case Enemy:
 						if(player.collidesWithBullet(b))
 						{
-							it.remove();
+							b.collide(player);
 							player.hitByBullet(b);
+							if(b.isDead()) it.remove();
 						}
 						if(f == Faction.Enemy)break;
 					
@@ -144,8 +145,9 @@ public class Engine implements Serializable
 							Enemy e = et.next();
 							if(e.collidesWithBullet(b))
 							{
-								it.remove();
+								b.collide(e);
 								e.hitByBullet(b);
+								if(b.isDead()) it.remove();
 								break;
 							}
 						}

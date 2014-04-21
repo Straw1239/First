@@ -64,7 +64,7 @@ public class Player extends Entity implements PlayerDataHolder
 	@Override
 	public void hitByBullet(Bullet b) 
 	{
-		damage(b.damage);
+		//damage(b.damage);
 	}
 	
 	public static class Action

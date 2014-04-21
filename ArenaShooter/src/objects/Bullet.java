@@ -14,6 +14,7 @@ public class Bullet extends GameObject implements BulletDataHolder
 	private double dx,dy;
 	private long startTime;
 	private double radius;
+	private boolean isDead = false;
 	
 	
 	private Bullet(double x, double y)
@@ -172,6 +173,17 @@ public class Bullet extends GameObject implements BulletDataHolder
 	public boolean collidesWithEnemy(Enemy e) 
 	{
 		return e.collidesWithBullet(this);
+	}
+	
+	public boolean isDead()
+	{
+		return isDead;
+	}
+	
+	public void collide(Entity e)
+	{
+		isDead = true;
+		e.damage(damage);
 	}
 	
 

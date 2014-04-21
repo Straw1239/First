@@ -59,7 +59,7 @@ public class BasicEnemy extends Enemy
 	@Override
 	public void hitByBullet(Bullet b) 
 	{
-		damage(b.damage);
+		//damage(b.damage);
 	}
 	
 	public void collideWithPlayer(Player p)
