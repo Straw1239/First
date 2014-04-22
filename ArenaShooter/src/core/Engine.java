@@ -11,8 +11,8 @@ import objects.Bullet;
 import objects.Cursor;
 import objects.Enemy;
 import objects.Faction;
+import objects.MovingEnemy;
 import objects.Player;
-import objects.events.Explosion;
 import objects.events.GameEvent;
 import utils.Utils;
 
@@ -62,7 +62,10 @@ public class Engine implements Serializable
 	{
 		if(updates % 60 == 0) 
 		{
-			addRandomBasicEnemy();
+			if(MainGame.rand.nextBoolean())
+				addRandomBasicEnemy();
+			else
+				addRandomMovingEnemy();
 		}
 	
 		executeEvents();
@@ -189,6 +192,14 @@ public class Engine implements Serializable
 		double x = MainGame.rand.nextDouble() * width;
 		double y = MainGame.rand.nextDouble() * height;
 		enemies.add(new BasicEnemy(x,y));
+	}
+	
+	private void addRandomMovingEnemy()
+	{
+		double x = MainGame.rand.nextDouble() * width;
+		double y = MainGame.rand.nextDouble() * height;
+		System.out.println("Attempting to add a new enemy");
+		enemies.add(new MovingEnemy(x, y));
 	}
 	
 	private void executePlayerAction()

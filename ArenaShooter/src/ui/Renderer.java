@@ -33,8 +33,8 @@ public class Renderer extends JComponent
 	
 	public void paintComponent(Graphics g)
 	{
-		//g.setColor(Color.black);
-		//g.fillRect(0, 0, getWidth(), getHeight());
+		g.setColor(Color.black);
+		g.fillRect(0, 0, getWidth(), getHeight());
 		if(display == null) return;
 		drawEvents(g);
 		drawPlayer(g);

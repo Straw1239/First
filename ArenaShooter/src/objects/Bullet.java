@@ -186,5 +186,15 @@ public class Bullet extends GameObject implements BulletDataHolder
 		e.damage(damage);
 	}
 	
+	public double getDX()
+	{
+		return dx;
+	}
+	
+	public double getDY()
+	{
+		return dy;
+	}
+	
 
 }
