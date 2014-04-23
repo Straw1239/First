@@ -1,7 +1,13 @@
 package objects;
 
 import core.Display;
-
+/**
+ * Base object of the object hierarchy.
+ * Each game object has an x, y, and Faction.
+ * 
+ * @author Rajan Troll
+ *
+ */
 public abstract class GameObject implements ObjectDataHolder
 {
 	protected double x,y;

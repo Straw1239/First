@@ -48,6 +48,12 @@ public final class Engine implements Serializable
 	private volatile Player.Action playerAction;
 	private List<Enemy> enemies = new LinkedList<>();
 	private List<GameEvent> events = new LinkedList<>();
+	
+	/**
+	 * Map from Faction to all bullets of that Faction, for optimization.
+	 * To access all bullets independent of faction, use .values() (Cannot add to .values())
+	 * Uses LinkedLists, so use iterators provided. 
+	 */
 	private Multimap<Faction, Bullet> bullets = LinkedListMultimap.create();
 	
 	/**
@@ -139,7 +145,9 @@ public final class Engine implements Serializable
 	}
 	
 	/**
-	 * 
+	 * Adds a new event to the engine event list
+	 * throws IllegalArgumentException if the event is expired,
+	 * NullPointerException if it is null
 	 * @param New Event
 	 */
 	
@@ -258,6 +266,12 @@ public final class Engine implements Serializable
 		double y = MainGame.rand.nextDouble() * height;
 		enemies.add(new MovingEnemy(x, y));
 	}
+	
+	/**
+	 * Needs improvement or replacement.
+	 * Executes the player's action for the tick,
+	 * including movement and shooting
+	 */
 	
 	private void executePlayerAction()
 	{
