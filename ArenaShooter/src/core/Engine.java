@@ -18,13 +18,29 @@ import utils.Utils;
 
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Multimap;
+/**
+ * Main game engine. Performs all non graphical internal calculation.
+ * Keeps track of Player, all bullets, enemies, and events.
+ * Provides an immutable Display object representing 
+ * one snapshot of engine state.
+ * 
+ * @author Rajan Troll
+ *
+ */
 
-
-public class Engine implements Serializable
+public final class Engine implements Serializable
 {
 	public static final long serialVersionUID = 0L;
 	
+	/**
+	 * Dimensions of the game world
+	 */
+	
 	public final double width, height;
+	
+	/**
+	 * Number of ticks this Engine has executed
+	 */
 	
 	private long updates = 0;
 	private volatile Player player;
@@ -33,7 +49,21 @@ public class Engine implements Serializable
 	private List<Enemy> enemies = new LinkedList<>();
 	private List<GameEvent> events = new LinkedList<>();
 	private Multimap<Faction, Bullet> bullets = LinkedListMultimap.create();
+	
+	/**
+	 * Representation of engine state. Replaced each update, 
+	 * is immutable and can be passed around safely.
+	 * Passed to the Renderer each frame. 
+	 */
 	private Display view;
+	
+	/**
+	 * Creates a new engine with the specified dimensions.
+	 * These dimensions cannot be changed after creation.
+	 * Initializes the player to the center of the game.
+	 * @param width
+	 * @param height
+	 */
 	
 	public Engine(double width, double height)
 	{
@@ -43,21 +73,39 @@ public class Engine implements Serializable
 		view = new Display(player, enemies, bullets.values(), events, cursor, width, height);
 	}
 	
+	/**
+	 * Returns a Display object representing the internal state of all game elements.
+	 * Display is immutable, engine state cannot be changed. This method does not generate 
+	 * a new Display, but returns the one calculated after each engine update to all callers 
+	 * until the next update.
+	 * @return
+	 */
+	
 	public Display getDisplay() 
 	{
 		return view;
 	}
 	
+	/**
+	 * Sets the player's action for the next engine update
+	 * @param action
+	 */
 	public void setPlayerAction(Player.Action action)
 	{
 		playerAction = action;
 	}
+	
 	
 	public void setCursorLocation(double x, double y)
 	{
 		cursor = new Cursor(x, y);
 	}
 	
+	/**
+	 * Advances the game represented by this engine one tick.
+	 * Updates all game entities, processes all events, and currently can add new enemies.
+	 * Also updates the Engine's Display object to the latest state.
+	 */
 	public void update()
 	{
 		if(updates % 60 == 0) 
@@ -80,10 +128,20 @@ public class Engine implements Serializable
 		updates++;
 	}
 	
+	/**
+	 * Returns number of engine updates that have occured
+	 * @return Time in ticks
+	 */
+	
 	public long getTime()
 	{
 		return updates;
 	}
+	
+	/**
+	 * 
+	 * @param New Event
+	 */
 	
 	public void addEvent(GameEvent e)
 	{
@@ -198,7 +256,6 @@ public class Engine implements Serializable
 	{
 		double x = MainGame.rand.nextDouble() * width;
 		double y = MainGame.rand.nextDouble() * height;
-		System.out.println("Attempting to add a new enemy");
 		enemies.add(new MovingEnemy(x, y));
 	}
 	
