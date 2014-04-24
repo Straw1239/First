@@ -15,15 +15,39 @@ import objects.events.Explosion;
 import ui.Window;
 import utils.XRandom;
 
+/**
+ * The main class for the game. 
+ * Contains static methods and variables including main()
+ * Not used as an object, should not be instantiated.
+ * Also provides the random number generator for the entire program,
+ * and gives the current engine time in ticks to all parts of the program.
+ * @author Rajan Troll
+ *
+ */
 public class MainGame 
 {
 	private static final double FPS = 60;
 	private static final double UPS = 60;
+	
+	/**
+	 * Main window for the game. Handles all user interfaces.
+	 */
 	private static Window window;
+	
+	/**
+	 * Main engine for the game. Performs all core calculations,
+	 * provides an immutable representation of it's internal state
+	 */
 	private static Engine engine;
 	private static KeyListen keyListener = new KeyListen();
 	private static MouseListen mouseListener = new MouseListen();
 	private static volatile boolean paused = false;
+	
+	/**
+	 * The random number generator for the game as a whole.
+	 * Uses the XORSHIFT algorithm instead of the default algorithm
+	 * for increased performance and period.
+	 */
 	public static final Random rand = new XRandom(((System.nanoTime() + Runtime.getRuntime().hashCode() * 7) + Thread.currentThread().hashCode()) * 31 + Calendar.getInstance().hashCode());
 	
 	
@@ -50,7 +74,12 @@ public class MainGame
 		runEngine();
 		runGraphics();
 	}
-	
+	/**
+	 * Starts engine execution in a new thread.
+	 * Continues engine updates indefinitely, 
+	 * limits engine speed to UPS, and stops execution while
+	 * game is paused.
+	 */
 	private static void runEngine() 
 	{
 		Thread t = new Thread(new Runnable()
@@ -96,7 +125,11 @@ public class MainGame
 		});
 		t.start();
 	}
-
+	/**
+	 * Starts rendering execution on the main thread.
+	 * Updates screen at FPS rate. Obtains data to display from engine,
+	 * passes to window. Currently does not handle paused.
+	 */
 	private static void runGraphics()
 	{
 		long frameNanoTime = (long)((1/FPS) * 1000_000_000);
@@ -120,16 +153,32 @@ public class MainGame
 		}
 	}
 	
+	/**
+	 * Returns the engine time in ticks since the start of the game.
+	 * 
+	 * @return ticks
+	 */
+	
 	public static long getTime()
 	{
 		return engine.getTime();
 	}
 	
+	/**
+	 * Creates the game window and engine.
+	 * In the future it will only create the game window.
+	 */
+	
 	private static void createWindow()
 	{
 		window = new Window();
-		engine = new Engine(window.getWidth(),window.getHeight());
+		engine = new Engine(window.getWidth() , window.getHeight() );
 	}
+	
+	/**
+	 * Calculates the player's action based on user input
+	 * @return	Player Action this tick
+	 */
 	
 	private static Player.Action getPlayerAction()
 	{
@@ -153,6 +202,14 @@ public class MainGame
 		return new Player.Action(up, down, left, right);
 	}
 	
+	
+	/**
+	 * MainGame's key listener. Used to trigger high level events,
+	 * not for keeping track of general keyboard input. Might be deleted 
+	 * in the future.
+	 * @author Rajan Troll
+	 *
+	 */
 	private static class KeyListen implements KeyListener
 	{
 		@Override
@@ -179,6 +236,13 @@ public class MainGame
 			
 		}	
 	} 
+	
+	/**
+	 * See KeyListen. Should probably be replaced by MouseTracker
+	 * ui.
+	 * @author Rajan Troll
+	 *
+	 */
 	
 	private static class MouseListen extends MouseAdapter
 	{

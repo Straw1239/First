@@ -2,6 +2,13 @@ package utils;
 
 import java.util.Random;
 
+/**
+ * Random number generator replacing built in algorithm.
+ * Faster, longer period, more random.
+ * 
+ *
+ */
+
 public class XRandom extends Random
 {
 
