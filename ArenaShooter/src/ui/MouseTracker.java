@@ -11,7 +11,13 @@ import core.Display;
 public class MouseTracker extends MouseAdapter
 {
 	private boolean[] buttons = new boolean[MouseInfo.getNumberOfButtons()];
-	private double x, y;
+	//private double x, y;
+	private long[] clickTimes = new long[MouseInfo.getNumberOfButtons()];
+	
+	public long MilliTimeSinceClick(int button)
+	{
+		return System.currentTimeMillis() - clickTimes[button];
+	}
 	
 	public boolean isClicked(int button)
 	{
@@ -32,7 +38,7 @@ public class MouseTracker extends MouseAdapter
 	
 	public void mouseClicked(MouseEvent e)
 	{
-		
+		clickTimes[e.getButton()] = e.getWhen();
 	}
 	
 	public void mousePressed(MouseEvent e)

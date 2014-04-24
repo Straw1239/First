@@ -10,8 +10,8 @@ import core.Display;
 public class MovingEnemy extends Enemy 
 {
 	public static final double radius = 20;
-	public static final double maxHealth = 50;
-	public static final double contactDamage = 2;
+	public static final double maxHealth = 30;
+	public static final double contactDamage = .1;
 	public static final Color color = Color.red;
 	
 	public MovingEnemy(double x, double y) 

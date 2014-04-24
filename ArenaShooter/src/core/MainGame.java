@@ -12,6 +12,7 @@ import javax.swing.SwingUtilities;
 import objects.Faction;
 import objects.Player;
 import objects.events.Explosion;
+import ui.BiTransformer;
 import ui.Window;
 import utils.XRandom;
 
@@ -26,8 +27,8 @@ import utils.XRandom;
  */
 public class MainGame 
 {
-	private static final double FPS = 60;
-	private static final double UPS = 60;
+	public static final double FPS = 60;
+	public static final double UPS = 60;
 	
 	/**
 	 * Main window for the game. Handles all user interfaces.
@@ -60,7 +61,7 @@ public class MainGame
 				createWindow();
 			}
 		});
-		while(engine == null)
+		while(window == null)
 		try 
 		{
 			Thread.sleep(10);
@@ -69,6 +70,7 @@ public class MainGame
 		{
 			throw new RuntimeException(e);
 		}
+		engine = new Engine(window.getWidth(), window.getHeight());
 		window.addKeyListener(keyListener);
 		window.addMouseListener(mouseListener);
 		runEngine();
@@ -172,7 +174,6 @@ public class MainGame
 	private static void createWindow()
 	{
 		window = new Window();
-		engine = new Engine(window.getWidth() , window.getHeight() );
 	}
 	
 	/**
@@ -186,17 +187,6 @@ public class MainGame
 		boolean down = window.isKeyPressed(KeyEvent.VK_S);
 		boolean right = window.isKeyPressed(KeyEvent.VK_D);
 		boolean left = window.isKeyPressed(KeyEvent.VK_A);
-		if(mouseListener.hasClicked())
-		{
-			double gameX = mouseListener.getX(), gameY = mouseListener.getY();
-			gameX /= window.getWidth();
-			gameY /= window.getHeight();
-			gameX *= engine.width;
-			gameY *= engine.height;
-			Player.Action action = new Player.Action(up, down, left, right, gameX, gameY);
-			mouseListener.reset();
-			return action;
-		}
 		if(window.isClicked(1))
 			return new Player.Action(up, down, left, right, window.mouseX(), window.mouseY());
 		return new Player.Action(up, down, left, right);
@@ -238,7 +228,7 @@ public class MainGame
 	} 
 	
 	/**
-	 * See KeyListen. Should probably be replaced by MouseTracker
+	 * See KeyListen. Should probably be replaced by MouseTracker in
 	 * ui.
 	 * @author Rajan Troll
 	 *

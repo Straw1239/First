@@ -3,6 +3,7 @@ package ui;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.Iterator;
 
 import javax.swing.JComponent;
@@ -18,7 +19,7 @@ public class Renderer extends JComponent
 {
 	private static final long serialVersionUID = 0L;
 	private Display display;
-	private Transformer converter = new ScreenMapper();
+	public final BiTransformer converter = new ScreenMapper();
 
 	public Renderer()
 	{
@@ -31,11 +32,12 @@ public class Renderer extends JComponent
 		display = d;
 	}
 	
-	public void paintComponent(Graphics g)
+	public void paintComponent(Graphics G)
 	{
+		Graphics2D g = (Graphics2D) G;
+		if(display == null) return;
 		g.setColor(Color.black);
 		g.fillRect(0, 0, getWidth(), getHeight());
-		if(display == null) return;
 		drawEvents(g);
 		drawPlayer(g);
 		drawBullets(g);
@@ -43,18 +45,18 @@ public class Renderer extends JComponent
 		display.mouse.draw(g, converter);
 	}
 	
-	private void drawPlayer(Graphics g)
+	private void drawPlayer(Graphics2D g)
 	{
 		g.setColor(Player.color);
 		PlayerDataHolder player = display.player;
 		g.fillOval(converter.screenX(player.getX() - Player.radius), converter.screenY(player.getY() - Player.radius), 
 				converter.pixels(Player.radius * 2), converter.pixels((Player.radius * 2)));
-		g.setColor(Color.black);
+		g.setColor(Color.white);
 		g.setFont(new Font("Arial",Font.BOLD,36));
-		g.drawString("Health " + player.health(), 20, 30);
+		g.drawString(String.format("Health: %.2f", player.health()), 20, 30);
 	}
 	
-	private void drawBullets(Graphics g)
+	private void drawBullets(Graphics2D g)
 	{
 		Iterator<? extends BulletDataHolder> it = display.bullets.iterator();
 		while(it.hasNext())
@@ -66,7 +68,7 @@ public class Renderer extends JComponent
 		}
 	}
 	
-	private void drawEnemies(Graphics g)
+	private void drawEnemies(Graphics2D g)
 	{
 		Iterator<? extends EnemyDataHolder> it = display.enemies.iterator();
 		while(it.hasNext())
@@ -75,7 +77,7 @@ public class Renderer extends JComponent
 		}
 	}
 	
-	private void drawEvents(Graphics g)
+	private void drawEvents(Graphics2D g)
 	{
 		Iterator<? extends EventDataHolder> it = display.events.iterator();
 		while(it.hasNext())
@@ -84,7 +86,7 @@ public class Renderer extends JComponent
 		}
 	}
 	
-	private class ScreenMapper implements Transformer
+	private class ScreenMapper implements BiTransformer
 	{
 
 		@Override
@@ -103,6 +105,18 @@ public class Renderer extends JComponent
 		public int pixels(double gameLength) 
 		{
 			return (int) (gameLength * getWidth() / display.width);
+		}
+
+		@Override
+		public double gameX(double screenX)
+		{
+			return (screenX * display.height / getHeight());
+		}
+
+		@Override
+		public double gameY(double screenY)
+		{
+			return (screenY * display.width / getWidth());
 		}
 		
 	}

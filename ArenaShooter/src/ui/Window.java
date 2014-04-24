@@ -52,12 +52,12 @@ public class Window
 	
 	public double mouseX()
 	{
-		return mouse.getX();
+		return getTransformer().gameX((mouse.getX()));
 	}
 	
 	public double mouseY()
 	{
-		return mouse.getY();
+		return getTransformer().gameY(mouse.getY());
 	}
 	
 	public void refresh(Display display)
@@ -76,5 +76,10 @@ public class Window
 		renderer.addMouseListener(m);
 		renderer.addMouseMotionListener(m);
 		renderer.addMouseWheelListener(m);
+	}
+	
+	public BiTransformer getTransformer()
+	{
+		return renderer.converter;
 	}
 }
