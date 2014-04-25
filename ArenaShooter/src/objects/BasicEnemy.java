@@ -1,14 +1,17 @@
 package objects;
 
-import java.awt.Color;
+
 import java.awt.Graphics;
 import java.util.Collection;
 
-import com.google.common.collect.Multimap;
-
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import objects.events.GameEvent;
 import ui.Transformer;
 import utils.Utils;
+
+import com.google.common.collect.Multimap;
+
 import core.Display;
 import core.MainGame;
 
@@ -73,10 +76,10 @@ public class BasicEnemy extends Enemy
 	}
 
 	@Override
-	public void draw(Graphics g, Transformer t) 
+	public void draw(GraphicsContext g) 
 	{
-		g.setColor(new Color(50, 200, 80));
-		g.fillOval(t.screenX(x - radius), t.screenY(y - radius), t.pixels(2 * radius), t.pixels(2 * radius));
+		g.setFill(Color.rgb(50, 200, 80));
+		g.fillOval(x - radius, y - radius, 2 * radius, 2 * radius);
 	}
 
 	
@@ -95,7 +98,7 @@ public class BasicEnemy extends Enemy
 			@Override
 			public void bulletEffects(Multimap<Faction, Bullet> bullets)
 			{
-				bullets.put(faction, new Bullet(this, d.player, 5, 5, Color.green));
+				bullets.put(faction, new Bullet(this, d.player, 5, 5, Color.GREEN));
 				hasExpired = true;
 			}
 

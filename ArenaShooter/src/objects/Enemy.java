@@ -1,9 +1,6 @@
 package objects;
 
-import java.awt.Graphics;
-
-import ui.Transformer;
-import core.Display;
+import javafx.scene.canvas.GraphicsContext;
 
 
 public abstract class Enemy extends Entity implements EnemyDataHolder
@@ -16,7 +13,7 @@ public abstract class Enemy extends Entity implements EnemyDataHolder
 	
 	public abstract void collideWithPlayer(Player p);
 	
-	public abstract void draw(Graphics g, Transformer t);
+	public abstract void draw(GraphicsContext g);
 	
 	
 		
