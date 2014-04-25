@@ -2,7 +2,11 @@ package objects;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.Collection;
 
+import com.google.common.collect.Multimap;
+
+import objects.events.GameEvent;
 import ui.Transformer;
 import utils.Utils;
 import core.Display;
@@ -75,13 +79,38 @@ public class BasicEnemy extends Enemy
 		g.fillOval(t.screenX(x - radius), t.screenY(y - radius), t.pixels(2 * radius), t.pixels(2 * radius));
 	}
 
-	@Override
-	public Bullet shot(Display d) 
+	
+	
+	public GameEvent event(Display d)
 	{
 		if(MainGame.getTime() < shotTime + fireTime) return null;
 		if(d.player.isDead()) return null;
 		shotTime = MainGame.getTime();
-		return new Bullet(this, d.player, 5, 5, Color.green);
+		return new GameEvent(this)
+		{
+			boolean hasExpired = false;
+			@Override
+			public void playerEffects(Player p){}
+
+			@Override
+			public void bulletEffects(Multimap<Faction, Bullet> bullets)
+			{
+				bullets.put(faction, new Bullet(this, d.player, 5, 5, Color.green));
+				hasExpired = true;
+			}
+
+			public void enemyEffects(Collection<? extends Enemy> enemies){}
+		
+			public void eventEffects(Collection<? extends GameEvent> events){}
+
+			public void draw(Graphics g, Transformer t){}
+			
+			public boolean hasExpired()
+			{
+				return hasExpired;
+			}
+			
+		};
 		
 	}
 

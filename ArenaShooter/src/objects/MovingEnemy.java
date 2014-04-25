@@ -34,11 +34,7 @@ public class MovingEnemy extends Enemy
 		g.fillOval(t.screenX(x - radius), t.screenY(y - radius), t.pixels(2 * radius), t.pixels(2 * radius));
 	}
 
-	@Override
-	public Bullet shot(Display d) 
-	{
-		return null;
-	}
+	
 
 	@Override
 	public void hitByBullet(Bullet b) 

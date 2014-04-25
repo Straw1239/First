@@ -8,7 +8,7 @@ public interface ObjectDataHolder
 	
 	public Faction getFaction();
 	
-	public static class Copier implements ObjectDataHolder
+	public static class Copier implements ObjectDataHolder, Cloneable
 	{
 		private double x, y;
 		private Faction faction;

@@ -1,7 +1,7 @@
 package objects;
 
 import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import ui.Transformer;
 import core.Display;
@@ -46,7 +46,7 @@ public class Cursor extends GameObject
 		return false;
 	}
 	
-	public void draw(Graphics g, Transformer t)
+	public void draw(Graphics2D g, Transformer t)
 	{
 		g.setColor(color);
 		int pixels = t.pixels(radius* 2); 

@@ -121,8 +121,6 @@ public final class Engine implements Serializable
 			else
 				addRandomMovingEnemy();
 		}
-	
-		executeEvents();
 		updatePlayer();
 		if(!player.isDead())
 		{
@@ -130,6 +128,7 @@ public final class Engine implements Serializable
 		}
 		updateEnemies();
 		updateBullets();
+		executeEvents();
 		view = new Display(player, enemies, bullets.values(), events, cursor, width, height);
 		updates++;
 	}
@@ -244,10 +243,10 @@ public final class Engine implements Serializable
 				 {
 					 e.collideWithPlayer(player);
 				 }
-				 Bullet b = e.shot(view);
-				 if(b != null)
+				 GameEvent ev = e.event(view);
+				 if(ev != null)
 				 {
-					 bullets.put(Faction.Enemy, b);
+					 events.add(ev);
 				 }
 			}
 		}

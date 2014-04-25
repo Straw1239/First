@@ -1,5 +1,6 @@
 package objects;
 
+import objects.events.GameEvent;
 import core.Display;
 /**
  * Base object of the object hierarchy.
@@ -21,7 +22,7 @@ public abstract class GameObject implements ObjectDataHolder
 	
 	protected GameObject(double x, double y, Faction faction)
 	{
-		this(x,y);
+		this(x, y);
 		this.faction = faction;
 	}
 	
@@ -34,6 +35,11 @@ public abstract class GameObject implements ObjectDataHolder
 	public abstract boolean collidesWithBullet(Bullet b);
 	
 	public abstract boolean collidesWithEnemy(Enemy e);
+	
+	public GameEvent event(Display d)
+	{
+		return null;
+	}
 	
 	public double getX()
 	{
@@ -51,7 +57,8 @@ public abstract class GameObject implements ObjectDataHolder
 	}
 
 	@Override
-	public int hashCode() {
+	public int hashCode() 
+	{
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((faction == null) ? 0 : faction.hashCode());
@@ -64,26 +71,38 @@ public abstract class GameObject implements ObjectDataHolder
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object obj) 
+	{
+		if (this == obj) 
+		{
 			return true;
 		}
-		if (obj == null) {
+		if (obj == null) 
+		{
 			return false;
 		}
-		if (!(obj instanceof GameObject)) {
+		if (!(obj instanceof GameObject)) 
+		{
 			return false;
 		}
+		
 		GameObject other = (GameObject) obj;
-		if (faction != other.faction) {
+		if (faction != other.faction) 
+		{
 			return false;
 		}
-		if (Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x)) {
+		if (Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x)) 
+		{
 			return false;
 		}
-		if (Double.doubleToLongBits(y) != Double.doubleToLongBits(other.y)) {
+		if (Double.doubleToLongBits(y) != Double.doubleToLongBits(other.y)) 
+		{
 			return false;
 		}
 		return true;
 	}
+	
+	
+	
+	
 }
