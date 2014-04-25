@@ -55,7 +55,7 @@ public class Explosion extends GameEvent implements ObjectDataHolder
 	}
 
 	@Override
-	public void bulletEffects(Multimap<Faction, Bullet> bullets)
+	public void bulletEffects(Multimap<Faction, ? extends Bullet> bullets)
 	{
 		//Currently explosions do not affect bullets
 	}

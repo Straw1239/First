@@ -102,6 +102,18 @@ public abstract class GameObject implements ObjectDataHolder
 		return true;
 	}
 	
+	public Object clone()
+	{
+		try 
+		{
+			return super.clone();
+		} 
+		catch (CloneNotSupportedException e) 
+		{
+			throw new InternalError(e);
+		}
+	}
+	
 	
 	
 	

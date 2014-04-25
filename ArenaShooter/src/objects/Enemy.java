@@ -16,6 +16,8 @@ public abstract class Enemy extends Entity implements EnemyDataHolder
 	public abstract void draw(GraphicsContext g);
 	
 	
+	
+	
 		
 	
 	
