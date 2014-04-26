@@ -1,15 +1,15 @@
 package objects;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
 
-import ui.Transformer;
+
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import fxcore.Display;
 
 public class Cursor extends GameObject
 {
 	public static final int radius = 10;
-	public static final Color color = new Color(170,0,170);
+	public static final Color color = Player.color;
 	
 	public Cursor(double x, double y)
 	{
@@ -46,11 +46,10 @@ public class Cursor extends GameObject
 		return false;
 	}
 	
-	public void draw(Graphics2D g, Transformer t)
+	public void draw(GraphicsContext g)
 	{
-		g.setColor(color);
-		int pixels = t.pixels(radius* 2); 
-		g.drawOval(t.screenX(x - radius), t.screenY(y - radius), pixels, pixels);
+		g.setStroke(color);
+		g.strokeOval(x - radius, y - radius,  2 * radius, 2 * radius);
 	}
 	
 

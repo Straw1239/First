@@ -30,9 +30,11 @@ public class Renderer
 		scaleGraphics(d);
 		g.setFill(Color.BLACK);
 		g.fillRect(0, 0, width, height);
+		drawBullets(d);
 		drawPlayer(d);
 		drawEnemies(d);
-		drawBullets(d);
+		
+		d.mouse.draw(g);
 		g.restore();
 	}
 	

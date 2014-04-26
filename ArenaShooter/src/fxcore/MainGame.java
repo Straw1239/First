@@ -8,6 +8,7 @@ import java.util.Random;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
@@ -44,6 +45,7 @@ public class MainGame extends Application
 	private KeyTracker keyTracker = new KeyTracker();
 	private MouseTracker mouse = new MouseTracker();
 	private Group root = new Group();
+	private Scene scene;
 	private Renderer renderer;
 	
 	public void init()
@@ -82,13 +84,16 @@ public class MainGame extends Application
 		stage.setResizable(false);
 		
 		
+		
 		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 		int width = gd.getDisplayMode().getWidth();
 		int height = gd.getDisplayMode().getHeight();
 		renderer = new Renderer(width, height);
 		engine = new Engine(width, height);
 		root.getChildren().add(renderer.canvas);
-		stage.setScene(new Scene(root));
+		scene = new Scene(root);
+		scene.setCursor(Cursor.NONE);
+		stage.setScene(scene);
 		runEngine();
 		runGraphics();
 		stage.show();
