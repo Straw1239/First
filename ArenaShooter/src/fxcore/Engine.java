@@ -293,7 +293,7 @@ public final class Engine implements Serializable
 	private void executePlayerAction()
 	{
 		if(playerAction == null) return;
-		int moveSpeed = 5;
+		double moveSpeed = 5;
 		double dx = 0, dy = 0;
 		
 		if(playerAction.isDown()) dy++;
@@ -324,11 +324,12 @@ public final class Engine implements Serializable
 			});*/
 			
 			double angle = Utils.angle(player, cursor);
-			double spread = Math.PI * 200 / distance;
-			double density = 16;
-			for(double i = -spread; i <= spread; i += spread * 2 / density)
+			double spread = Math.PI * 25 / distance;
+			double density = 3;
+			double offset = spread / density;
+			for(int i = 0; i < density; i++)
 			{
-				bullets.put(Faction.Player, new Bullet(player, angle + i, distance / 100, 5, Player.color));
+				bullets.put(Faction.Player, new Bullet(player, angle + (i - density / 2) * offset, 10, 5, Player.color));
 			}
 		}
 		
