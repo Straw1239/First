@@ -1,7 +1,7 @@
 package objects;
 
 import objects.events.GameEvent;
-import core.Display;
+import fxcore.Display;
 /**
  * Base object of the object hierarchy.
  * Each game object has an x, y, and Faction.
@@ -100,6 +100,18 @@ public abstract class GameObject implements ObjectDataHolder
 			return false;
 		}
 		return true;
+	}
+	
+	public Object clone()
+	{
+		try
+		{
+			return super.clone();
+		}
+		catch (CloneNotSupportedException e)
+		{
+			throw new InternalError(e);
+		}
 	}
 	
 	

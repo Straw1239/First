@@ -4,7 +4,7 @@ import java.awt.MouseInfo;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import core.Display;
+import fxcore.Display;
 
 
 

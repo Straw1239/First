@@ -1,18 +1,19 @@
 package objects;
 
-import java.awt.Color;
-import java.awt.Graphics;
 
-import ui.Transformer;
+
+
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import utils.Utils;
-import core.Display;
+import fxcore.Display;
 
 public class MovingEnemy extends Enemy 
 {
 	public static final double radius = 20;
 	public static final double maxHealth = 30;
 	public static final double contactDamage = .1;
-	public static final Color color = Color.red;
+	public static final Color color = Color.RED;
 	
 	public MovingEnemy(double x, double y) 
 	{
@@ -28,10 +29,10 @@ public class MovingEnemy extends Enemy
 	}
 
 	@Override
-	public void draw(Graphics g, Transformer t) 
+	public void draw(GraphicsContext g) 
 	{
-		g.setColor(color);
-		g.fillOval(t.screenX(x - radius), t.screenY(y - radius), t.pixels(2 * radius), t.pixels(2 * radius));
+		g.setFill(color);
+		g.fillOval(x - radius, y - radius, 2 * radius, 2 * radius);
 	}
 
 	

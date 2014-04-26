@@ -13,7 +13,7 @@ import objects.EnemyDataHolder;
 import objects.Player;
 import objects.PlayerDataHolder;
 import objects.events.EventDataHolder;
-import core.Display;
+import fxcore.Display;
 
 public class Renderer extends JComponent 
 {

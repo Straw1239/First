@@ -1,28 +1,29 @@
 package objects.events;
 
-import java.awt.Color;
-import java.awt.Graphics;
+
+
 import java.util.Collection;
 import java.util.Iterator;
 
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import objects.Bullet;
 import objects.Enemy;
 import objects.Faction;
 import objects.ObjectDataHolder;
 import objects.Player;
-import ui.Transformer;
 import utils.Utils;
 
 import com.google.common.collect.Multimap;
 
-import core.MainGame;
+import fxcore.MainGame;
 
 public class Explosion extends GameEvent implements ObjectDataHolder
 {
 	public static final long DURATION = 10;
 	
 	private double radius, damage;
-	private Color color = Color.red;
+	private Color color = Color.RED;
 	
 	public Explosion(double x, double y, Faction faction, double radius, double damage)
 	{
@@ -86,13 +87,13 @@ public class Explosion extends GameEvent implements ObjectDataHolder
 	}
 
 	@Override
-	public void draw(Graphics g, Transformer t)
+	public void draw(GraphicsContext g)
 	{
-		g.setColor(color);
+		g.setFill(color);
 		long time = MainGame.getTime() - startTime();
 		double radius = this.radius * (time / (double) DURATION);
-		int temp = t.pixels(2 * radius);
-		g.fillOval(t.screenX(x - radius), t.screenY(y - radius), temp, temp);
+		double temp = 2 * radius;
+		g.fillOval(x - radius, y - radius, temp, temp);
 	}
 
 	@Override

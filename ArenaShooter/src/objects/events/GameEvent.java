@@ -1,17 +1,16 @@
 package objects.events;
 
-import java.awt.Graphics;
 import java.util.Collection;
-
-import com.google.common.collect.Multimap;
 
 import objects.Bullet;
 import objects.Enemy;
 import objects.Faction;
 import objects.ObjectDataHolder;
 import objects.Player;
-import ui.Transformer;
-import core.MainGame;
+
+import com.google.common.collect.Multimap;
+
+import fxcore.MainGame;
 
 public abstract class GameEvent implements ObjectDataHolder, EventDataHolder
 {
@@ -31,18 +30,6 @@ public abstract class GameEvent implements ObjectDataHolder, EventDataHolder
 	{
 		this(source.getX(), source.getY(), source.getFaction());
 	}
-	
-	public abstract void playerEffects(Player p);
-	
-	public abstract void bulletEffects(Multimap<Faction, Bullet> bullets);
-	
-	public abstract void enemyEffects(Collection<? extends Enemy> enemies);
-	
-	public abstract void eventEffects(Collection<? extends GameEvent> events);
-	
-	public abstract void draw(Graphics g, Transformer t);
-	
-	public abstract boolean hasExpired();
 	
 	public void effects(Player p, Multimap<Faction, Bullet> bullets, Collection<? extends Enemy> enemies, Collection<? extends GameEvent> events)
 	{
@@ -70,5 +57,17 @@ public abstract class GameEvent implements ObjectDataHolder, EventDataHolder
 	public long startTime()
 	{
 		return startTime;
+	}
+	
+	public Object clone()
+	{
+		try
+		{
+			return super.clone();
+		}
+		catch (CloneNotSupportedException e)
+		{
+			throw new InternalError(e);
+		}
 	}
 }

@@ -12,8 +12,8 @@ public class MouseTracker implements EventHandler<MouseEvent>
 	@Override
 	public void handle(MouseEvent event)
 	{
-		x = event.getSceneX();
-		y = event.getSceneY();
+		x = event.getX();
+		y = event.getY();
 		if(event.getEventType() == MouseEvent.MOUSE_PRESSED)
 		{
 			clicked[event.getButton().ordinal()] = true;

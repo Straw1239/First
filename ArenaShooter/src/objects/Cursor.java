@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 import ui.Transformer;
-import core.Display;
+import fxcore.Display;
 
 public class Cursor extends GameObject
 {

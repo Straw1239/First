@@ -1,14 +1,15 @@
 package objects;
 
-import java.awt.Color;
 
+
+import javafx.scene.paint.Color;
 import utils.Utils;
-import core.Display;
+import fxcore.Display;
 
 public class Player extends Entity implements PlayerDataHolder
 {
 	public static double radius = 30;
-	public static Color color = new Color(170,0,170);
+	public static Color color = Color.rgb(170, 0, 170);
 	
 	public Player(double x, double y) 
 	{

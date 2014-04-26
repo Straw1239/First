@@ -1,4 +1,4 @@
-package core;
+package fxcore;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -18,6 +18,8 @@ import utils.Utils;
 
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Multimap;
+
+
 /**
  * Main game engine. Performs all non graphical internal calculation.
  * Keeps track of Player, all bullets, enemies, and events.

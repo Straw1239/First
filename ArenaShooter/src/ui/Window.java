@@ -6,7 +6,7 @@ import java.awt.event.MouseAdapter;
 
 import javax.swing.JFrame;
 
-import core.Display;
+import fxcore.Display;
 
 public class Window 
 {

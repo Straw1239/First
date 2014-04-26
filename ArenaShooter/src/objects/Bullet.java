@@ -1,10 +1,11 @@
 package objects;
 
-import java.awt.Color;
 
+
+import javafx.scene.paint.Color;
 import utils.Utils;
-import core.Display;
-import core.MainGame;
+import fxcore.Display;
+import fxcore.MainGame;
 
 public class Bullet extends GameObject implements BulletDataHolder
 {
@@ -40,7 +41,7 @@ public class Bullet extends GameObject implements BulletDataHolder
 	
 	public Bullet(double x, double y, double dx, double dy)
 	{
-		this(x,y,dx,dy,Color.red);
+		this(x,y,dx,dy,Color.RED);
 	}
 	
 	public Bullet(double x, double y, double dx, double dy, Color color)
@@ -50,7 +51,7 @@ public class Bullet extends GameObject implements BulletDataHolder
 	
 	public Bullet(double x, double y, double dx, double dy, double radius)
 	{
-		this(x,y,dx,dy,radius,Color.red);
+		this(x,y,dx,dy,radius,Color.RED);
 	}
 	
 	public Bullet(ObjectDataHolder source, double dx, double dy, double radius,Color color)

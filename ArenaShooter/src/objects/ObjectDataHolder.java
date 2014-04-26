@@ -1,6 +1,8 @@
 package objects;
 
-public interface ObjectDataHolder 
+import utils.Cloner;
+
+public interface ObjectDataHolder extends Cloner
 {
 	public double getX();
 	
@@ -8,35 +10,5 @@ public interface ObjectDataHolder
 	
 	public Faction getFaction();
 	
-	public static class Copier implements ObjectDataHolder, Cloneable
-	{
-		private double x, y;
-		private Faction faction;
-		
-		public Copier(ObjectDataHolder o) 
-		{
-			x = o.getX();
-			y = o.getY();
-			faction = o.getFaction();
-		}
-
-		@Override
-		public double getX() 
-		{
-			return x;
-		}
-
-		@Override
-		public double getY() 
-		{
-			return y;
-		}
-
-		@Override
-		public Faction getFaction() 
-		{
-			return faction;
-		}
-		
-	}
+	
 }
