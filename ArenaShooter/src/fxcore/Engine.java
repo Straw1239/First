@@ -13,6 +13,7 @@ import objects.Enemy;
 import objects.Faction;
 import objects.MovingEnemy;
 import objects.Player;
+import objects.events.Explosion;
 import objects.events.GameEvent;
 import utils.Utils;
 
@@ -154,8 +155,16 @@ public final class Engine implements Serializable
 	
 	public void addEvent(GameEvent e)
 	{
-		if(e.hasExpired()) throw new IllegalArgumentException();
+		if(e.hasExpired()) throw new IllegalArgumentException("Event has already expired");
 		events.add(e);
+	}
+	
+	private void addNotNull(GameEvent e)
+	{
+		if(e != null)
+		{
+			addEvent(e);
+		}
 	}
 	
 	private void executeEvents()
@@ -193,6 +202,7 @@ public final class Engine implements Serializable
 				if(b.hasHitWall(width, height))
 				{
 					it.remove();
+					addNotNull(b.onDeath(view));
 				}
 				else
 				{
@@ -204,7 +214,11 @@ public final class Engine implements Serializable
 						{
 							b.collide(player);
 							player.hitByBullet(b);
-							if(b.isDead()) it.remove();
+							if(b.isDead()) 
+							{
+								addNotNull(b.onDeath());
+								it.remove();
+							}	
 						}
 						if(f == Faction.Enemy)break;
 					
@@ -217,7 +231,11 @@ public final class Engine implements Serializable
 							{
 								b.collide(e);
 								e.hitByBullet(b);
-								if(b.isDead()) it.remove();
+								if(b.isDead()) 
+								{
+									it.remove();
+									addNotNull(e.onDeath(view));
+								}
 								break;
 							}
 						}
@@ -238,6 +256,7 @@ public final class Engine implements Serializable
 			if(e.isDead()) 
 			{
 				it.remove();
+				addNotNull(e.onDeath(view));
 			}
 			else
 			{
@@ -246,10 +265,7 @@ public final class Engine implements Serializable
 					 e.collideWithPlayer(player);
 				 }
 				 GameEvent ev = e.event(view);
-				 if(ev != null)
-				 {
-					 events.add(ev);
-				 }
+				 addNotNull(ev);
 			}
 		}
 	}
@@ -298,7 +314,22 @@ public final class Engine implements Serializable
 			double distance = Utils.distance(player.getX(), player.getY(), x, y);
 			double speed = 10;
 			double ratio = speed / distance;
-			bullets.put(Faction.Player, new Bullet(player, (x - player.getX()) * ratio, (y - player.getY())  * ratio,5,Player.color));
+			
+			/*bullets.put(Faction.Player, new Bullet(player, cursor,10, 5,Player.color)
+			{
+				public GameEvent onDeath()
+				{
+					return new Explosion(this, getRadius() * 4, damage);
+				}
+			});*/
+			
+			double angle = Utils.angle(player, cursor);
+			double spread = Math.PI * 200 / distance;
+			double density = 16;
+			for(double i = -spread; i <= spread; i += spread * 2 / density)
+			{
+				bullets.put(Faction.Player, new Bullet(player, angle + i, distance / 100, 5, Player.color));
+			}
 		}
 		
 	}

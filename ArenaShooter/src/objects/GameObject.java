@@ -1,6 +1,7 @@
 package objects;
 
 import objects.events.GameEvent;
+import utils.Utils;
 import fxcore.Display;
 /**
  * Base object of the object hierarchy.
@@ -37,6 +38,16 @@ public abstract class GameObject implements ObjectDataHolder
 	public abstract boolean collidesWithEnemy(Enemy e);
 	
 	public GameEvent event(Display d)
+	{
+		return null;
+	}
+	
+	public GameEvent onDeath(Display d)
+	{
+		return onDeath();
+	}
+	
+	public GameEvent onDeath()
 	{
 		return null;
 	}
@@ -112,6 +123,11 @@ public abstract class GameObject implements ObjectDataHolder
 		{
 			throw new InternalError(e);
 		}
+	}
+	
+	public double angleTo(ObjectDataHolder o)
+	{
+		return Utils.angle(this, o);
 	}
 	
 	

@@ -31,4 +31,11 @@ public class Utils
 	{
 		return distance(g1,g2) < radius;
 	}
+	
+	public static double angle(ObjectDataHolder g1, ObjectDataHolder g2)
+	{
+		double x = g2.getX() - g1.getX();
+		double y = g2.getY() - g1.getY();
+		return Math.atan2(y, x);
+	}
 }

@@ -3,6 +3,8 @@ package objects;
 
 
 import javafx.scene.paint.Color;
+import objects.events.Explosion;
+import objects.events.GameEvent;
 import utils.Utils;
 import fxcore.Display;
 import fxcore.MainGame;
@@ -54,11 +56,7 @@ public class Bullet extends GameObject implements BulletDataHolder
 		this(x,y,dx,dy,radius,Color.RED);
 	}
 	
-	public Bullet(ObjectDataHolder source, double dx, double dy, double radius,Color color)
-	{
-		this(source.getX(),source.getY(),dx,dy,radius,color);
-		faction = source.getFaction();
-	}
+	
 	
 	public Bullet(ObjectDataHolder source, ObjectDataHolder target, double speed, double radius, Color color)
 	{
@@ -70,10 +68,21 @@ public class Bullet extends GameObject implements BulletDataHolder
 		this.color = color;
 	}
 	
+	public Bullet(ObjectDataHolder source, double angle, double speed, double radius, Color color)
+	{
+		this(source);
+		dx = Math.cos(angle) * speed;
+		dy = Math.sin(angle) * speed;
+		this.radius = radius;
+		this.color = color;
+	}
+	
 	public boolean hasHitWall(double width, double height)
 	{
 		return (x + radius >= width || x - radius <= 0 || y + radius >= height || y - radius  <= 0);
 	}
+	
+	
 	
 	@Override
 	public void update(Display d) 
@@ -196,6 +205,8 @@ public class Bullet extends GameObject implements BulletDataHolder
 	{
 		return dy;
 	}
+	
+	
 	
 
 }

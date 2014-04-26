@@ -5,10 +5,12 @@ import java.util.Iterator;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import objects.BulletDataHolder;
 import objects.EnemyDataHolder;
 import objects.Player;
 import objects.PlayerDataHolder;
+import objects.events.EventDataHolder;
 
 public class Renderer 
 {
@@ -30,6 +32,7 @@ public class Renderer
 		scaleGraphics(d);
 		g.setFill(Color.BLACK);
 		g.fillRect(0, 0, width, height);
+		drawEvents(d);
 		drawBullets(d);
 		drawPlayer(d);
 		drawEnemies(d);
@@ -56,6 +59,9 @@ public class Renderer
 		g.setFill(Player.color);
 		double radius = Player.radius;
 		g.fillOval(p.getX() - radius, p.getY() - radius, 2 * radius, 2 * radius);
+		g.setFill(Color.WHITE);
+		g.setFont(new Font("Ariel", 36));
+		g.fillText(String.format("Health: %.2f", p.health()), 30, 30);
 		
 	}
 	
@@ -67,6 +73,15 @@ public class Renderer
 	private void drawEnemies(Display d)
 	{
 		Iterator<? extends EnemyDataHolder> it = d.enemies.iterator();
+		while(it.hasNext())
+		{
+			it.next().draw(g);
+		}
+	}
+	
+	private void drawEvents(Display d)
+	{
+		Iterator<? extends EventDataHolder> it = d.events.iterator();
 		while(it.hasNext())
 		{
 			it.next().draw(g);
