@@ -1,12 +1,12 @@
 package fxcore;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import javafx.scene.canvas.GraphicsContext;
 import objects.BasicEnemy;
 import objects.Bullet;
 import objects.Cursor;
@@ -14,7 +14,6 @@ import objects.Enemy;
 import objects.Faction;
 import objects.MovingEnemy;
 import objects.Player;
-import objects.events.Explosion;
 import objects.events.GameEvent;
 import utils.Utils;
 
@@ -80,7 +79,7 @@ public final class Engine implements Serializable
 		this.width = width;
 		this.height = height;
 		player = new Player(width / 2, height / 2);
-		view = new Display(player, enemies, bullets.values(), events, cursor, width, height);
+		view = new Display(player, enemies, bullets.values(), events, cursor, width, height, updates);
 	}
 	
 	/**
@@ -133,7 +132,7 @@ public final class Engine implements Serializable
 		updateEnemies();
 		updateBullets();
 		executeEvents();
-		view = new Display(player, enemies, bullets.values(), events, cursor, width, height);
+		view = new Display(player, enemies, bullets.values(), events, cursor, width, height, updates);
 		updates++;
 	}
 	
@@ -171,6 +170,7 @@ public final class Engine implements Serializable
 	private void executeEvents()
 	{
 		Iterator<GameEvent> it = events.iterator();
+		Collection<GameEvent> newEvents = new ArrayList<>();
 		while(it.hasNext())
 		{
 			GameEvent e = it.next();
@@ -180,9 +180,10 @@ public final class Engine implements Serializable
 			}
 			else
 			{
-				e.effects(player, bullets, enemies, events);
+				newEvents.addAll(e.effects(player, bullets, enemies, events));
 			}
 		}
+		events.addAll(newEvents);
 	}
 	
 	private void updatePlayer()
@@ -313,20 +314,22 @@ public final class Engine implements Serializable
 		{
 			double x = playerAction.targetX(), y = playerAction.targetY();
 			double distance = Utils.distance(player.getX(), player.getY(), x, y);
-			double speed = distance / 50;
+			double speed = 10;
 			double ratio = speed / distance;
 			
-			/*bullets.put(Faction.Player, new Bullet(player, cursor,10, 5,Player.color)
+			bullets.put(Faction.Player, new Bullet(player, cursor,10, 5,Player.color)
 			{
+				/*
 				public GameEvent onDeath()
 				{
 					return new Explosion(this, getRadius() * 4, damage);
 				}
-			});*/
-			
+				*/
+			});
+			/*
 			double angle = Utils.angle(player, cursor);
 			double spread = Math.PI * 50 / distance;
-			double density = 30;
+			double density = 3;
 			double offset = spread / density;
 			for(int i = 0; i < density; i++)
 			{
@@ -334,6 +337,8 @@ public final class Engine implements Serializable
 					
 				
 			}
+			*/
+			
 		}
 		
 	}

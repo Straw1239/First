@@ -4,6 +4,14 @@ import javafx.event.EventHandler;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
+/**
+ * Keeps track of mouse position, and current state of all mouse buttons, 
+ * including the time since they were pressed in nanoseconds.
+ * Should be added as a top - level event filter in a JavaFX Application.
+ * Never consumes events.
+ * @author Rajan
+ *
+ */
 public class MouseTracker implements EventHandler<MouseEvent>
 {
 	private volatile boolean[] clicked = new boolean[MouseButton.values().length];

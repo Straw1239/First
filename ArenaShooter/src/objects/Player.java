@@ -2,14 +2,22 @@ package objects;
 
 
 
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import utils.Utils;
 import fxcore.Display;
+import fxcore.MainGame;
 
+/**
+ * Represents the player of the game. 
+ * @author Rajan
+ *
+ */
 public class Player extends Entity implements PlayerDataHolder
 {
 	public static double radius = 30;
 	public static Color color = Color.rgb(170, 0, 170);
+	private long fireTime;
 	
 	public Player(double x, double y) 
 	{
@@ -131,5 +139,18 @@ public class Player extends Entity implements PlayerDataHolder
 		{
 			return right;
 		}
+	}
+
+	@Override
+	public long fireTime()
+	{
+		return fireTime;
+	}
+
+	@Override
+	public void draw(GraphicsContext g)
+	{
+		
+		
 	}	
 }

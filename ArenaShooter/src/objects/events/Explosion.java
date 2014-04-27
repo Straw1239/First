@@ -2,6 +2,7 @@ package objects.events;
 
 
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -18,6 +19,12 @@ import com.google.common.collect.Multimap;
 
 import fxcore.MainGame;
 
+/**
+ * Basic Event representing an explosion. Damages all entities of appropriate factions within it's radius, 
+ * displaying a red expanding circle graphic.
+ * @author Rajan Troll
+ *
+ */
 public class Explosion extends GameEvent implements ObjectDataHolder
 {
 	public static final long DURATION = 10;
@@ -80,9 +87,9 @@ public class Explosion extends GameEvent implements ObjectDataHolder
 	}
 
 	@Override
-	public void eventEffects(Collection<GameEvent> events)
+	public Collection<GameEvent> eventEffects(Collection<GameEvent> events)
 	{
-		// Currently explosions do not affect other events
+		return new ArrayList<>(0);
 
 	}
 

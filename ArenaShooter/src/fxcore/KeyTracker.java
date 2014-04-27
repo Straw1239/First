@@ -4,6 +4,13 @@ import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
+/**
+ * Keeps track of all keys currently pressed at any given time.
+ * Should be added as a top - level event filter to a JavaFX Application.
+ * Does not ever consume KeyEvents.
+ * @author Rajan
+ *
+ */
 public class KeyTracker implements EventHandler<KeyEvent>
 {
 	private boolean[] keys = new boolean[256];

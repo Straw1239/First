@@ -2,6 +2,7 @@ package objects;
 
 
 
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import objects.events.Explosion;
 import objects.events.GameEvent;
@@ -9,6 +10,13 @@ import utils.Utils;
 import fxcore.Display;
 import fxcore.MainGame;
 
+/**
+ * Represents a bullet in the game. Provides many contructors for easy building.
+ * Automatically moves itself by dx and dy each time update(Display) is called.
+ * Subclasses may want to override various methods for different behavior.
+ * @author Rajan
+ *
+ */
 public class Bullet extends GameObject implements BulletDataHolder
 {
 	public Color color;
@@ -204,6 +212,13 @@ public class Bullet extends GameObject implements BulletDataHolder
 	public double getDY()
 	{
 		return dy;
+	}
+
+	@Override
+	public void draw(GraphicsContext g)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

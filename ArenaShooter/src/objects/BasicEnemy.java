@@ -1,6 +1,7 @@
 package objects;
 
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javafx.scene.canvas.GraphicsContext;
@@ -12,6 +13,7 @@ import com.google.common.collect.Multimap;
 
 import fxcore.Display;
 import fxcore.MainGame;
+
 
 public class BasicEnemy extends Enemy 
 {
@@ -102,7 +104,7 @@ public class BasicEnemy extends Enemy
 
 			public void enemyEffects(Collection<Enemy> enemies){}
 		
-			public void eventEffects(Collection<GameEvent> events){}
+			public Collection<GameEvent> eventEffects(Collection<GameEvent> events){return new ArrayList<>(0);}
 
 			public void draw(GraphicsContext g){}
 			

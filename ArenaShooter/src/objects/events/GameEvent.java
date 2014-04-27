@@ -11,8 +11,14 @@ import objects.Player;
 import com.google.common.collect.Multimap;
 
 import fxcore.MainGame;
-
-public abstract class GameEvent implements ObjectDataHolder, EventDataHolder
+/**
+ * Basic abstract base class for all events. See EventDataHolder. 
+ * Stores x, y, faction, and starting time of events. Provides
+ * useful methods such as clone, and effects() combining all of the effects into one method. 
+ * @author Rajan
+ *
+ */
+public abstract class GameEvent implements EventDataHolder
 {
 	protected double x, y;
 	protected Faction faction;
@@ -30,13 +36,19 @@ public abstract class GameEvent implements ObjectDataHolder, EventDataHolder
 	{
 		this(source.getX(), source.getY(), source.getFaction());
 	}
-	
-	public void effects(Player p, Multimap<Faction, Bullet> bullets, Collection<Enemy> enemies, Collection<GameEvent> events)
+	/**
+	 * Applies all effects this GameEvent has on internal engine objects.
+	 * @param p
+	 * @param bullets
+	 * @param enemies
+	 * @param events
+	 */
+	public Collection<GameEvent> effects(Player p, Multimap<Faction, Bullet> bullets, Collection<Enemy> enemies, Collection<GameEvent> events)
 	{
 		playerEffects(p);
 		bulletEffects(bullets);
 		enemyEffects(enemies);
-		eventEffects(events);
+		return eventEffects(events);
 	}
 	
 	public double getX()

@@ -4,8 +4,10 @@ import java.util.Iterator;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.Effect;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.effect.*;
 import objects.BulletDataHolder;
 import objects.EnemyDataHolder;
 import objects.Player;
@@ -22,6 +24,7 @@ public class Renderer
 	{
 		canvas = new Canvas(width, height);
 		g = canvas.getGraphicsContext2D();
+		
 		this.width  = width;
 		this.height = height;
 	}
@@ -36,14 +39,17 @@ public class Renderer
 		drawBullets(d);
 		drawPlayer(d);
 		drawEnemies(d);
-		
 		d.mouse.draw(g);
 		g.restore();
 	}
 	
 	private void drawBullets(Display d)
 	{
+		g.save();
 		Iterator<? extends BulletDataHolder> it = d.bullets.iterator();
+		BoxBlur effect = new BoxBlur(5, 5, 5);
+		//effect.setInput(new Bloom(0));
+		g.setEffect(effect);
 		while(it.hasNext())
 		{
 			BulletDataHolder b = it.next();
@@ -51,6 +57,8 @@ public class Renderer
 			double radius = b.getRadius();
 			g.fillOval(b.getX() - radius, b.getY() - radius, 2 * radius, 2 * radius);
 		}
+		g.restore();
+		
 	}
 
 	private void drawPlayer(Display d)
