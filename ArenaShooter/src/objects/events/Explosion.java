@@ -62,7 +62,7 @@ public class Explosion extends GameEvent implements ObjectDataHolder
 	}
 
 	@Override
-	public void enemyEffects(Collection<? extends Enemy> enemies)
+	public void enemyEffects(Collection<Enemy> enemies)
 	{
 		if(faction != Faction.Enemy)
 		if(MainGame.getTime() - startTime() <= 0)
@@ -80,7 +80,7 @@ public class Explosion extends GameEvent implements ObjectDataHolder
 	}
 
 	@Override
-	public void eventEffects(Collection<? extends GameEvent> events)
+	public void eventEffects(Collection<GameEvent> events)
 	{
 		// Currently explosions do not affect other events
 

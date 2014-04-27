@@ -156,7 +156,6 @@ public class MainGame extends Application
 	{
 		new AnimationTimer()
 		{
-
 			@Override
 			public void handle(long now)
 			{

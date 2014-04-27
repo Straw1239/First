@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import javafx.scene.canvas.GraphicsContext;
 import objects.BasicEnemy;
 import objects.Bullet;
 import objects.Cursor;
@@ -312,7 +313,7 @@ public final class Engine implements Serializable
 		{
 			double x = playerAction.targetX(), y = playerAction.targetY();
 			double distance = Utils.distance(player.getX(), player.getY(), x, y);
-			double speed = 10;
+			double speed = distance / 50;
 			double ratio = speed / distance;
 			
 			/*bullets.put(Faction.Player, new Bullet(player, cursor,10, 5,Player.color)
@@ -324,12 +325,14 @@ public final class Engine implements Serializable
 			});*/
 			
 			double angle = Utils.angle(player, cursor);
-			double spread = Math.PI * 25 / distance;
-			double density = 3;
+			double spread = Math.PI * 50 / distance;
+			double density = 30;
 			double offset = spread / density;
 			for(int i = 0; i < density; i++)
 			{
-				bullets.put(Faction.Player, new Bullet(player, angle + (i - density / 2) * offset, 10, 5, Player.color));
+				bullets.put(Faction.Player, new Bullet(player, angle + (i - density / 2) * offset, speed, 5, Player.color));
+					
+				
 			}
 		}
 		

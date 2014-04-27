@@ -17,9 +17,9 @@ public interface EventDataHolder extends ObjectDataHolder
 	
 	public void bulletEffects(Multimap<Faction, Bullet> bullets);
 	
-	public void enemyEffects(Collection<? extends Enemy> enemies);
+	public void enemyEffects(Collection<Enemy> enemies);
 	
-	public void eventEffects(Collection<? extends GameEvent> events);
+	public void eventEffects(Collection<GameEvent> events);
 	
 	public void draw(GraphicsContext g);
 	

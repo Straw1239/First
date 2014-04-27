@@ -31,7 +31,7 @@ public abstract class GameEvent implements ObjectDataHolder, EventDataHolder
 		this(source.getX(), source.getY(), source.getFaction());
 	}
 	
-	public void effects(Player p, Multimap<Faction, Bullet> bullets, Collection<? extends Enemy> enemies, Collection<? extends GameEvent> events)
+	public void effects(Player p, Multimap<Faction, Bullet> bullets, Collection<Enemy> enemies, Collection<GameEvent> events)
 	{
 		playerEffects(p);
 		bulletEffects(bullets);

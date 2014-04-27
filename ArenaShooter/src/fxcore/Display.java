@@ -14,7 +14,7 @@ import com.google.common.collect.ImmutableList;
 
 /**
  * Class representing a display of an internal engine view.
- * Should be immutable, currently needs fixing
+ * Is Immutable
  * Passed from the engine to the renderer for displaying to the screen
  * also passed to all engine objects in update.
  * @author Rajan Troll

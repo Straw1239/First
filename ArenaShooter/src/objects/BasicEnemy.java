@@ -100,9 +100,9 @@ public class BasicEnemy extends Enemy
 				hasExpired = true;
 			}
 
-			public void enemyEffects(Collection<? extends Enemy> enemies){}
+			public void enemyEffects(Collection<Enemy> enemies){}
 		
-			public void eventEffects(Collection<? extends GameEvent> events){}
+			public void eventEffects(Collection<GameEvent> events){}
 
 			public void draw(GraphicsContext g){}
 			
