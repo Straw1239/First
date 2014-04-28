@@ -32,9 +32,9 @@ public class Renderer
 	public void render(Display d)
 	{
 		g.save();
-		scaleGraphics(d);
 		g.setFill(Color.BLACK);
 		g.fillRect(0, 0, width, height);
+		scaleGraphics(d);
 		drawEvents(d);
 		drawBullets(d);
 		drawPlayer(d);
@@ -47,9 +47,9 @@ public class Renderer
 	{
 		g.save();
 		Iterator<? extends BulletDataHolder> it = d.bullets.iterator();
-		BoxBlur effect = new BoxBlur(5, 5, 5);
+		//BoxBlur effect = new BoxBlur(5, 5, 5);
 		//effect.setInput(new Bloom(0));
-		g.setEffect(effect);
+		//g.setEffect(effect);
 		while(it.hasNext())
 		{
 			BulletDataHolder b = it.next();

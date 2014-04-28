@@ -34,6 +34,17 @@ public class MainGame extends Application
 		return app.engine.getTime();
 	}
 	
+	public static double getGameWidth()
+	{
+		return app.engine.width;
+	}
+	
+	public static double getGameHeight()
+	{
+		return app.engine.height;
+	}
+	
+	
 	public static final Random rand = new XRandom(((System.nanoTime() + Runtime.getRuntime().hashCode() * 7) + Thread.currentThread().hashCode()) * 31 + Calendar.getInstance().hashCode());
 	
 	
@@ -47,6 +58,7 @@ public class MainGame extends Application
 	private Group root = new Group();
 	private Scene scene;
 	private Renderer renderer;
+	
 	
 	public void init()
 	{
@@ -89,7 +101,8 @@ public class MainGame extends Application
 		int width = gd.getDisplayMode().getWidth();
 		int height = gd.getDisplayMode().getHeight();
 		renderer = new Renderer(width, height);
-		engine = new Engine(width, height);
+		engine = new Engine(width * 5, height * 5);
+		
 		root.getChildren().add(renderer.canvas);
 		scene = new Scene(root);
 		scene.setCursor(Cursor.NONE);
@@ -163,6 +176,18 @@ public class MainGame extends Application
 			}
 			
 		}.start();
+	}
+	
+	public static class Dimension
+	{
+		public final double width;
+		public final double height;
+		
+		public Dimension(double width, double height)
+		{
+			this.width = width;
+			this.height = height;
+		}
 	}
 	
 	
