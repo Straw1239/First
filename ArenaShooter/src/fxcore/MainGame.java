@@ -101,7 +101,7 @@ public class MainGame extends Application
 		int width = gd.getDisplayMode().getWidth();
 		int height = gd.getDisplayMode().getHeight();
 		renderer = new Renderer(width, height);
-		engine = new Engine(width * 5, height * 5);
+		engine = new Engine(width , height);
 		
 		root.getChildren().add(renderer.canvas);
 		scene = new Scene(root);
@@ -114,40 +114,35 @@ public class MainGame extends Application
 	
 	private void runEngine()
 	{
-		new Thread(new Runnable()
+		new Thread(() ->
 		{
-			@Override
-			public void run()
+			long frameNanoTime = (1_000_000_000L / UPS);
+			long startFrameTime;
+			while(true)
 			{
-				long frameNanoTime = (1_000_000_000L / UPS);
-				long startFrameTime;
-				while(true)
+				try
 				{
-					try
+					if(paused)
 					{
-						if(paused)
-						{
-							Thread.sleep(10);
-						}
-						else
-						{
-							startFrameTime = System.nanoTime();
-							engine.setPlayerAction(getPlayerAction());
-							engine.setCursorLocation(mouse.x(), mouse.y());
-							engine.update();
-							while(System.nanoTime() - startFrameTime < frameNanoTime)
-							{
-								Thread.sleep(1);	
-							}
-						}
+						Thread.sleep(10);
 					}
-					catch (InterruptedException e)
+					else
 					{
-						throw new RuntimeException(e);
+						startFrameTime = System.nanoTime();
+						engine.setPlayerAction(getPlayerAction());
+						engine.setCursorLocation(mouse.x(), mouse.y());
+						engine.update();
+						while(System.nanoTime() - startFrameTime < frameNanoTime)
+						{
+							Thread.sleep(1);	
+						}
 					}
 				}
+				catch (InterruptedException e)
+				{
+					throw new RuntimeException(e);
+				}
 			}
-			
 		}).start();
 	}
 	

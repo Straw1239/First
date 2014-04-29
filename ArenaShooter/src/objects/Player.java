@@ -4,6 +4,7 @@ package objects;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import utils.Utils;
 import fxcore.Display;
 import fxcore.MainGame;
@@ -150,7 +151,11 @@ public class Player extends Entity implements PlayerDataHolder
 	@Override
 	public void draw(GraphicsContext g)
 	{
-		
+		g.setFill(Player.color);
+		g.fillOval(x - radius, y - radius, 2 * radius, 2 * radius);
+		g.setFill(Color.WHITE);
+		g.setFont(new Font("Ariel", 36));
+		g.fillText(String.format("Health: %.2f", health), 30, 30);
 		
 	}	
 }

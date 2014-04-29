@@ -63,9 +63,7 @@ public class Bullet extends GameObject implements BulletDataHolder
 	{
 		this(x,y,dx,dy,radius,Color.RED);
 	}
-	
-	
-	
+		
 	public Bullet(ObjectDataHolder source, ObjectDataHolder target, double speed, double radius, Color color)
 	{
 		this(source);
@@ -89,8 +87,6 @@ public class Bullet extends GameObject implements BulletDataHolder
 	{
 		return (x + radius >= width || x - radius <= 0 || y + radius >= height || y - radius  <= 0);
 	}
-	
-	
 	
 	@Override
 	public void update(Display d) 
@@ -217,8 +213,8 @@ public class Bullet extends GameObject implements BulletDataHolder
 	@Override
 	public void draw(GraphicsContext g)
 	{
-		// TODO Auto-generated method stub
-		
+		g.setFill(color);
+		g.fillOval(x - radius, y - radius, 2 * radius, 2 * radius);
 	}
 	
 	

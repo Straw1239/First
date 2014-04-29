@@ -47,15 +47,12 @@ public class Renderer
 	{
 		g.save();
 		Iterator<? extends BulletDataHolder> it = d.bullets.iterator();
-		//BoxBlur effect = new BoxBlur(5, 5, 5);
+		//BoxBlur effect = new BoxBlur(5, 5, 3);
 		//effect.setInput(new Bloom(0));
 		//g.setEffect(effect);
 		while(it.hasNext())
 		{
-			BulletDataHolder b = it.next();
-			g.setFill(b.getColor());
-			double radius = b.getRadius();
-			g.fillOval(b.getX() - radius, b.getY() - radius, 2 * radius, 2 * radius);
+			it.next().draw(g);
 		}
 		g.restore();
 		
@@ -63,14 +60,7 @@ public class Renderer
 
 	private void drawPlayer(Display d)
 	{
-		PlayerDataHolder p = d.player;
-		g.setFill(Player.color);
-		double radius = Player.radius;
-		g.fillOval(p.getX() - radius, p.getY() - radius, 2 * radius, 2 * radius);
-		g.setFill(Color.WHITE);
-		g.setFont(new Font("Ariel", 36));
-		g.fillText(String.format("Health: %.2f", p.health()), 30, 30);
-		
+		d.player.draw(g);
 	}
 	
 	private void scaleGraphics(Display d)

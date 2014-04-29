@@ -11,6 +11,7 @@ import objects.BasicEnemy;
 import objects.Bullet;
 import objects.Cursor;
 import objects.Enemy;
+import objects.Entity;
 import objects.Faction;
 import objects.MovingEnemy;
 import objects.Player;
@@ -58,6 +59,8 @@ public final class Engine implements Serializable
 	 * Uses LinkedLists, so use iterators provided. 
 	 */
 	private Multimap<Faction, Bullet> bullets = LinkedListMultimap.create();
+	
+	
 	
 	/**
 	 * Representation of engine state. Replaced each update, 
