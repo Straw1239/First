@@ -29,7 +29,7 @@ public class BallParticleRenderer implements ParticleRenderer {
 	public int getNumberOfParticles() {
 
 		// This type of renderer actually seems to support a high number of particles.
-		return 3000;
+		return 500;
 	}
 
 	/*

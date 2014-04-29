@@ -50,7 +50,7 @@ public class CanvasBallParticleTest extends Application {
 		stage.setTitle("JavaFX Canvas Ball Particle Test"); //$NON-NLS-1$
 
 		// Create a new particle tester using a ball renderer.
-		final CanvasParticleAnimater animater = new CanvasParticleAnimater(1920, 1080, new BallParticleRenderer());
+		final CanvasParticleAnimater animater = new CanvasParticleAnimater(1024, 1024, new BallParticleRenderer());
 
 		// Create a pane to contain the <code>Canvas</code> that will automatically center it.
 		final BorderPane pane = new BorderPane();
