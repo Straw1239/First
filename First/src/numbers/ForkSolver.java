@@ -14,13 +14,9 @@ public class ForkSolver
 	public static long evalTime = 0;
 	private static long positions = 0;
 	
-	
-	
-	
-	
+
 	public static void main(String[] args) throws FileNotFoundException, InterruptedException 
 	{
-		
 		JFrame frame = new JFrame("Auto Solver");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setBackground(Color.white);
@@ -42,7 +38,7 @@ public class ForkSolver
 			int moves = 0;
 			long time = 0;
 			int depth = 3;
-			double target = .05;
+			double target = .2;
 			long targetTime = (long)(target * 10000000000.0);
 			while(true)
 			{
@@ -172,7 +168,8 @@ public class ForkSolver
 				}
 			}
 		}
-		double smoothWeight = 1.2;
+		score = Math.sqrt(score) * 2.5;
+		double smoothWeight = .5;
 		//Subtract points for sharp transitions
 		for(int i = 1; i < s.size();i++)
 		{
@@ -187,9 +184,9 @@ public class ForkSolver
 				{
 					
 					
-						if(i == 1 && first > second) ignore = true;
+						//if(i == 1 && first > second) ignore = true;
 						
-						if(i == 3 && second > first) ignore = true;
+						//if(i == 3 && second > first) ignore = true;
 					
 					
 					
@@ -258,118 +255,6 @@ public class ForkSolver
 			}
 		}
 		return ordering;
-	}
-	
-	private static Collection<FastState> states(FastState s, Direction d)
-	{
-		FastState after = s.move(d);
-		if(after.equals(s))
-			return new ArrayList<>(0);
-		else
-			return after.possibleRandomAdditions();
-	}
-	
-	private static double min(Collection<Double> args)
-	{
-		if(args.size() == 0) throw new IllegalArgumentException();
-		Iterator<Double> it = args.iterator();
-		double min = it.next();
-		while(it.hasNext())
-		{
-			min = Math.min(min, it.next());
-		}
-		return min;
-	}
-	
-	private static class EvalTask extends RecursiveTask<Double>
-	{
-		private FastState state;
-	
-		public EvalTask(FastState state)
-		{
-			super();
-			this.state = state;
-		}
-		
-		@Override
-		protected Double compute() 
-		{
-			return evaluate(state);
-		}
-	}
-	
-	private static class SearchEvalTask extends RecursiveTask<Double>
-	{
-		private FastState state;
-		private int depth;
-		private double currentBest;
-		
-		public SearchEvalTask(FastState state, int depth, double currentBest) 
-		{
-			super();
-			this.state = state;
-			this.depth = depth;
-			this.currentBest = currentBest;
-		}
-
-		@Override
-		protected Double compute() 
-		{
-			if(depth == 0)
-			{
-				RecursiveTask<Double> task = new EvalTask(state);
-				task.fork();
-				return task.join();
-			}
-			else
-			{
-				ArrayList<RecursiveTask<Double>>[] forks = new ArrayList[4];
-				for(Direction d : Direction.values())
-				{
-					Collection<FastState> states = states(state,d);
-					Iterator<FastState> it = states.iterator();
-					while(it.hasNext())
-					{
-						SearchEvalTask task = new SearchEvalTask(it.next(),depth-1,currentBest);
-						forks[d.ordinal()].add(task);
-						task.fork();
-					}
-				}
-				double bestCase = Double.NEGATIVE_INFINITY;
-				for(int i = 0; i < forks.length;i++)
-				{
-					ArrayList<RecursiveTask<Double>> list = forks[i];
-					double worstCase = list.get(0).join();
-					for(int j = 1; j < list.size();j++)
-					{
-						worstCase = Math.min(worstCase, list.get(i).join());
-					}
-					bestCase = Math.max(bestCase,worstCase );
-				}
-				return bestCase;
-			}
-		}
-		
-	}
-	
-	private static class Evaluator implements Callable<Double>
-	{
-		FastState state;
-		int depth;
-		double currentBest;
-		
-		public Evaluator(FastState state, int depth, double currentBest) 
-		{
-			this.state = state;
-			this.depth = depth;
-			this.currentBest = currentBest;
-		}
-		
-		@Override
-		public Double call() throws Exception 
-		{
-			return bestWorstCase(state,depth,currentBest);
-		}
 	}
 	
 	private static class StatePainter extends JComponent
