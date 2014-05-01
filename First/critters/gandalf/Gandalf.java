@@ -9,6 +9,8 @@ import critters.CritterInfo;
 
 public class Gandalf extends Critter
 {
+	
+	
 	private static String symbol = "G";
 	
 	private Point location = new Point(0, 0);
@@ -61,5 +63,10 @@ public class Gandalf extends Critter
 		default:
 			throw new RuntimeException("Missing enum label");
 		}
+	}
+	
+	private static enum GDirection extends Direction
+	{
+		
 	}
 }
