@@ -11,12 +11,10 @@ import objects.BasicEnemy;
 import objects.Bullet;
 import objects.Cursor;
 import objects.Enemy;
-import objects.Entity;
 import objects.Faction;
 import objects.MovingEnemy;
 import objects.Player;
 import objects.events.GameEvent;
-import utils.Utils;
 
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Multimap;
@@ -83,6 +81,13 @@ public final class Engine implements Serializable
 		this.height = height;
 		player = new Player(width / 2, height / 2);
 		view = new Display(player, enemies, bullets.values(), events, cursor, width, height, updates);
+	}
+	
+	public Engine(Display state)
+	{
+		width = state.width;
+		height = state.height;
+		throw new UnsupportedOperationException();
 	}
 	
 	/**
@@ -315,10 +320,10 @@ public final class Engine implements Serializable
 		player.move(dx * moveSpeed, dy * moveSpeed);
 		if(playerAction.isShooting())
 		{
-			double x = playerAction.targetX(), y = playerAction.targetY();
-			double distance = Utils.distance(player.getX(), player.getY(), x, y);
-			double speed = 10;
-			double ratio = speed / distance;
+			//double x = playerAction.targetX(), y = playerAction.targetY();
+			//double distance = Utils.distance(player.getX(), player.getY(), x, y);
+			//double speed = 10;
+			//double ratio = speed / distance;
 			
 			bullets.put(Faction.Player, new Bullet(player, cursor,10, 5,Player.color)
 			{

@@ -1,5 +1,7 @@
 package critters;
 
+import gandalf.Gandalf;
+
 
 // CSE 142 Homework 8 (Critters)
 // Authors: Stuart Reges and Marty Stepp
@@ -22,6 +24,7 @@ public class CritterMain {
         frame.add(numberOfCritters, TRex.class);
         frame.add(numberOfCritters, FlyTrap.class);
         frame.add(numberOfCritters, Food.class);
+        frame.add(numberOfCritters, Gandalf.class);
         
 //        frame.add(numberOfCritters, Husky_Hogeland.class);
        // frame.add(numberOfCritters, Husky_Pollock_Rosebush3.class);

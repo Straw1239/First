@@ -16,4 +16,15 @@ public class Point extends java.awt.Point
 	{
 		return shift(vector.x, vector.y);
 	}
+	
+	public void move(Point vector)
+	{
+		x += vector.x;
+		y += vector.y;
+	}
+	
+	public Point reflect()
+	{
+		return new Point(-x, -y);
+	}
 }

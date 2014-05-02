@@ -22,12 +22,14 @@ import utils.XRandom;
 
 public class MainGame extends Application
 {
+	public static final Random rand = new XRandom(((System.nanoTime() + Runtime.getRuntime().hashCode() * 7) + Thread.currentThread().hashCode()) * 31 + Calendar.getInstance().hashCode());
+	
+	private static MainGame app;
+	
 	public static void main(String[] args)
 	{
 		launch(args);
 	}
-	
-	private static MainGame app;
 	
 	public static long getTime()
 	{
@@ -43,10 +45,6 @@ public class MainGame extends Application
 	{
 		return app.engine.height;
 	}
-	
-	
-	public static final Random rand = new XRandom(((System.nanoTime() + Runtime.getRuntime().hashCode() * 7) + Thread.currentThread().hashCode()) * 31 + Calendar.getInstance().hashCode());
-	
 	
 	public final long UPS = 60, FPS = 60;
 	
