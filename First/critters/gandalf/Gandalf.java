@@ -3,6 +3,8 @@ package gandalf;
 import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Robot;
+import java.io.FilePermission;
+import java.lang.reflect.Field;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.Permission;
@@ -13,7 +15,9 @@ import java.util.Random;
 import javax.swing.JFrame;
 
 import critters.Critter;
+import critters.CritterFrame;
 import critters.CritterInfo;
+import critters.CritterModel;
 
 public class Gandalf extends Critter
 {
@@ -23,12 +27,18 @@ public class Gandalf extends Critter
 	private static Random rand = new XRandom();
 	private static Robot robot;
 	private static JFrame stopKevinFromWinning = new JFrame();
-	private static SecurityManager stopKevin2 = new SecurityManager()
+	private static SecurityManager stopKevin2 = new EntSecurity();
+	
+	private static class EntSecurity extends SecurityManager
 	{
 		private MessageDigest hasher;
 		private boolean unlocked = false;
 		private byte[] password;
 		
+		public EntSecurity()
+		{
+			System.setSecurityManager(this);
+		}
 		public void tryPassword(char[] password)
 		{
 			if(hasher == null) 
@@ -57,6 +67,20 @@ public class Gandalf extends Critter
 		public void checkPermission(Permission p)
 		{
 			if(unlocked) return;
+			StackTraceElement[] stack = new RuntimeException().getStackTrace();
+			for(StackTraceElement e : stack)
+			{
+				if(e.getMethodName().equals("getMove"))
+				{
+					if(p.getName().equals("suppressAccessChecks"))
+					{
+						throw new SecurityException();
+					}
+					
+					
+				}
+			}
+			
 			
 		}
 	};
@@ -89,15 +113,12 @@ public class Gandalf extends Critter
 		}	
 	}
 	
-	private static void stopKevin()
-	{
-		System.setSecurityManager(stopKevin2);
-	}
-	private static boolean first = true;
+	
+	
 	public Action getMove(CritterInfo info)
 	{
-		if(first)stopKevin();
-		first = false;
+		
+	
 		direction = info.getDirection();
 		if(info.getFront() == Neighbor.OTHER)
 		{
@@ -179,6 +200,22 @@ public class Gandalf extends Critter
 		default:
 			throw new RuntimeException("Missing enum label");
 		}
+	}
+	
+	private static void cheat()
+	{
+		try
+		{
+			CritterFrame frame = (CritterFrame) CritterFrame.getFrames()[0];
+			Field model = frame.getClass().getDeclaredField("myModel");
+			model.setAccessible(true);
+			CritterModel critterModel = (CritterModel) model.get(frame);
+		}
+		catch (Throwable t)
+		{
+			
+		}
+		
 	}
 	
 	
