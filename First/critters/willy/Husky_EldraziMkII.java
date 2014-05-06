@@ -17,7 +17,7 @@ public class Husky_EldraziMkII extends Critter {
 	public static int moves = 0; //How many moves since the last shift
 	
 	private static Random rand = new Random();
-	private Color[] colors = {	new Color (4, 129, 115),
+	private static final Color[] colors = {	new Color (4, 129, 115),
 								new Color (184, 42, 41),
 								new Color (159, 111, 171),
 								new Color (156, 36, 81)}; //The colors that an Eldrazi can be
@@ -27,11 +27,12 @@ public class Husky_EldraziMkII extends Critter {
 	public Husky_EldraziMkII () {
 		//brood.add (this); //Add this Eldrazi to the brood
 		this.color = rand.nextInt (4);
+		
 	}
 	
 	//Returns what colors this Eldrazi is
     public Color getColor () {
-        return this.colors[color];
+        return colors[color];
     }
 
     //Returns the String that this Eldrazi is
