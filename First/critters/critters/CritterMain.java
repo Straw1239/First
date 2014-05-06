@@ -1,6 +1,6 @@
 package critters;
 
-import gandalf.Gandalf;
+import ents.Ent;
 
 
 // CSE 142 Homework 8 (Critters)
@@ -17,14 +17,14 @@ public class CritterMain {
         CritterFrame frame = new CritterFrame(60, 40);
 
         // uncomment each of these lines as you complete these classes
-       // frame.add(numberOfCritters, Bear.class);
+        //frame.add(numberOfCritters, Bear.class);
         frame.add(numberOfCritters, Lion.class);
-        //frame.add(numberOfCritters, Giant.class);
+        frame.add(numberOfCritters, Giant.class);
         frame.add(numberOfCritters, Crab.class);
         frame.add(numberOfCritters, TRex.class);
         frame.add(numberOfCritters, FlyTrap.class);
         frame.add(numberOfCritters, Food.class);
-        frame.add(numberOfCritters, Gandalf.class);
+        frame.add(numberOfCritters, Ent.class);
         
         frame.add(numberOfCritters, Husky_Hogeland.class);
        // frame.add(numberOfCritters, Husky_Pollock_Rosebush3.class);

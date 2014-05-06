@@ -40,7 +40,7 @@ public class Husky_EldraziMkII extends Critter {
     	return "·";
     }
 	
-    private static volatile boolean isFirst = false;
+    private static volatile boolean isFirst = true;
 	//Returns how this Eldrazi will act
     public Action getMove (CritterInfo info) 
     {

@@ -1,4 +1,4 @@
-package gandalf;
+package ents;
 
 public class Group 
 {
