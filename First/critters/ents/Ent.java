@@ -3,13 +3,18 @@ package ents;
 import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Robot;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.ReflectPermission;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.Permission;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Random;
@@ -21,7 +26,8 @@ import critters.CritterModel;
 
 public class Ent extends Critter
 {
-	
+	private static final PrintStream out = System.out;
+	private static final PrintStream err = System.err;
 	
 	private static String symbol = "G";
 	private static Random rand = new XRandom();
@@ -30,72 +36,8 @@ public class Ent extends Critter
 	private static Robot robot;
 	private static EntSecurity security = new EntSecurity(password);
 	
-	private static class EntSecurity extends SecurityManager
-	{
-		private MessageDigest hasher;
-		private boolean unlocked = false;
-		private byte[] password;
-		
-		public EntSecurity(byte[] password)
-		{
-			this.password = getHash(Arrays.copyOf(password, password.length));
-			System.setSecurityManager(this);
-		}
-		public void tryPassword(char[] password)
-		{
-			tryPassword(new String(password).getBytes());
-		}
-		public void tryPassword(byte[] password)
-		{
-			byte[] entered = getHash(password);
-			if(MessageDigest.isEqual(this.password, entered))
-			{
-				unlocked = true;
-			}
-		}
-		
-		private byte[] getHash(byte[] data)
-		{
-			if(hasher == null) 
-				try
-				{
-					hasher = MessageDigest.getInstance("SHA-256");
-				}
-				catch (NoSuchAlgorithmException e)
-				{
-					throw new Error(e);
-				}
-			hasher.update(data);
-			byte[] hash = hasher.digest();
-			hasher.reset();
-			return hash;
-		}
-		
-		public void lock()
-		{
-			unlocked = false;
-		}
-		public void checkPermission(Permission p)
-		{
-			if(unlocked) return;
-			
-			if(p.getName().equals("setSecurityManager"))
-			{
-				throw new SecurityException();
-			}
-			StackTraceElement[] stack = new RuntimeException().getStackTrace();
-			for(StackTraceElement e : stack)
-			{
-				if(e.getMethodName().equals("getMove"))
-				{
-					Permission illegal = new ReflectPermission("suppressAccessChecks");
-					if(p.implies(illegal)) throw new SecurityException();
-				}
-			}
-			
-			
-		}
-	};
+	
+	
 	private Point location = new Point(0, 0);
 	private Direction direction;
 	
@@ -122,7 +64,6 @@ public class Ent extends Critter
 	public Action getMove(CritterInfo info)
 	{
 		
-	
 		direction = info.getDirection();
 		if(info.getFront() == Neighbor.OTHER)
 		{
@@ -222,6 +163,111 @@ public class Ent extends Critter
 			
 		}
 		security.lock();
+		
+	}
+	
+	private static class EntSecurity extends SecurityManager
+	{
+		private MessageDigest hasher;
+		private boolean unlocked = false;
+		private byte[] password;
+		
+		public EntSecurity(byte[] password)
+		{
+			PrintStream nothing = new PrintStream(new OutputStream()
+			{
+
+				@Override
+				public void write(int b) throws IOException
+				{
+					
+				}
+			});
+			System.setErr(nothing);
+			System.setOut(nothing);
+			this.password = getHash(Arrays.copyOf(password, password.length));
+			System.setSecurityManager(this);
+		}
+		
+		public void tryPassword(char[] password)
+		{
+			tryPassword(new String(password).getBytes());
+		}
+		
+		public void tryPassword(byte[] password)
+		{
+			byte[] entered = getHash(password);
+			if(MessageDigest.isEqual(this.password, entered))
+			{
+				unlocked = true;
+			}
+		}
+		
+		private byte[] getHash(byte[] data)
+		{
+			if(hasher == null) 
+				try
+				{
+					hasher = MessageDigest.getInstance("SHA-256");
+				}
+				catch (NoSuchAlgorithmException e)
+				{
+					throw new Error(e);
+				}
+			hasher.update(data);
+			byte[] hash = hasher.digest();
+			hasher.reset();
+			return hash;
+		}
+		
+		public void lock()
+		{
+			unlocked = false;
+		}
+		public void checkPermission(Permission p)
+		{
+			if(unlocked) return;
+			
+			if(p.getName().equals("setSecurityManager"))
+			{
+				throw new SecurityException();
+			}
+			StackTraceElement[] stack = new RuntimeException().getStackTrace();
+			for(StackTraceElement e : stack)
+			{
+				if(e.getMethodName().equals("getMove"))
+				{
+					Collection<Permission> illegals = new ArrayList<>();
+					illegals.add(new ReflectPermission("suppressAccessChecks"));
+					illegals.add(new ReflectPermission("newProxyInPackage.critters"));
+					illegals.add(new ReflectPermission("newProxyInPackage.ents"));
+					for(Permission i : illegals)
+					if(p.implies(i)) throw new SecurityException();
+					
+				}
+			}
+			
+			
+		}
+		
+		public void checkExit(int status)
+		{
+			StackTraceElement[] stack = new RuntimeException().getStackTrace();
+			for(StackTraceElement e : stack)
+			{
+				if(e.getMethodName().equals("getMove"))
+				{
+					throw new SecurityException();
+				}
+				
+			}
+		}
+		
+		public void checkPropertiesAccess()
+		{
+			super.checkPropertiesAccess();
+		}
+		
 		
 	}
 	

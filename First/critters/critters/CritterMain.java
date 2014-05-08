@@ -1,5 +1,7 @@
 package critters;
 
+import willy.EldraziSwarmIII;
+import willy.Husky_EldraziMkII;
 import ents.Ent;
 
 
@@ -13,21 +15,22 @@ import ents.Ent;
 
 public class CritterMain {
     public static void main(String[] args) {
-        final int numberOfCritters = 20;
+        final int numberOfCritters = 30;
         CritterFrame frame = new CritterFrame(60, 40);
 
         // uncomment each of these lines as you complete these classes
         //frame.add(numberOfCritters, Bear.class);
-        frame.add(numberOfCritters, Lion.class);
-        frame.add(numberOfCritters, Giant.class);
-        frame.add(numberOfCritters, Crab.class);
-        frame.add(numberOfCritters, TRex.class);
-        frame.add(numberOfCritters, FlyTrap.class);
-        frame.add(numberOfCritters, Food.class);
+        //frame.add(numberOfCritters, Lion.class);
+        //frame.add(numberOfCritters, Giant.class);
+        //frame.add(numberOfCritters, Crab.class);
+        //frame.add(numberOfCritters, TRex.class);
+        //frame.add(numberOfCritters, FlyTrap.class);
+        //frame.add(numberOfCritters, Food.class);
         frame.add(numberOfCritters, Ent.class);
-        
+        frame.add(numberOfCritters, EldraziSwarmIII.class);
+       // frame.add(numberOfCritters, Husky_EldraziMkII.class);
         frame.add(numberOfCritters, Husky_Hogeland.class);
-       // frame.add(numberOfCritters, Husky_Pollock_Rosebush3.class);
+        frame.add(numberOfCritters, Husky_Pollock_Rosebush3.class);
         /*
          * N.B. public static final boolean ENABLE_DASHBOARD = true;
          * This should be set to false in order to disable dashboard.
