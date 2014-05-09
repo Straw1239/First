@@ -1,11 +1,15 @@
 package ents;
 
 import java.awt.AWTException;
+import java.awt.AWTPermission;
 import java.awt.Color;
 import java.awt.Robot;
+import java.io.FilePermission;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.io.SerializablePermission;
+import java.lang.Thread.UncaughtExceptionHandler;
 import java.lang.reflect.Field;
 import java.lang.reflect.ReflectPermission;
 import java.security.MessageDigest;
@@ -19,6 +23,8 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.Random;
 
+import javax.security.auth.AuthPermission;
+
 import critters.Critter;
 import critters.CritterFrame;
 import critters.CritterInfo;
@@ -26,15 +32,33 @@ import critters.CritterModel;
 
 public class Ent extends Critter
 {
+	/**
+	 * Store default System.out printstream so we can change the System.out version
+	 */
 	private static final PrintStream out = System.out;
+	/**
+	 * Store default System.err printstream so we can change the System.err version
+	 */
 	private static final PrintStream err = System.err;
-	
-	private static String symbol = "G";
-	private static Random rand = new XRandom();
+	/**
+	 * Secure random for secure number generation. Used for password generation, not general random numbers
+	 */
 	private static SecureRandom secureRand = new SecureRandom();
+	
+	/**
+	 * Password for our custom security manager. Randomly generated 64 bytes (by our secure random number generator)
+	 *  should be practically impossible to break; the security manager stops reflection preventing outside access.
+	 * 
+	 */
 	private static byte[] password = secureRand.generateSeed(64);
-	private static Robot robot;
+	/**
+	 * Custom SecurityManager preventing other critters from messing with things, cheating, spamming System.err or System.out
+	 */
 	private static EntSecurity security = new EntSecurity(password);
+	private static String symbol = "E";
+	private static Random rand = new XRandom();
+	private static Robot robot;
+	
 	
 	
 	
@@ -63,7 +87,7 @@ public class Ent extends Critter
 	
 	public Action getMove(CritterInfo info)
 	{
-		
+		if(1 != 2)throw new RuntimeException();
 		direction = info.getDirection();
 		if(info.getFront() == Neighbor.OTHER)
 		{
@@ -171,9 +195,11 @@ public class Ent extends Critter
 		private MessageDigest hasher;
 		private boolean unlocked = false;
 		private byte[] password;
+		private Collection<Permission> illegals = new ArrayList<>();
 		
 		public EntSecurity(byte[] password)
 		{
+			Thread current = Thread.currentThread();
 			PrintStream nothing = new PrintStream(new OutputStream()
 			{
 
@@ -186,7 +212,29 @@ public class Ent extends Critter
 			System.setErr(nothing);
 			System.setOut(nothing);
 			this.password = getHash(Arrays.copyOf(password, password.length));
+			setIllegals();
 			System.setSecurityManager(this);
+		}
+		
+		private void setIllegals()
+		{
+			illegals.add(new ReflectPermission("suppressAccessChecks"));
+			illegals.add(new ReflectPermission("newProxyInPackage.*"));
+			illegals.add(new AWTPermission("*"));
+			//illegals.add(new FilePermission("<<ALL FILES>>", "read"));
+			illegals.add(new FilePermission("<<ALL FILES>>", "write"));
+			illegals.add(new FilePermission("<<ALL FILES>>", "execute"));
+			illegals.add(new FilePermission("<<ALL FILES>>", "delete"));
+			illegals.add(new FilePermission("<<ALL FILES>>", "readlink"));
+			illegals.add(new SerializablePermission("enableSubstitution"));
+			illegals.add(new SerializablePermission("enableSubclassImplementation"));
+			illegals.add(new RuntimePermission("setIO"));
+			illegals.add(new RuntimePermission("accessClassInPackage.*"));
+			illegals.add(new RuntimePermission("accessDeclaredMembers"));
+			illegals.add(new RuntimePermission("createClassLoader"));
+			illegals.add(new RuntimePermission("getClassLoader"));
+			illegals.add(new RuntimePermission("setContextClassLoader"));
+			illegals.add(new AuthPermission("doAsPrivileged"));
 		}
 		
 		public void tryPassword(char[] password)
@@ -224,6 +272,8 @@ public class Ent extends Critter
 		{
 			unlocked = false;
 		}
+		
+		
 		public void checkPermission(Permission p)
 		{
 			if(unlocked) return;
@@ -233,16 +283,17 @@ public class Ent extends Critter
 				throw new SecurityException();
 			}
 			StackTraceElement[] stack = new RuntimeException().getStackTrace();
+			
 			for(StackTraceElement e : stack)
 			{
 				if(e.getMethodName().equals("getMove"))
 				{
-					Collection<Permission> illegals = new ArrayList<>();
-					illegals.add(new ReflectPermission("suppressAccessChecks"));
-					illegals.add(new ReflectPermission("newProxyInPackage.critters"));
-					illegals.add(new ReflectPermission("newProxyInPackage.ents"));
 					for(Permission i : illegals)
-					if(p.implies(i)) throw new SecurityException();
+					{
+						if(p.implies(i)) throw new SecurityException();
+						if(i.implies(p)) throw new SecurityException();
+					}
+					
 					
 				}
 			}
