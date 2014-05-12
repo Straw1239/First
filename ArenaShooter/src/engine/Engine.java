@@ -297,7 +297,7 @@ public final class Engine
 	{
 		double x = MainGame.rand.nextDouble() * width;
 		double y = MainGame.rand.nextDouble() * height;
-		entities.put(Faction.Enemy,(new MovingEnemy(x, y));
+		entities.put(Faction.Enemy,(new MovingEnemy(x, y)));
 	}
 	
 	/**
