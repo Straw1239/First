@@ -6,8 +6,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import objects.events.Explosion;
 import objects.events.GameEvent;
+import player.Player;
 import utils.Utils;
-import fxcore.Display;
+import engine.State;
 import fxcore.MainGame;
 
 /**
@@ -24,9 +25,26 @@ public class Bullet extends GameObject implements BulletDataHolder
 	
 	private double dx,dy;
 	private long startTime;
-	private double radius;
 	private boolean isDead = false;
+	private Circle bounds;
 	
+	private void setRadius(double radius)
+	{
+		bounds = new Circle(radius)
+		{
+			@Override
+			public double centerX()
+			{
+				return x;
+			}
+
+			@Override
+			public double centerY()
+			{
+				return y;
+			}
+		};
+	}
 	
 	private Bullet(double x, double y)
 	{
@@ -45,7 +63,7 @@ public class Bullet extends GameObject implements BulletDataHolder
 		this(x,y);
 		this.dx = dx;
 		this.dy = dy;
-		this.radius = radius;
+		setRadius(radius);
 		this.color = color;
 	}
 	
@@ -70,7 +88,7 @@ public class Bullet extends GameObject implements BulletDataHolder
 		double distance = Utils.distance(source,target);
 		dx = speed * (target.getX() - x) / distance;
 		dy = speed * (target.getY() - y) / distance;
-		this.radius = radius;
+		setRadius(radius);
 		this.color = color;
 	}
 	
@@ -79,17 +97,14 @@ public class Bullet extends GameObject implements BulletDataHolder
 		this(source);
 		dx = Math.cos(angle) * speed;
 		dy = Math.sin(angle) * speed;
-		this.radius = radius;
+		setRadius(radius);
 		this.color = color;
 	}
 	
-	public boolean hasHitWall(double width, double height)
-	{
-		return (x + radius >= width || x - radius <= 0 || y + radius >= height || y - radius  <= 0);
-	}
+	
 	
 	@Override
-	public void update(Display d) 
+	public void update(State d) 
 	{
 		x += dx;
 		y += dy;
@@ -98,13 +113,13 @@ public class Bullet extends GameObject implements BulletDataHolder
 	@Override
 	public boolean collidesWith(GameObject entity) 
 	{
-		return entity.collidesWithBullet(this);
+		return bounds.intersects(entity.bounds());
 	}
 
 	@Override
 	public double getRadius() 
 	{
-		return radius;
+		return bounds.radius();
 	}
 
 	@Override
@@ -113,10 +128,14 @@ public class Bullet extends GameObject implements BulletDataHolder
 		return color;
 	}
 
+	
+
 	@Override
-	public int hashCode() {
+	public int hashCode()
+	{
 		final int prime = 31;
 		int result = super.hashCode();
+		result = prime * result + ((bounds == null) ? 0 : bounds.hashCode());
 		result = prime * result + ((color == null) ? 0 : color.hashCode());
 		long temp;
 		temp = Double.doubleToLongBits(damage);
@@ -125,70 +144,39 @@ public class Bullet extends GameObject implements BulletDataHolder
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		temp = Double.doubleToLongBits(dy);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(radius);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + (isDead ? 1231 : 1237);
 		result = prime * result + (int) (startTime ^ (startTime >>> 32));
 		return result;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (!super.equals(obj)) {
-			return false;
-		}
-		if (!(obj instanceof Bullet)) {
-			return false;
-		}
+	public boolean equals(Object obj)
+	{
+		if (this == obj) return true;
+		if (!super.equals(obj)) return false;
+		if (getClass() != obj.getClass()) return false;
 		Bullet other = (Bullet) obj;
-		if (color == null) {
-			if (other.color != null) {
-				return false;
-			}
-		} else if (!color.equals(other.color)) {
-			return false;
+		if (bounds == null)
+		{
+			if (other.bounds != null) return false;
 		}
+		else if (!bounds.equals(other.bounds)) return false;
+		if (color == null)
+		{
+			if (other.color != null) return false;
+		}
+		else if (!color.equals(other.color)) return false;
 		if (Double.doubleToLongBits(damage) != Double
-				.doubleToLongBits(other.damage)) {
+				.doubleToLongBits(other.damage)) return false;
+		if (Double.doubleToLongBits(dx) != Double.doubleToLongBits(other.dx))
 			return false;
-		}
-		if (Double.doubleToLongBits(dx) != Double.doubleToLongBits(other.dx)) {
+		if (Double.doubleToLongBits(dy) != Double.doubleToLongBits(other.dy))
 			return false;
-		}
-		if (Double.doubleToLongBits(dy) != Double.doubleToLongBits(other.dy)) {
-			return false;
-		}
-		if (Double.doubleToLongBits(radius) != Double
-				.doubleToLongBits(other.radius)) {
-			return false;
-		}
-		if (startTime != other.startTime) {
-			return false;
-		}
+		if (isDead != other.isDead) return false;
+		if (startTime != other.startTime) return false;
 		return true;
 	}
 
-	@Override
-	public boolean collidesWithPlayer(Player p) 
-	{
-		return p.collidesWithBullet(this);
-	}
-
-	@Override
-	public boolean collidesWithBullet(Bullet b) 
-	{
-		// Should Bullets collide? for now, no.
-		return false;
-	}
-
-	@Override
-	public boolean collidesWithEnemy(Enemy e) 
-	{
-		return e.collidesWithBullet(this);
-	}
-	
 	public boolean isDead()
 	{
 		return isDead;
@@ -214,7 +202,13 @@ public class Bullet extends GameObject implements BulletDataHolder
 	public void draw(GraphicsContext g)
 	{
 		g.setFill(color);
-		g.fillOval(x - radius, y - radius, 2 * radius, 2 * radius);
+		g.fillOval(x - bounds.radius(), y - bounds.radius(), 2 * bounds.radius(), 2 * bounds.radius());
+	}
+
+	@Override
+	public Bounds bounds()
+	{
+		return bounds ;
 	}
 	
 	

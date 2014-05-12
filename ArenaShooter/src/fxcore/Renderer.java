@@ -4,15 +4,11 @@ import java.util.Iterator;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.effect.Effect;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.effect.*;
 import objects.BulletDataHolder;
-import objects.EnemyDataHolder;
-import objects.Player;
-import objects.PlayerDataHolder;
+import objects.EntityDataHolder;
 import objects.events.EventDataHolder;
+import engine.State;
 
 public class Renderer 
 {
@@ -29,21 +25,22 @@ public class Renderer
 		this.height = height;
 	}
 	
-	public void render(Display d)
+	public void render(State d)
 	{
 		g.save();
+	//	g.setGlobalAlpha(.5);
 		g.setFill(Color.BLACK);
 		g.fillRect(0, 0, width, height);
 		scaleGraphics(d);
 		drawEvents(d);
 		drawBullets(d);
 		drawPlayer(d);
-		drawEnemies(d);
+		drawEntities(d);
 		d.mouse.draw(g);
 		g.restore();
 	}
 	
-	private void drawBullets(Display d)
+	private void drawBullets(State d)
 	{
 		g.save();
 		Iterator<? extends BulletDataHolder> it = d.bullets.iterator();
@@ -58,26 +55,26 @@ public class Renderer
 		
 	}
 
-	private void drawPlayer(Display d)
+	private void drawPlayer(State d)
 	{
 		d.player.draw(g);
 	}
 	
-	private void scaleGraphics(Display d)
+	private void scaleGraphics(State d)
 	{
 		g.scale(width / d.width, height / d.height);
 	}
 	
-	private void drawEnemies(Display d)
+	private void drawEntities(State d)
 	{
-		Iterator<? extends EnemyDataHolder> it = d.enemies.iterator();
+		Iterator<? extends EntityDataHolder> it = d.entities.iterator();
 		while(it.hasNext())
 		{
 			it.next().draw(g);
 		}
 	}
 	
-	private void drawEvents(Display d)
+	private void drawEvents(State d)
 	{
 		Iterator<? extends EventDataHolder> it = d.events.iterator();
 		while(it.hasNext())

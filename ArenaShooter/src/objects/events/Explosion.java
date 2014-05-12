@@ -12,7 +12,7 @@ import objects.Bullet;
 import objects.Enemy;
 import objects.Faction;
 import objects.ObjectDataHolder;
-import objects.Player;
+import player.Player;
 import utils.Utils;
 
 import com.google.common.collect.Multimap;

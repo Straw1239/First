@@ -2,9 +2,10 @@ package objects;
 
 
 
+import player.Player;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import fxcore.Display;
+import engine.State;
 
 public class Cursor extends GameObject
 {
@@ -17,7 +18,7 @@ public class Cursor extends GameObject
 	}
 
 	@Override
-	public void update(Display d)
+	public void update(State d)
 	{
 		
 	}
@@ -28,24 +29,6 @@ public class Cursor extends GameObject
 		return false;
 	}
 
-	@Override
-	public boolean collidesWithPlayer(Player p)
-	{
-		return false;
-	}
-
-	@Override
-	public boolean collidesWithBullet(Bullet b)
-	{
-		return false;
-	}
-
-	@Override
-	public boolean collidesWithEnemy(Enemy e)
-	{
-		return false;
-	}
-	
 	public void draw(GraphicsContext g)
 	{
 		g.setStroke(color);
@@ -54,6 +37,12 @@ public class Cursor extends GameObject
 		g.setStroke(Color.WHITE);
 		double radius = this.radius - 5;
 		g.strokeOval(x - radius, y - radius, 2 * radius, 2 * radius);
+	}
+
+	@Override
+	public Bounds bounds()
+	{
+		return Bounds.NONE;
 	}
 	
 

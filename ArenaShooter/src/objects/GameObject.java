@@ -1,8 +1,9 @@
 package objects;
 
 import objects.events.GameEvent;
+import player.Player;
 import utils.Utils;
-import fxcore.Display;
+import engine.State;
 /**
  * Base object of the object hierarchy.
  * Each game object has an x, y, and Faction.
@@ -27,22 +28,18 @@ public abstract class GameObject implements ObjectDataHolder
 		this.faction = faction;
 	}
 	
-	public abstract void update(Display d);
+	public abstract void update(State d);
 	
 	public abstract boolean collidesWith(GameObject entity);
 	
-	public abstract boolean collidesWithPlayer(Player p);
+	public abstract Bounds bounds();
 	
-	public abstract boolean collidesWithBullet(Bullet b);
-	
-	public abstract boolean collidesWithEnemy(Enemy e);
-	
-	public GameEvent event(Display d)
+	public GameEvent event(State d)
 	{
 		return null;
 	}
 	
-	public GameEvent onDeath(Display d)
+	public GameEvent onDeath(State d)
 	{
 		return onDeath();
 	}

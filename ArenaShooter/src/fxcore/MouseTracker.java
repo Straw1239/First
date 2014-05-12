@@ -16,7 +16,7 @@ public class MouseTracker implements EventHandler<MouseEvent>
 {
 	private volatile boolean[] clicked = new boolean[MouseButton.values().length];
 	private transient volatile long[] timeClicked = new long[MouseButton.values().length];
-	private volatile double x, y;
+	private volatile double x, y, sx = 1, sy = 1;
 	@Override
 	public void handle(MouseEvent event)
 	{
@@ -35,12 +35,22 @@ public class MouseTracker implements EventHandler<MouseEvent>
 	
 	public double x()
 	{
-		return x;
+		return x * sx;
+	}
+	
+	public void setScaleX(double scale)
+	{
+		sx = scale;
+	}
+	
+	public void setScaleY(double scale)
+	{
+		sy = scale;
 	}
 	
 	public double y()
 	{
-		return y;
+		return y * sy;
 	}
 	
 	public boolean isPressed(MouseButton button)

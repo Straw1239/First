@@ -7,11 +7,11 @@ import java.util.Collection;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import objects.events.GameEvent;
-import utils.Utils;
+import player.Player;
 
 import com.google.common.collect.Multimap;
 
-import fxcore.Display;
+import engine.State;
 import fxcore.MainGame;
 
 
@@ -23,6 +23,20 @@ public class BasicEnemy extends Enemy
 	public static final long fireTime = 35;
 	
 	private long shotTime = MainGame.getTime();
+	private Bounds bounds = new Circle(radius)
+	{
+		@Override
+		public double centerX()
+		{
+			return x;
+		}
+
+		@Override
+		public double centerY()
+		{
+			return y;
+		}
+	};
 	
 	public BasicEnemy(double x, double y) 
 	{
@@ -32,7 +46,7 @@ public class BasicEnemy extends Enemy
 	}
 
 	@Override
-	public void update(Display d) 
+	public void update(State d) 
 	{	
 		
 	}
@@ -40,27 +54,8 @@ public class BasicEnemy extends Enemy
 	@Override
 	public boolean collidesWith(GameObject entity) 
 	{
-		return entity.collidesWithEnemy(this);
-	}
-
-	@Override
-	public boolean collidesWithPlayer(Player p) 
-	{
-		return Utils.circleCollide(this, p, radius + Player.radius);
-	}
-
-	@Override
-	public boolean collidesWithBullet(Bullet b) 
-	{
-		if(faction == b.faction) return false;
-		return Utils.circleCollide(this, b, radius + b.getRadius());
-	}
-
-	@Override
-	public boolean collidesWithEnemy(Enemy e) 
-	{
-		//Should enemies collide? for now, no.
-		return false;
+		assert(entity != null);
+		return entity.bounds().intersects(bounds());
 	}
 
 	@Override
@@ -84,7 +79,7 @@ public class BasicEnemy extends Enemy
 
 	
 	
-	public GameEvent event(Display d)
+	public GameEvent event(State d)
 	{
 		if(MainGame.getTime() < shotTime + fireTime) return null;
 		if(d.player.isDead()) return null;
@@ -112,9 +107,14 @@ public class BasicEnemy extends Enemy
 			{
 				return hasExpired;
 			}
-			
 		};
 		
+	}
+
+	@Override
+	public Bounds bounds()
+	{
+		return bounds;
 	}
 
 }

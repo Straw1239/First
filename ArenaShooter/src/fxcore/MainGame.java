@@ -5,6 +5,7 @@ import java.awt.GraphicsEnvironment;
 import java.util.Calendar;
 import java.util.Random;
 
+import engine.Engine;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -16,8 +17,9 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import objects.Player;
+import player.Player;
 import utils.XRandom;
 
 public class MainGame extends Application
@@ -88,6 +90,7 @@ public class MainGame extends Application
 		});
 		stage.addEventFilter(KeyEvent.ANY, keyTracker);
 		stage.addEventFilter(MouseEvent.ANY, mouse);
+		
 		stage.setFullScreenExitHint("");
 		stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
 		stage.setFullScreen(true);
@@ -165,7 +168,7 @@ public class MainGame extends Application
 			@Override
 			public void handle(long now)
 			{
-				renderer.render(engine.getDisplay());
+				renderer.render(engine.getState());
 			}
 			
 		}.start();

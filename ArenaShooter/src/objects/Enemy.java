@@ -1,5 +1,6 @@
 package objects;
 
+import player.Player;
 import javafx.scene.canvas.GraphicsContext;
 
 
@@ -12,13 +13,5 @@ public abstract class Enemy extends Entity implements EnemyDataHolder
 	}
 	
 	public abstract void collideWithPlayer(Player p);
-	
-	public abstract void draw(GraphicsContext g);
-	
-	
-		
-	
-	
-	
 	
 }

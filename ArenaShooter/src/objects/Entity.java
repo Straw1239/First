@@ -14,6 +14,8 @@ public abstract class Entity extends GameObject implements EntityDataHolder
 	
 	public abstract void hitByBullet(Bullet b);
 	
+	public abstract void collideWith(Entity e);
+	
 	protected double health;
 	protected double maxHealth;
 	
