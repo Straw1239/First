@@ -12,6 +12,6 @@ public abstract class Enemy extends Entity implements EnemyDataHolder
 		faction = Faction.Enemy;
 	}
 	
-	public abstract void collideWithPlayer(Player p);
+	
 	
 }

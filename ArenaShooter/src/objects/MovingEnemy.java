@@ -39,7 +39,7 @@ public class MovingEnemy extends Enemy
 	}
 
 	@Override
-	public void collideWithPlayer(Player p) 
+	public void collideWith(Entity p) 
 	{
 		p.damage(contactDamage);
 	}

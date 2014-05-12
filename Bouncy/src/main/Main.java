@@ -46,11 +46,11 @@ public class Main extends Application
 		stage.setScene(new Scene(pane));
 		simulation = new BallSimulator(1000,1000);
 		
-		for(int i = 0; i < 8192; i++)
+		for(int i = 0; i < 200; i++)
 		{
 			Vector v = new Vector(rand.nextDouble() - .5, rand.nextDouble() - .5).normalized().scale(250);
 			Color c = new Color(rand.nextDouble(), rand.nextDouble(), rand.nextDouble(), rand.nextDouble());
-			simulation.addBall(new Ball(simulation.dimensions.scale(.5), v, 20, c));
+			simulation.addBall(new Ball(simulation.dimensions.scale(.5), v, 10, c));
 		}
 		stage.show();
 		runEngine();
@@ -66,7 +66,7 @@ public class Main extends Application
 			while(true)
 			{
 				long time = System.nanoTime();
-				simulation.update((time - lastTime) / 1_000_000_000.0);
+				simulation.update(.0005);
 				lastTime = time;
 			}	
 		}).start();

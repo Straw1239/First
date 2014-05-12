@@ -163,5 +163,11 @@ public class Player extends Entity implements PlayerDataHolder
 	public Bounds bounds()
 	{
 		return bounds;
+	}
+
+	@Override
+	public void collideWith(Entity e) 
+	{
+		//Do nothing for now, damage will be handled by enemy's collide function
 	}	
 }

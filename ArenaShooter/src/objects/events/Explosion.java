@@ -2,21 +2,15 @@ package objects.events;
 
 
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import objects.Bullet;
-import objects.Enemy;
+import objects.Circle;
+import objects.Entity;
 import objects.Faction;
 import objects.ObjectDataHolder;
-import player.Player;
-import utils.Utils;
-
-import com.google.common.collect.Multimap;
-
+import engine.EventHandler;
 import fxcore.MainGame;
 
 /**
@@ -31,6 +25,22 @@ public class Explosion extends GameEvent implements ObjectDataHolder
 	
 	private double radius, damage;
 	private Color color = Color.RED;
+	private Circle bounds = new Circle(radius)
+	{
+
+		@Override
+		public double centerX() 
+		{
+			return x;
+		}
+
+		@Override
+		public double centerY() 
+		{
+			return y;
+		}
+		
+	};
 	
 	public Explosion(double x, double y, Faction faction, double radius, double damage)
 	{
@@ -51,47 +61,7 @@ public class Explosion extends GameEvent implements ObjectDataHolder
 		color = c;
 	}
 
-	@Override
-	public void playerEffects(Player p)
-	{
-		if(faction != Faction.Player)
-		if(MainGame.getTime() - startTime() <= 0)
-		if(Utils.circleCollide(this, p, radius + Player.radius))
-		{
-			p.damage(damage);
-		}
-	}
-
-	@Override
-	public void bulletEffects(Multimap<Faction, Bullet> bullets)
-	{
-		//Currently explosions do not affect bullets
-	}
-
-	@Override
-	public void enemyEffects(Collection<Enemy> enemies)
-	{
-		if(faction != Faction.Enemy)
-		if(MainGame.getTime() - startTime() <= 0)
-		{
-			Iterator<? extends Enemy> it = enemies.iterator();
-			while(it.hasNext())
-			{
-				Enemy e = it.next();
-				if(Utils.circleCollide(this, e, radius + Player.radius))
-				{
-					e.damage(damage);
-				}	
-			}
-		}
-	}
-
-	@Override
-	public Collection<GameEvent> eventEffects(Collection<GameEvent> events)
-	{
-		return new ArrayList<>(0);
-
-	}
+	
 
 	@Override
 	public void draw(GraphicsContext g)
@@ -109,4 +79,21 @@ public class Explosion extends GameEvent implements ObjectDataHolder
 		return (MainGame.getTime() - startTime()) > DURATION;
 	}
 
+	@Override
+	public void effects(EventHandler handler) 
+	{
+		Collection<? extends Entity> entities = handler.entities();
+		for(Entity e : entities)
+		{
+			if(e.getFaction() != faction)
+			{
+				if(e.bounds().intersects(bounds))
+				{
+					e.damage(damage);
+				}
+			}
+		}
+	}
+
+	
 }

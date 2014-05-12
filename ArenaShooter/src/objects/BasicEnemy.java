@@ -11,6 +11,7 @@ import player.Player;
 
 import com.google.common.collect.Multimap;
 
+import engine.EventHandler;
 import engine.State;
 import fxcore.MainGame;
 
@@ -64,12 +65,6 @@ public class BasicEnemy extends Enemy
 		//damage(b.damage);
 	}
 	
-	public void collideWithPlayer(Player p)
-	{
-		damage(contactDamage * 2);
-		p.damage(contactDamage);
-	}
-
 	@Override
 	public void draw(GraphicsContext g) 
 	{
@@ -88,25 +83,22 @@ public class BasicEnemy extends Enemy
 		{
 			boolean hasExpired = false;
 			@Override
-			public void playerEffects(Player p){}
-
-			@Override
-			public void bulletEffects(Multimap<Faction, Bullet> bullets)
-			{
-				bullets.put(faction, new Bullet(this, d.player, 5, 5, Color.GREEN));
-				hasExpired = true;
-			}
-
-			public void enemyEffects(Collection<Enemy> enemies){}
-		
-			public Collection<GameEvent> eventEffects(Collection<GameEvent> events){return new ArrayList<>(0);}
-
+			
 			public void draw(GraphicsContext g){}
 			
 			public boolean hasExpired()
 			{
 				return hasExpired;
 			}
+
+			@Override
+			public void effects(EventHandler handler) {
+				handler.add( new Bullet(this, d.player, 5, 5, Color.GREEN));
+				hasExpired = true;
+				
+			}
+
+			
 		};
 		
 	}
@@ -115,6 +107,13 @@ public class BasicEnemy extends Enemy
 	public Bounds bounds()
 	{
 		return bounds;
+	}
+
+	@Override
+	public void collideWith(Entity e) 
+	{
+		damage(contactDamage * 2);
+		e.damage(contactDamage);
 	}
 
 }

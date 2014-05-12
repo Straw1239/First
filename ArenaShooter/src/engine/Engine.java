@@ -2,9 +2,11 @@ package engine;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import objects.BasicEnemy;
 import objects.Bullet;
@@ -12,12 +14,15 @@ import objects.Cursor;
 import objects.Enemy;
 import objects.Entity;
 import objects.Faction;
+import objects.GameObject;
 import objects.MovingEnemy;
 import objects.Rectangle;
 import objects.events.GameEvent;
 import player.Player;
+import utils.Concatenator;
 import utils.Utils;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Multimap;
 
@@ -55,6 +60,7 @@ public final class Engine
 	private volatile Player.Action playerAction;
 	private Multimap<Faction, Entity> entities = LinkedListMultimap.create();
 	private List<GameEvent> events = new LinkedList<>();
+	private EventHandler handler = new Handler();
 	
 	/**
 	 * Map from Faction to all bullets of that Faction, for optimization.
@@ -86,6 +92,7 @@ public final class Engine
 		this.height = height;
 		player = new Player(width / 2, height / 2);
 		bounds = Rectangle.of(0, 0, width, height);
+		entities.put(Faction.Player, player);
 		view = new State(player, entities.values(), bullets.values(), events, cursor, width, height, updates);
 	}
 	
@@ -194,7 +201,7 @@ public final class Engine
 			}
 			else
 			{
-				newEvents.addAll(e.effects(player, bullets, enemies, events));
+				e.effects(handler);
 			}
 		}
 		events.addAll(newEvents);
@@ -358,10 +365,91 @@ public final class Engine
 	}
 	
 	
-	
-	
-	
-	
-	
-	
+	private class Handler implements EventHandler
+	{
+
+		@Override
+		public Collection<? extends GameObject> getAll() 
+		{
+			return new Concatenator<GameObject>(Collections.singleton(player), Collections.singleton(cursor), entities.values(), bullets.values())
+			{
+
+				@Override
+				public boolean add(GameObject arg0) 
+				{
+					add(arg0);
+					return true;
+				}
+
+				@Override
+				public boolean addAll(Collection<? extends GameObject> arg0) 
+				{
+					addAll(arg0);
+					return true;
+				}
+			};
+		}
+
+		@Override
+		public Collection<? extends GameEvent> getAllEvents() 
+		{
+			return events;
+		}
+
+		@Override
+		public void add(GameObject obj) 
+		{
+			if(obj instanceof Bullet) bullets.put(obj.getFaction(), (Bullet)obj);
+			else if(obj instanceof Player) throw new IllegalArgumentException();
+			else if(obj instanceof Entity) entities.put(obj.getFaction(), (Entity) obj);
+		}
+
+		@Override
+		public void addEvent(GameEvent e) 
+		{
+			events.add(e);
+		}
+
+		@Override
+		public Collection<? extends GameObject> objectsOfFaction(Faction f) 
+		{
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public Collection<? extends GameEvent> eventsOfFaction(Faction f) 
+		{
+			return Collections.unmodifiableCollection(events.stream().filter(e -> e.getFaction() == f).collect(Collectors.toList()));
+		}
+
+		@Override
+		public Player getPlayer() 
+		{
+			return player;
+		}
+
+		@Override
+		public Collection<? extends Entity> entitiesOfFaction(Faction f) 
+		{
+			return entities.get(f);
+		}
+
+		@Override
+		public Collection<? extends Entity> entities() 
+		{
+			return entities.values();
+		}
+
+		@Override
+		public Collection<? extends Bullet> bullets()
+		{
+			return bullets.values();
+		}
+
+		@Override
+		public Collection<? extends Bullet> bulletsOfFaction(Faction f) {
+			
+			return bullets.get(f);
+		}
+	}	
 }

@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import objects.Bullet;
 import objects.Enemy;
+import objects.Entity;
 import objects.Faction;
 import objects.ObjectDataHolder;
 import player.Player;
@@ -35,20 +36,6 @@ public abstract class GameEvent implements EventDataHolder
 	protected GameEvent(ObjectDataHolder source)
 	{
 		this(source.getX(), source.getY(), source.getFaction());
-	}
-	/**
-	 * Applies all effects this GameEvent has on internal engine objects.
-	 * @param p
-	 * @param bullets
-	 * @param enemies
-	 * @param events
-	 */
-	public Collection<GameEvent> effects(Player p, Multimap<Faction, Bullet> bullets, Collection<Enemy> enemies, Collection<GameEvent> events)
-	{
-		playerEffects(p);
-		bulletEffects(bullets);
-		enemyEffects(enemies);
-		return eventEffects(events);
 	}
 	
 	public double getX()
