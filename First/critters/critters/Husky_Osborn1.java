@@ -3,7 +3,6 @@ package critters;
 
 
 import java.awt.Color;
-import java.util.Random;
 
 
 public class Husky_Osborn1 extends Critter {
@@ -16,6 +15,7 @@ public class Husky_Osborn1 extends Critter {
 		this.updated = false;
 	}
 	
+	@Override
 	public Action getMove(CritterInfo info) {
 		this.step++;
 		if (info.getFront() == Neighbor.OTHER) {
@@ -75,10 +75,12 @@ public class Husky_Osborn1 extends Critter {
 	        } return Action.INFECT;
     }
 	
+	@Override
 	public Color getColor() {
 		return Color.ORANGE;
 	}
 	
+	@Override
 	public String toString() {
 		String spaces = "";
 		for (int i = 1; i <= this.step; i++) {

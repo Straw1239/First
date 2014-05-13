@@ -14,7 +14,8 @@ public class Crab extends Critter {
         r = new Random();
     }
         
-    public Action getMove(CritterInfo info) {
+    @Override
+	public Action getMove(CritterInfo info) {
         if (info.getFront() == Neighbor.OTHER) {
             return Action.INFECT;
         } else { // randomly pick one of the other three
@@ -29,11 +30,13 @@ public class Crab extends Critter {
         }
     }
 
-    public Color getColor() {
+    @Override
+	public Color getColor() {
         return Color.MAGENTA;
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
         return "<X>";
     }
 }

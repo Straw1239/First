@@ -20,7 +20,8 @@ public class Husky_Pollock_Rosebush3 extends Critter {
 	public Husky_Pollock_Rosebush3(){
 	}
 	
-    public Action getMove(CritterInfo info) {
+    @Override
+	public Action getMove(CritterInfo info) {
     	groupTimer++;
     	getChar(info);
     	getColor(info);
@@ -72,11 +73,13 @@ public class Husky_Pollock_Rosebush3 extends Critter {
     			 
     }
 
-    public Color getColor() {
+    @Override
+	public Color getColor() {
         return hue;
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
     	return character;
     }
     

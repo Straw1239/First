@@ -12,18 +12,21 @@ public class Bear extends Critter {
 		this.polar = polar;
 	}
 		
+	@Override
 	public Color getColor() {
 		if(this.polar)
 			return Color.WHITE;
 		return Color.BLACK;
 	}
 	
+	@Override
 	public String toString() {
 		if(numberOfMoves % 2 == 0)
 			return "\\";
 		return "/";
 	}
 	
+	@Override
 	public Action getMove(CritterInfo info) {
 		numberOfMoves++;
 		

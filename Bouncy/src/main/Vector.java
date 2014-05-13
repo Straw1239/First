@@ -1,6 +1,9 @@
 package main;
 
-public class Vector {
+import static java.lang.Math.*;
+
+public class Vector 
+{
 	public final double x, y;
 	
 	public Vector(double x, double y)
@@ -21,7 +24,7 @@ public class Vector {
 	
 	public double getLength()
 	{
-		return Math.sqrt(x * x + y * y);
+		return sqrt(x * x + y * y);
 	}
 	
 	public double lengthSquared()
@@ -64,9 +67,18 @@ public class Vector {
 		return "(" + x + ", " + y + ")";
 	}
 	
+	public static final Vector ZERO = new Vector(0, 0);
+	
 	public static double dotProduct(Vector vec1, Vector vec2)
 	{
 		return vec1.x * vec2.x + vec1.y * vec2.y;
 	}
+	
+	public static Vector fromPolar(double radius, double radians)
+	{
+		return new Vector(cos(radians) * radius, sin(radians) * radius);
+	}
+	
+	
 
 }

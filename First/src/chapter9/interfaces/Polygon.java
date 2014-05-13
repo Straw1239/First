@@ -43,6 +43,7 @@ public abstract class Polygon implements Shape
 		return true;
 	}
 
+	@Override
 	public double perimeter()
 	{
 		return numSides * sideLength;

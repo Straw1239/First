@@ -9,7 +9,6 @@ package critters;
 import javax.swing.*;
 import java.awt.Point;
 import java.awt.*;
-import java.awt.event.*;
 import java.util.*;
 
 public class CritterPanel extends JPanel {
@@ -35,7 +34,8 @@ public class CritterPanel extends JPanel {
                                        FONT_SIZE * model.getHeight() + 20));
     }
 
-    public void paintComponent(Graphics g) {
+    @Override
+	public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.setFont(myFont);
         Iterator<Critter> i = myModel.iterator();

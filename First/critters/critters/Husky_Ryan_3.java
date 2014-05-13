@@ -11,15 +11,18 @@ public class Husky_Ryan_3 extends Critter
 	{
 		buddy = false;
 	}
+	@Override
 	public Color getColor()
 	{
 		return new Color(255, 0, 255);
 	}
+	@Override
 	public String toString()
 	{
 		if(buddy == true) return ":D";
 		else return "D:";
 	}
+	@Override
 	public Action getMove(CritterInfo info)
 	{
 		buddySystem(info);

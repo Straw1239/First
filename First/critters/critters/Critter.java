@@ -54,13 +54,15 @@ public class Critter {
     }
 
     // This method should be overriden (default display is "?")
-    public String toString() {
+    @Override
+	public String toString() {
         return "?";
     }
 
     // This prevents critters from trying to redefine the definition of
     // object equality, which is important for the simulator to work properly.
-    public final boolean equals(Object other) {
+    @Override
+	public final boolean equals(Object other) {
         return this == other;
     }
 }

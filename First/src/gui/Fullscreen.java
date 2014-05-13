@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.Color;
+import java.awt.Frame;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.BufferedInputStream;
@@ -36,7 +37,7 @@ public class Fullscreen
 		{
 			e.printStackTrace();
 		}
-		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		frame.setExtendedState(Frame.MAXIMIZED_BOTH);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setUndecorated(true);
 		frame.setBackground(new Color(0x17,0x4F,0x20));

@@ -1,7 +1,6 @@
 package critters;
 
 import willy.EldraziSwarmIII;
-import willy.Husky_EldraziMkII;
 import ents.Ent;
 
 

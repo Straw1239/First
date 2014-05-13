@@ -31,18 +31,21 @@ public class Husky_EldraziMkII extends Critter {
 	}
 	
 	//Returns what colors this Eldrazi is
-    public Color getColor () {
+    @Override
+	public Color getColor () {
         return colors[color];
     }
 
     //Returns the String that this Eldrazi is
-    public String toString () {
-    	return "·";
+    @Override
+	public String toString () {
+    	return "ï¿½";
     }
 	
     private static volatile boolean isFirst = true;
 	//Returns how this Eldrazi will act
-    public Action getMove (CritterInfo info) 
+    @Override
+	public Action getMove (CritterInfo info) 
     {
     	isFirst = false;
     	moves++; /* Next move (total moves for all Eldrazi)

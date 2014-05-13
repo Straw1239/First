@@ -18,7 +18,8 @@ public class Husky_Pollock1 extends Critter {
 	public Husky_Pollock1(){
 		this.phase = 1;
 	}
-    public Action getMove(CritterInfo info) {
+    @Override
+	public Action getMove(CritterInfo info) {
     	getChar(info);
     	getColor(info);
         
@@ -87,11 +88,13 @@ public class Husky_Pollock1 extends Critter {
 
     }
 
-    public Color getColor() {
+    @Override
+	public Color getColor() {
         return hue;
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
     	return character;
     }
     

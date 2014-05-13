@@ -7,12 +7,15 @@ public class Husky_Saritha extends Critter{
 	public Husky_Saritha(){
 		
 	}
+	@Override
 	public Color getColor(){
 		return Color.YELLOW;
 	}
+	@Override
 	public String toString(){
 		return "H";
 	}
+	@Override
 	public Action getMove(CritterInfo info){
 		if(info.getFront()==(Neighbor.OTHER)){
 			return Action.INFECT;

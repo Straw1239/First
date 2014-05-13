@@ -19,6 +19,7 @@ public class PiTrap_AidanCarrollHusky extends Critter {
 		dir = 0;
 	}
 
+	@Override
 	public Action getMove(CritterInfo info) {
 		count++;
 		if (count > 1000) {
@@ -208,10 +209,12 @@ public class PiTrap_AidanCarrollHusky extends Critter {
 		}
 	}
 
+	@Override
 	public Color getColor() {
 		return Color.BLUE;
 	}
 
+	@Override
 	public String toString() {
 		return "π";
 	}

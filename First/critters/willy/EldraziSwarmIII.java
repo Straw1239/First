@@ -6,9 +6,6 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 import critters.Critter;
-import critters.Critter.Action;
-import critters.Critter.Direction;
-import critters.Critter.Neighbor;
 import critters.CritterInfo;
 
 /* TO DO:
@@ -34,17 +31,20 @@ public class EldraziSwarmIII extends Critter {
 	}
 	
 	//Returns what color this ESC is (red)
-    public Color getColor () {
+    @Override
+	public Color getColor () {
     	return Color.RED;
     }
 
     //Returns the String that this ESC is (omega)
-    public String toString () {
-    	return "½";
+    @Override
+	public String toString () {
+    	return "ï¿½";
     }
 	
 	//Returns how this ESC will act
-    public Action getMove (CritterInfo info) {
+    @Override
+	public Action getMove (CritterInfo info) {
     	//Determine which direction to move in (not acted on in battle)
     	if (inputs == 0) enemiesTotal = new int[4]; //Reset the total enemy counts if it's the first ESC to input data
     	//Update its knowledge of where nearby enemies are, updating its enemiesThis boolean[4]

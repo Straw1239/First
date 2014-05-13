@@ -89,6 +89,7 @@ public class Hangman extends JPanel
 		return word.equalsIgnoreCase(new String(guesses));
 	}
 	
+	@Override
 	public void paintComponent(Graphics g)
 	{
 		if(word == null) return;

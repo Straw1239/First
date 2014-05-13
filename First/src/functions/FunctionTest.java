@@ -5,6 +5,7 @@ public class FunctionTest {
 	public static void main(String[] args) {
 		Function f = new Function()
 		{
+			@Override
 			public double f(double x)
 			{
 				return Math.exp(x);
@@ -12,6 +13,7 @@ public class FunctionTest {
 		};
 		Function g = new Function()
 		{
+			@Override
 			public double f(double x)
 			{
 				return Math.sqrt(x);
@@ -19,6 +21,7 @@ public class FunctionTest {
 		};
 		Function h = new Function()
 		{
+			@Override
 			public double f(double x)
 			{
 				return x*x;
@@ -26,12 +29,14 @@ public class FunctionTest {
 		};
 		Function ln = new Function()
 		{
+			@Override
 			public double f(double x)
 			{
 				return Math.log(x);
 			}
 		};
 		Function awesome = Function.fog(ln, new Function(){
+			@Override
 			public double f(double x)
 			{
 				return x*x*x*x*x;

@@ -33,10 +33,12 @@ public class Husky_WilliamBerman_Species8472 extends Critter {
 			this.what = status.HOLDFAST;
 	}
 
+	@Override
 	public Color getColor () {
 		return this.thisColor;
 	}
 
+	@Override
 	public String toString () {
 		return "¤";
 		//if (this.what == status.DORMANT)
@@ -47,6 +49,7 @@ public class Husky_WilliamBerman_Species8472 extends Critter {
 			//return "U";
 	}
 
+	@Override
 	public Action getMove (CritterInfo info) {
 		this.count++; //Next move
 		

@@ -13,7 +13,6 @@ import javax.xml.parsers.*;
 import javax.xml.xpath.*;
 import static javax.xml.xpath.XPathConstants.*;
 import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
 
 public class GeoLocator {
     // Needed to encode the given query string to be used in the url

@@ -23,10 +23,12 @@ public class Husky_WilliamBerman_Species8472_1 extends Critter {
 			this.what = Status.HOLDFAST;
 	}
 
+	@Override
 	public Color getColor () {
 		return this.thisColor;
 	}
 
+	@Override
 	public String toString () {
 		/* This is for testing purposes; it's usually
 		return "S"; */
@@ -36,6 +38,7 @@ public class Husky_WilliamBerman_Species8472_1 extends Critter {
 			return "U";
 	}
 
+	@Override
 	public Action getMove (CritterInfo info) {
 		this.count++;
 		

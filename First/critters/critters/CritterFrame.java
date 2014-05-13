@@ -53,7 +53,8 @@ public class CritterFrame extends JFrame {
 
         final JSlider slider = new JSlider();
         slider.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
+            @Override
+			public void stateChanged(ChangeEvent e) {
                 double ratio = 1000.0 / (1 + Math.pow(slider.getValue(), 0.3));
                 myTimer.setDelay((int) (ratio - 180));
             }
@@ -65,21 +66,24 @@ public class CritterFrame extends JFrame {
 
         JButton b1 = new JButton("start");
         b1.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+            @Override
+			public void actionPerformed(ActionEvent e) {
                 myTimer.start();
             }
         });
         p.add(b1);
         JButton b2 = new JButton("stop");
         b2.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+            @Override
+			public void actionPerformed(ActionEvent e) {
                 myTimer.stop();
             }
         });
         p.add(b2);
         JButton b3 = new JButton("step");
         b3.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+            @Override
+			public void actionPerformed(ActionEvent e) {
                 doOneStep();
             }
         });
@@ -88,7 +92,8 @@ public class CritterFrame extends JFrame {
         // add debug button
         JButton b4 = new JButton("debug");
         b4.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+            @Override
+			public void actionPerformed(ActionEvent e) {
                 myModel.toggleDebug();
                 myPicture.repaint();
             }
@@ -98,7 +103,8 @@ public class CritterFrame extends JFrame {
         // add 100 button
         JButton b5 = new JButton("next 100");
         b5.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+            @Override
+			public void actionPerformed(ActionEvent e) {
                 multistep(100);
             }
         });
@@ -181,7 +187,8 @@ public class CritterFrame extends JFrame {
     //       method and repaints the display
     private void addTimer() {
         ActionListener updater = new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+            @Override
+			public void actionPerformed(ActionEvent e) {
                 doOneStep();
             }
         };

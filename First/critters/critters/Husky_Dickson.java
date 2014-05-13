@@ -36,6 +36,7 @@ public class Husky_Dickson extends Critter {
 
 	private static final double GET_THEM = 0.5;
 
+	@Override
 	public Action getMove(CritterInfo info) {
 		update(info);
 		if (swarm) {
@@ -184,10 +185,12 @@ public class Husky_Dickson extends Critter {
 		return swarm;
 	}
 	
+	@Override
 	public Color getColor() {
 		return Color.WHITE;
 	}
 
+	@Override
 	public String toString() {
 		return "     DC     ";
 	}

@@ -8,7 +8,8 @@ package critters;
 import java.awt.*;
 
 public class FlyTrap extends Critter {
-    public Action getMove(CritterInfo info) {
+    @Override
+	public Action getMove(CritterInfo info) {
         if (info.getFront() == Neighbor.OTHER) {
             return Action.INFECT;
         } else {
@@ -16,11 +17,13 @@ public class FlyTrap extends Critter {
         }
     }
 
-    public Color getColor() {
+    @Override
+	public Color getColor() {
         return Color.RED;
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
         return "T";
     }
 }

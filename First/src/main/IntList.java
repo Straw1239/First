@@ -40,7 +40,7 @@ public class IntList
 	{
 		if (size >= capacity())
 		{
-			array = Arrays.copyOf(array, (int)Math.max(capacity()*2,1));
+			array = Arrays.copyOf(array, Math.max(capacity()*2,1));
 		}
 		array[size] = newInt;
 		size++;
@@ -49,7 +49,7 @@ public class IntList
 	{
 		if (size >= capacity())
 		{
-			array = Arrays.copyOf(array, (int)Math.max(capacity()*2,1));
+			array = Arrays.copyOf(array, Math.max(capacity()*2,1));
 		}
 		for(int i = size; i > index; i--)
 		{
@@ -60,7 +60,7 @@ public class IntList
 	}
 	public void addAll(int[] newElements)
 	{
-		while(capacity() <= size + newElements.length) ensureCapacity((int)Math.max(capacity()*2,1));
+		while(capacity() <= size + newElements.length) ensureCapacity(Math.max(capacity()*2,1));
 		for(int i = 0; i < newElements.length;i++)
 		{
 			add(newElements[i]);
@@ -68,7 +68,7 @@ public class IntList
 	}
 	public void addAll(Collection<Integer> newElements)
 	{
-		while(capacity() <= size + newElements.size()) ensureCapacity((int)Math.max(capacity()*2,1));
+		while(capacity() <= size + newElements.size()) ensureCapacity(Math.max(capacity()*2,1));
 		Iterator<Integer> it = newElements.iterator();
 		while(it.hasNext())
 		{
@@ -77,7 +77,7 @@ public class IntList
 	}
 	public void addAll(IntList list)
 	{
-		while(capacity() <= size + list.size()) ensureCapacity((int)Math.max(capacity()*2,1));
+		while(capacity() <= size + list.size()) ensureCapacity(Math.max(capacity()*2,1));
 		for(int i = 0; i < list.size();i++)
 		{
 			add(list.get(i));
@@ -160,6 +160,7 @@ public class IntList
 	{
 		return new IntIterator(position,this);
 	}
+	@Override
 	public String toString()
 	{
 		StringBuilder s = new StringBuilder(3*size);
@@ -192,10 +193,12 @@ public class IntList
 			this.position = position;
 			array = a;
 		}
+		@Override
 		public boolean hasNext()
 		{
 			return position < array.size();
 		}
+		@Override
 		public Integer next() throws NoSuchElementException
 		{
 			if(position >= array.size()) throw new NoSuchElementException();
@@ -203,6 +206,7 @@ public class IntList
 			next = true;
 			return new Integer(array.get(position-1));
 		}
+		@Override
 		public void remove() throws IllegalStateException
 		{
 			if (!next) throw new IllegalStateException();

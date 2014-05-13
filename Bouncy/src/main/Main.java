@@ -2,9 +2,13 @@ package main;
 
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCombination;
@@ -44,13 +48,17 @@ public class Main extends Application
 		BorderPane pane = new BorderPane();
 		pane.setCenter(renderer);
 		stage.setScene(new Scene(pane));
-		simulation = new BallSimulator(1000,1000);
-		
-		for(int i = 0; i < 200; i++)
+		simulation = new BallSimulator(4000, 4000);
+		int balls = 1024;
+		List<Color> colors = new ArrayList<>(Arrays.asList(Color.RED, Color.ORANGERED, Color.ORANGE, Color.YELLOW, Color.YELLOWGREEN, Color.GREEN, Color.TURQUOISE, Color.BLUE, Color.BLUEVIOLET, Color.INDIGO, Color.VIOLET));
+		List<Color> temp = new ArrayList<>(colors);
+		Collections.reverse(temp);
+		colors.addAll(temp);
+		for(int i = 0; i < balls; i++)
 		{
-			Vector v = new Vector(rand.nextDouble() - .5, rand.nextDouble() - .5).normalized().scale(250);
-			Color c = new Color(rand.nextDouble(), rand.nextDouble(), rand.nextDouble(), rand.nextDouble());
-			simulation.addBall(new Ball(simulation.dimensions.scale(.5), v, 10, c));
+			Vector v = Vector.fromPolar((i + balls) / 8.0, i * 2 * Math.PI / balls);
+			Color c = colors.get(i % colors.size());//new Color(rand.nextDouble(), rand.nextDouble(), rand.nextDouble(), rand.nextDouble());
+			simulation.addBall(new Ball(simulation.dimensions.scale(.5), v, 20, c));
 		}
 		stage.show();
 		runEngine();
@@ -59,14 +67,13 @@ public class Main extends Application
 	
 	private void runEngine()
 	{
-		
 		new Thread(() ->
 		{
 			long lastTime = System.nanoTime();
 			while(true)
 			{
 				long time = System.nanoTime();
-				simulation.update(.0005);
+				simulation.update((time - lastTime) / 1_000_000_000.0);
 				lastTime = time;
 			}	
 		}).start();

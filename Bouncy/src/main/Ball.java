@@ -21,6 +21,8 @@ public class Ball implements Drawable, Cloner, Copyable<Ball>
 		this.color = color;
 	}
 	
+	
+	
 	public double getRadius()
 	{
 		return radius;

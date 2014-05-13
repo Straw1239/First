@@ -32,7 +32,7 @@ import fxcore.MainGame;
 /**
  * Main game engine. Performs all non graphical internal calculation.
  * Keeps track of Player, all bullets, enemies, and events.
- * Provides an immutable Display object representing 
+ * Provides an immutable State object representing 
  * one snapshot of engine state.
  * 
  * @author Rajan Troll
@@ -48,6 +48,10 @@ public final class Engine
 	 */
 	
 	public final double width, height;
+	
+	/**
+	 * Bounds of the game world
+	 */
 	public final Rectangle bounds; 
 	
 	/**
@@ -55,12 +59,13 @@ public final class Engine
 	 */
 	
 	private long updates = 0;
+	
 	private volatile Player player;
 	private Cursor cursor = new Cursor(500,500);
 	private volatile Player.Action playerAction;
 	private Multimap<Faction, Entity> entities = LinkedListMultimap.create();
 	private List<GameEvent> events = new LinkedList<>();
-	private EventHandler handler = new Handler();
+	private Handler handler = new Handler();
 	
 	/**
 	 * Map from Faction to all bullets of that Faction, for optimization.
@@ -69,7 +74,7 @@ public final class Engine
 	 */
 	private Multimap<Faction, Bullet> bullets = LinkedListMultimap.create();
 	
-	
+	private Spawner spawner = new Spawner();
 	
 	/**
 	 * Representation of engine state. Replaced each update, 
@@ -95,7 +100,11 @@ public final class Engine
 		entities.put(Faction.Player, player);
 		view = new State(player, entities.values(), bullets.values(), events, cursor, width, height, updates);
 	}
-	
+	/**
+	 * Creates engine based on data contained in state. State is immutable; all data is copied into the new engine.
+	 * Exactly recreates the state represented by the State object in the engine.
+	 * @param state
+	 */
 	public Engine(State state)
 	{
 		width = state.width;
@@ -191,7 +200,6 @@ public final class Engine
 	private void executeEvents()
 	{
 		Iterator<GameEvent> it = events.iterator();
-		Collection<GameEvent> newEvents = new ArrayList<>();
 		while(it.hasNext())
 		{
 			GameEvent e = it.next();
@@ -204,7 +212,8 @@ public final class Engine
 				e.effects(handler);
 			}
 		}
-		events.addAll(newEvents);
+		events.addAll(handler.newEvents);
+		handler.newEvents.clear();
 	}
 	
 	private void updatePlayer()
@@ -367,7 +376,7 @@ public final class Engine
 	
 	private class Handler implements EventHandler
 	{
-
+		public Collection<GameEvent> newEvents = new ArrayList<>();
 		@Override
 		public Collection<? extends GameObject> getAll() 
 		{
@@ -407,7 +416,7 @@ public final class Engine
 		@Override
 		public void addEvent(GameEvent e) 
 		{
-			events.add(e);
+			newEvents.add(e);
 		}
 
 		@Override
@@ -447,8 +456,8 @@ public final class Engine
 		}
 
 		@Override
-		public Collection<? extends Bullet> bulletsOfFaction(Faction f) {
-			
+		public Collection<? extends Bullet> bulletsOfFaction(Faction f) 
+		{	
 			return bullets.get(f);
 		}
 	}	

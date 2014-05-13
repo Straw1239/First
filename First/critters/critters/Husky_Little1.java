@@ -10,6 +10,7 @@ public class Husky_Little1 extends Critter
 	{
 	}
 	
+	@Override
 	public Action getMove(CritterInfo info)
 	{
 		if (info.getFront() == Critter.Neighbor.OTHER)
@@ -32,11 +33,13 @@ public class Husky_Little1 extends Critter
 			return Action.HOP;
 	}
 	
+	@Override
 	public Color getColor()
 	{
 		return Color.ORANGE;
 	}
 	
+	@Override
 	public String toString()
 	{
 		return "#";

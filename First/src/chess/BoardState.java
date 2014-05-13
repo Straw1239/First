@@ -437,6 +437,7 @@ public class BoardState
 			this.file = file;
 			this.piece = p;
 		}
+		@Override
 		public int hashCode()
 		{
 			int hash = rank * 31 + file;

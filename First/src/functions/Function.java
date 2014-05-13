@@ -5,6 +5,7 @@ public abstract class Function
 	public abstract double f(double x);
 	private static final Function minus1 = new Function()
 	{
+		@Override
 		public double f(double x)
 		{
 			return -1;
@@ -12,6 +13,7 @@ public abstract class Function
 	};
 	private static final Function xToTheMinus1 = new Function()
 	{
+		@Override
 		public double f(double x)
 		{
 			return 1/x;
@@ -64,6 +66,7 @@ public abstract class Function
 		{
 			super(f,g);
 		}
+		@Override
 		public double f(double x)
 		{
 			return f.f(x)+g.f(x);
@@ -75,6 +78,7 @@ public abstract class Function
 		{
 			super(f,g);
 		}
+		@Override
 		public double f(double x)
 		{
 			return f.f(x) * g.f(x);
@@ -86,6 +90,7 @@ public abstract class Function
 		{
 			super(f,g);
 		}
+		@Override
 		public double f(double x)
 		{
 			return f.f(g.f(x));
@@ -98,6 +103,7 @@ public abstract class Function
 			constant = x;
 		}
 		private double constant;
+		@Override
 		public double f(double x)
 		{
 			return constant;

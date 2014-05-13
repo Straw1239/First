@@ -9,10 +9,12 @@ public class Husky_Arden1 extends Critter{
 		
 	}
 
+	@Override
 	public String toString(){
 		return "Ӝ";
 	}
 
+	@Override
 	public Action getMove(CritterInfo info){
 		if(info.getFront() == Neighbor.OTHER)
 			return Action.INFECT;
@@ -37,6 +39,7 @@ public class Husky_Arden1 extends Critter{
 
 	
 
+	@Override
 	public Color getColor(){
 		return new Color(new Random().nextInt(256),new Random().nextInt(256),new Random().nextInt(256));
 	}

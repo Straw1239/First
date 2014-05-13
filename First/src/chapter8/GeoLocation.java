@@ -26,7 +26,8 @@ public class GeoLocation {
     }
 
     // returns a string representation of this geo location
-    public String toString() {
+    @Override
+	public String toString() {
         return "latitude: " + latitude + ", longitude: " + longitude;
     }
 

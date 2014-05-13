@@ -23,7 +23,8 @@ public class Husky_Pollock2 extends Critter {
 		this.phase = "findFriends";
 		critterCount++;
 	}
-    public Action getMove(CritterInfo info) {
+    @Override
+	public Action getMove(CritterInfo info) {
     	groupTimer++;
     	getChar(info);
     	getColor(info);
@@ -59,11 +60,13 @@ public class Husky_Pollock2 extends Critter {
     			 
     }
 
-    public Color getColor() {
+    @Override
+	public Color getColor() {
         return hue;
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
     	return character;
     }
     

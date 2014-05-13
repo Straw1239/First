@@ -25,6 +25,7 @@ public class Husky_Aaron extends Critter {
 		huskies.add(this);
 	}
 
+	@Override
 	public Action getMove(CritterInfo info) {
 		if(initialTurn + moveCount >= turnCount) {
 			newTurn();
@@ -97,10 +98,12 @@ public class Husky_Aaron extends Critter {
 		turnCount++;
 	}
 
+	@Override
 	public String toString() {
 		return "A";
 	}
 
+	@Override
 	public Color getColor() {
 		return Color.CYAN;
 	}

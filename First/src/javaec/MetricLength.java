@@ -86,6 +86,7 @@ public class MetricLength implements Comparable<MetricLength>
 		return mm / (MMCM * CMM);
 	}
 	
+	@Override
 	public String toString()
 	{
 		return getMeters() + "m " + getCentimeters() + "cm " + getMillimeters() + "mm";

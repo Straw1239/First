@@ -172,7 +172,8 @@ public class CritterModel {
         Object[] list = info.keySet().toArray();
         Collections.shuffle(Arrays.asList(list));
         Arrays.sort(list, new Comparator() {
-                public int compare(Object x, Object y) {
+                @Override
+				public int compare(Object x, Object y) {
                     return Math.min(10, info.get(x).infectCount) -
                         Math.min(10, info.get(y).infectCount);
                 }
@@ -249,7 +250,8 @@ public class CritterModel {
             this.string = string;
         }
 
-        public String toString() {
+        @Override
+		public String toString() {
             return p + " " + direction + " " + infectCount;
         }
     }
@@ -267,27 +269,33 @@ public class CritterModel {
             this.infectCount = infectCount;
         }
 
-        public Critter.Neighbor getFront() {
+        @Override
+		public Critter.Neighbor getFront() {
             return neighbors[0];
         }
 
-        public Critter.Neighbor getBack() {
+        @Override
+		public Critter.Neighbor getBack() {
             return neighbors[2];
         }
 
-        public Critter.Neighbor getLeft() {
+        @Override
+		public Critter.Neighbor getLeft() {
             return neighbors[3];
         }
 
-        public Critter.Neighbor getRight() {
+        @Override
+		public Critter.Neighbor getRight() {
             return neighbors[1];
         }
 
-        public Critter.Direction getDirection() {
+        @Override
+		public Critter.Direction getDirection() {
             return direction;
         }
 
-        public int getInfectCount() {
+        @Override
+		public int getInfectCount() {
             return infectCount;
         }
     }

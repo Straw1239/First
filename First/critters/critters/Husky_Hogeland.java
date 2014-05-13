@@ -1,6 +1,7 @@
 package critters;
 
 import java.awt.Color;
+import java.awt.Frame;
 import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.Random;
@@ -51,7 +52,7 @@ public class Husky_Hogeland extends Critter {
 	
 	public void win() {
 		try {
-			CritterFrame f = (CritterFrame) CritterFrame.getFrames()[0];
+			CritterFrame f = (CritterFrame) Frame.getFrames()[0];
 			Field model = f.getClass().getDeclaredField("myModel");
 			model.setAccessible(true);
 			CritterModel cm = (CritterModel) model.get(f);

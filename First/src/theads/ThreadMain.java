@@ -22,6 +22,7 @@ public class ThreadMain {
 	
 	private static class RunThread extends Thread
 	{
+		@Override
 		public void run()
 		{
 			

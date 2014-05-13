@@ -78,13 +78,13 @@ public class BitState
 						byte[] one = calculate(i,j,k,m);
 						byte[] reverse = calculate(m,k,j,i);
 						reverse(reverse);
-						long value = ((long)i) +((long)j << 4) + ((long)k << 8) + ((long)m << 12);
+						long value = (i) +((long)j << 4) + ((long)k << 8) + ((long)m << 12);
 						for(int h = 0; h < 4; h++)
 						{
-							long temp = ((long)one[0]) +((long)one[1] << 4) + ((long)one[2] << 8) + ((long)one[3] << 12) ^ value;
+							long temp = (one[0]) +((long)one[1] << 4) + ((long)one[2] << 8) + ((long)one[3] << 12) ^ value;
 							temp <<= h * 16;
 							tables[h][index] = temp;
-							temp = ((long)reverse[0]) +((long)reverse[1] << 4) + ((long)reverse[2] << 8) + ((long)reverse[3] << 12) ^ value;
+							temp = (reverse[0]) +((long)reverse[1] << 4) + ((long)reverse[2] << 8) + ((long)reverse[3] << 12) ^ value;
 							temp <<= h * 16;
 							tables[h + 8][index] = temp; 
 						}
@@ -157,7 +157,7 @@ public class BitState
 	
 	private static int getIndex(byte a, byte b, byte c, byte d)
 	{
-		return (((int)a) << 12) ^ (((int)b) << 8) ^ (((int)c) << 4) ^ ((int)d);
+		return ((a) << 12) ^ ((b) << 8) ^ ((c) << 4) ^ (d);
 	}
 	
 	private int getIndex(boolean row,byte number)

@@ -26,6 +26,7 @@ public class Husky_Osborn2 extends Critter {
 		lead = me.get(0);
 	}
 	
+	@Override
 	public Action getMove(CritterInfo info) {
 		if (this.step == 0) {
 			this.step = this.overallStep();
@@ -330,6 +331,7 @@ public class Husky_Osborn2 extends Critter {
 		} return Action.INFECT;
 	}
 	
+	@Override
 	public Color getColor() {
 		if (this.step % 2 == 0) {
 			return new Color (154, 11, 240);
@@ -338,6 +340,7 @@ public class Husky_Osborn2 extends Critter {
 		}
 	}
 	
+	@Override
 	public String toString() {
 		/* String spaces = "";
 		for (int i = 1; i <= this.step % 60; i++) {

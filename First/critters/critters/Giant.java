@@ -8,6 +8,7 @@ public class Giant extends Critter {
 		// TODO Auto-generated constructor stub
 	}
 	
+	@Override
 	public String toString() {
 		numberOfMoves = (numberOfMoves == 23)? 0 : numberOfMoves++;
 		if(numberOfMoves < 6)
@@ -20,10 +21,12 @@ public class Giant extends Critter {
 			return "fum";
 	}
 	
+	@Override
 	public Color getColor() {
 		return Color.GRAY;
 	}
 	
+	@Override
 	public Action getMove(CritterInfo info) {
 		if(info.getFront() == Neighbor.OTHER ){
 			return Action.INFECT;

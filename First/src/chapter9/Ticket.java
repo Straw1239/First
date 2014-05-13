@@ -16,6 +16,7 @@ public abstract class Ticket
 		return number;
 	}
 	
+	@Override
 	public String toString()
 	{
 		return String.format("Number: %d, Price: %.1f", number, getPrice());

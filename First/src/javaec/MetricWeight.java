@@ -31,6 +31,7 @@ public class MetricWeight implements Comparable<MetricWeight>
 		this((long) (kg * RATIO));
 	}
 	
+	@Override
 	public String toString()
 	{
 		return getTons() + "t " + getKG() + "kg " + getGrams() + "g";

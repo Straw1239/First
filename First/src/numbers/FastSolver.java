@@ -93,7 +93,7 @@ public class FastSolver
 	
 	public static int getIndex(byte a, byte b, byte c, byte d)
 	{
-		return (((int)a) << 12) + (((int)b) << 8) + (((int)c) << 4) + ((int)d);
+		return ((a) << 12) + ((b) << 8) + ((c) << 4) + (d);
 	}
 	
 	
@@ -321,6 +321,7 @@ public class FastSolver
 			setPreferredSize(new Dimension(size,size));
 		}
 		
+		@Override
 		public void paintComponent(Graphics g)
 		{
 			if(state != null)

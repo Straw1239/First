@@ -46,6 +46,7 @@ public class PlaceInformation {
 		return this.location.distanceFrom(location);
 	}
 	
+	@Override
 	public String toString()
 	{
 		return name + ", " + address;

@@ -8,11 +8,13 @@ public class StudentAdvancedTicket extends AdvancedTicket
 		super(number, daysBefore);
 	}
 	
+	@Override
 	public double getPrice()
 	{
 		return super.getPrice() / 2;
 	}
 	
+	@Override
 	public String toString()
 	{
 		return super.toString() + " (ID required)";

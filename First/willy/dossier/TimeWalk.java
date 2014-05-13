@@ -87,6 +87,7 @@ public class TimeWalk extends JFrame {
 		
 		//Create the main window
 		EventQueue.invokeLater (new Runnable () {
+			@Override
 			public void run () {
 				try {
 					TimeWalk frame = new TimeWalk ();
@@ -157,6 +158,7 @@ public class TimeWalk extends JFrame {
 		JButton prevYearBtn = new JButton ("Previous year");
 		prevYearBtn.setFont (new Font ("Tahoma", Font.PLAIN, 11));
 		prevYearBtn.addActionListener (new ActionListener () {
+			@Override
 			public void actionPerformed (ActionEvent arg0) { /*Go to the previous year, update the label, and update the day-buttons
 			* when the previous-year button is pressed */
 				currentYear--;
@@ -176,6 +178,7 @@ public class TimeWalk extends JFrame {
 		JButton prevMonthBtn = new JButton ("Previous month");
 		prevMonthBtn.setFont (new Font ("Tahoma", Font.PLAIN, 11));
 		prevMonthBtn.addActionListener (new ActionListener () {
+			@Override
 			public void actionPerformed (ActionEvent arg0) { /*Go to the previous month, update the label, and update the day-buttons
 			* when the previous-month button is pressed */
 				if (currentMonth == 0) { //If it is going to the month before January,
@@ -198,6 +201,7 @@ public class TimeWalk extends JFrame {
 		JButton nextMonthBtn = new JButton ("Next month");
 		nextMonthBtn.setFont (new Font ("Tahoma", Font.PLAIN, 11));
 		nextMonthBtn.addActionListener (new ActionListener () {
+			@Override
 			public void actionPerformed (ActionEvent arg0) { /*Go to the next month, update the label, and update the day-buttons
 			* when the next-month button is pressed */
 				if (currentMonth == 11) { //If it is going to the month after December,
@@ -220,6 +224,7 @@ public class TimeWalk extends JFrame {
 		JButton nextYearBtn = new JButton ("Next year");
 		nextYearBtn.setFont (new Font ("Tahoma", Font.PLAIN, 11));
 		nextYearBtn.addActionListener (new ActionListener () {
+			@Override
 			public void actionPerformed (ActionEvent arg0) { /*Go to the next year, update the label, and update the day-buttons
 			* when the next-year button is pressed */
 				currentYear++;
@@ -247,8 +252,10 @@ public class TimeWalk extends JFrame {
 		JButton addEventBtn = new JButton ("Add New Event");
 		addEventBtn.setFont (new Font ("Tahoma", Font.PLAIN, 11));
 		addEventBtn.addActionListener (new ActionListener () {
+			@Override
 			public void actionPerformed (ActionEvent arg0) { //Create an adder window when the add-event button is pressed
 				EventQueue.invokeLater (new Runnable () {
+					@Override
 					public void run () {
 						try {
 							AdderWindow aw = new AdderWindow ();
@@ -266,6 +273,7 @@ public class TimeWalk extends JFrame {
 		JButton deleteAllBtn = new JButton ("Delete All Events");
 		deleteAllBtn.setFont (new Font ("Tahoma", Font.PLAIN, 11));
 		deleteAllBtn.addActionListener (new ActionListener () {
+			@Override
 			public void actionPerformed (ActionEvent arg0) { //Delete the contents of the timeline when the delete-all button is pressed (and confirmed)
 				if (JOptionPane.showConfirmDialog (null, "Do you want to clear the timeline?", "Delete All Events", JOptionPane.YES_NO_OPTION)
 				== JOptionPane.YES_OPTION) { //If the user presses "yes" in the JOptionPane.
@@ -280,6 +288,7 @@ public class TimeWalk extends JFrame {
 		
 		//Create the reminder window
 		EventQueue.invokeLater (new Runnable () {
+			@Override
 			public void run () {
 				try {
 					ReminderWindow rw = new ReminderWindow (today);
@@ -444,6 +453,7 @@ public class TimeWalk extends JFrame {
 			final JTextField AWNameFld = new JTextField ();
 			AWNameFld.setFont (new Font ("Tahoma", Font.PLAIN, 11));
 			AWNameFld.addActionListener (new ActionListener () {
+				@Override
 				public void actionPerformed (ActionEvent arg0) { //Use the value currently in the field when ENTER is pressed (a String can have any character)
 					AWName = AWNameFld.getText (); //Use the current value for the name when ENTER is pressed
 					AWNameFld.setBackground (new Color (0, 255, 0)); //Indicate no problem with a green field
@@ -474,6 +484,7 @@ public class TimeWalk extends JFrame {
 			final JTextField AWYearFld = new JTextField ();
 			AWYearFld.setFont (new Font ("Tahoma", Font.PLAIN, 11));
 			AWYearFld.addActionListener (new ActionListener () {
+				@Override
 				public void actionPerformed (ActionEvent arg0) { //Try the value currently in the field when ENTER is pressed
 					try {
 						AWYear = Integer.parseInt (AWYearFld.getText ()); //Try using the current value for the year when ENTER is pressed
@@ -494,6 +505,7 @@ public class TimeWalk extends JFrame {
 			final JTextField AWMonthFld = new JTextField ();
 			AWMonthFld.setFont (new Font ("Tahoma", Font.PLAIN, 11));
 			AWMonthFld.addActionListener (new ActionListener () {
+				@Override
 				public void actionPerformed (ActionEvent arg0) { //Try the value currently in the field when ENTER is pressed
 					try {
 						AWMonth = AWMonthFld.getText (); //Try using the current value for the month when ENTER is pressed
@@ -520,6 +532,7 @@ public class TimeWalk extends JFrame {
 			final JTextField AWDayFld = new JTextField ();
 			AWDayFld.setFont (new Font ("Tahoma", Font.PLAIN, 11));
 			AWDayFld.addActionListener (new ActionListener () {
+				@Override
 				public void actionPerformed (ActionEvent arg0) { //Try the value currently in the field when ENTER is pressed
 					//Get the new value
 					try {
@@ -564,6 +577,7 @@ public class TimeWalk extends JFrame {
 			final JTextField AWStartFld = new JTextField ();
 			AWStartFld.setFont (new Font ("Tahoma", Font.PLAIN, 11));
 			AWStartFld.addActionListener (new ActionListener () {
+				@Override
 				public void actionPerformed (ActionEvent arg0) { //Try the value currently in the field when ENTER is pressed
 					try {
 						AWStart = Integer.parseInt (AWStartFld.getText ()); //Try using the current value for the start when ENTER is pressed
@@ -588,6 +602,7 @@ public class TimeWalk extends JFrame {
 			final JTextField AWEndFld = new JTextField ();
 			AWEndFld.setFont (new Font ("Tahoma", Font.PLAIN, 11));
 			AWEndFld.addActionListener (new ActionListener () {
+				@Override
 				public void actionPerformed (ActionEvent arg0) { //Try the value currently in the field when ENTER is pressed
 					try {
 						AWEnd = Integer.parseInt (AWEndFld.getText ()); //Try using the current value for the end when ENTER is pressed
@@ -611,6 +626,7 @@ public class TimeWalk extends JFrame {
 			//The field that receives the description of the Event
 			final JTextArea AWDescriptionArea = new JTextArea ();
 			AWDescriptionArea.addKeyListener (new KeyAdapter () {
+				@Override
 				public void keyReleased (KeyEvent arg0) { /*Use the value currently in the field when a keystroke is finished
 				* (a String can have any character) (ENTER will both go to the next line and do this) */
 					AWDescription = AWDescriptionArea.getText (); //Use the current value for the description when a keystroke is finished
@@ -642,6 +658,7 @@ public class TimeWalk extends JFrame {
 			final JTextField AWPriorityFld = new JTextField ();
 			AWPriorityFld.setFont (new Font ("Tahoma", Font.PLAIN, 11));
 			AWPriorityFld.addActionListener (new ActionListener () {
+				@Override
 				public void actionPerformed (ActionEvent arg0) { //Try the value currently in the field when ENTER is pressed
 					try {
 						AWPriority = Integer.parseInt (AWPriorityFld.getText ()); //Try using the current value for the name when ENTER is pressed
@@ -665,6 +682,7 @@ public class TimeWalk extends JFrame {
 			//The button that can cancel this adder window
 			JButton AWCancelBtn = new JButton ("Cancel");
 			AWCancelBtn.addActionListener (new ActionListener () {
+				@Override
 				public void actionPerformed (ActionEvent arg0) { //Stop this Event from being made when the cancel button is pressed
 					dispose ();
 				}
@@ -675,6 +693,7 @@ public class TimeWalk extends JFrame {
 			//The button that adds the Event to the timeline
 			JButton AWAddBtn = new JButton ("Add Event");
 			AWAddBtn.addActionListener (new ActionListener () {
+				@Override
 				public void actionPerformed (ActionEvent arg0) { /*Try adding the Event to the timeline when the add-button is pressed
 				* (add the Event if all of the fields are OK, but do not add it (and tell the user) if one or more fields are invalid) */
 					if (isAllOK (addOK)) { //If all of the fields are OK...
@@ -742,8 +761,10 @@ public class TimeWalk extends JFrame {
 			if (this.DBDate.equals (today)) this.setBorder (new LineBorder (Color.BLACK, 3)); //Check if this day-button is today: if it is, give it a border
 			
 			this.addActionListener (new ActionListener () {
+				@Override
 				public void actionPerformed (ActionEvent arg0) { //Make a day-button window for this day-button when it is clicked
 					EventQueue.invokeLater (new Runnable () {
+						@Override
 						public void run () {
 							try {
 								DayButtonWindow dbw = new DayButtonWindow (DBDate, DBEvents);
@@ -835,6 +856,7 @@ public class TimeWalk extends JFrame {
 			JButton EPDeleteEventBtn = new JButton ("Delete Event");
 			EPDeleteEventBtn.setFont (new Font ("Tahoma", Font.PLAIN, 11));
 			EPDeleteEventBtn.addActionListener (new ActionListener () {
+				@Override
 				public void actionPerformed (ActionEvent arg0) { //Delete the Event from the timeline, and clear this panel, when this button is pressed
 					int indexToDelete = 0;
 					for (int x = 0; x < events.size (); x++) { //For each Event on the timeline...
@@ -908,6 +930,7 @@ public class TimeWalk extends JFrame {
 			JButton DBWCloseBtn = new JButton ("Close");
 			DBWCloseBtn.setFont (new Font ("Tahoma", Font.PLAIN, 11));
 			DBWCloseBtn.addActionListener (new ActionListener () {
+				@Override
 				public void actionPerformed (ActionEvent arg0) { //Close the day-button window when this button is pressed
 					dispose ();
 				}
@@ -1047,6 +1070,7 @@ public class TimeWalk extends JFrame {
 			JButton RWCloseBtn = new JButton ("Close");
 			RWCloseBtn.setFont (new Font ("Tahoma", Font.PLAIN, 11));
 			RWCloseBtn.addActionListener (new ActionListener () {
+				@Override
 				public void actionPerformed (ActionEvent arg0) { //Close the reminder window when this button is pressed
 					dispose ();
 				}

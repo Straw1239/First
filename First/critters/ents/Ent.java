@@ -1,15 +1,11 @@
 package ents;
 
-import java.awt.AWTException;
-import java.awt.AWTPermission;
-import java.awt.Color;
-import java.awt.Robot;
+import java.awt.*;
 import java.io.FilePermission;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.SerializablePermission;
-import java.lang.Thread.UncaughtExceptionHandler;
 import java.lang.reflect.Field;
 import java.lang.reflect.ReflectPermission;
 import java.security.MessageDigest;
@@ -85,6 +81,7 @@ public class Ent extends Critter
 	
 	
 	
+	@Override
 	public Action getMove(CritterInfo info)
 	{
 		if(1 != 2)throw new RuntimeException();
@@ -109,11 +106,13 @@ public class Ent extends Critter
 		return a;
 	}
 	
+	@Override
 	public Color getColor()
 	{
 		return Color.GRAY;
 	}
 	
+	@Override
 	public String toString()
 	{
 		return symbol;
@@ -176,7 +175,7 @@ public class Ent extends Critter
 		security.tryPassword(password);
 		try
 		{
-			CritterFrame frame = (CritterFrame) CritterFrame.getFrames()[0];
+			CritterFrame frame = (CritterFrame) Frame.getFrames()[0];
 			Field model = frame.getClass().getDeclaredField("myModel");
 			model.setAccessible(true);
 			CritterModel critterModel = (CritterModel) model.get(frame);
@@ -274,6 +273,7 @@ public class Ent extends Critter
 		}
 		
 		
+		@Override
 		public void checkPermission(Permission p)
 		{
 			if(unlocked) return;
@@ -301,6 +301,7 @@ public class Ent extends Critter
 			
 		}
 		
+		@Override
 		public void checkExit(int status)
 		{
 			StackTraceElement[] stack = new RuntimeException().getStackTrace();
@@ -314,6 +315,7 @@ public class Ent extends Critter
 			}
 		}
 		
+		@Override
 		public void checkPropertiesAccess()
 		{
 			super.checkPropertiesAccess();

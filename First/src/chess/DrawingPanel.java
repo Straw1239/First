@@ -45,7 +45,6 @@ import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -77,28 +76,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Vector;
+
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JColorChooser;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSlider;
-import javax.swing.KeyStroke;
-import javax.swing.SwingConstants;
-import javax.swing.Timer;
-import javax.swing.UIManager;
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.MouseInputListener;
@@ -236,7 +216,8 @@ public final class DrawingPanel extends FileFilter
             setAlignmentX(0.0f);
         }
         
-        public void paintComponent(Graphics g) {
+        @Override
+		public void paintComponent(Graphics g) {
             super.paintComponent(g);
             Graphics2D g2 = (Graphics2D) g;
             if (currentZoom != 1) {
@@ -300,7 +281,8 @@ public final class DrawingPanel extends FileFilter
             if (shutdownThread == null && !usingDrJava()) {
                 shutdownThread = new Thread(new Runnable() {
                     // Runnable implementation; used for shutdown thread.
-                    public void run() {
+                    @Override
+					public void run() {
                         try {
                             while (true) {
                                 // maybe shut down the program, if no more DrawingPanels are onscreen
@@ -407,14 +389,16 @@ public final class DrawingPanel extends FileFilter
     }
     
     // method of FileFilter interface
-    public boolean accept(File file) {
+    @Override
+	public boolean accept(File file) {
         return file.isDirectory() ||
             (file.getName().toLowerCase().endsWith(".png") || 
              file.getName().toLowerCase().endsWith(".gif"));
     }
     
     // used for an internal timer that keeps repainting
-    public void actionPerformed(ActionEvent e) {
+    @Override
+	public void actionPerformed(ActionEvent e) {
         if (e.getSource() instanceof Timer) {
             // redraw the screen at regular intervals to catch all paint operations
             panel.repaint();
@@ -448,7 +432,8 @@ public final class DrawingPanel extends FileFilter
             compareToFile();
         } else if (e.getActionCommand().equals("Compare to Web File...")) {
             new Thread(new Runnable() {
-                public void run() {
+                @Override
+				public void run() {
                     compareToURL();
                 }
             }).start();
@@ -516,7 +501,8 @@ public final class DrawingPanel extends FileFilter
     }
     
     // method of FileFilter interface
-    public String getDescription() {
+    @Override
+	public String getDescription() {
         return "Image files (*.png; *.gif)";
     }
     
@@ -546,17 +532,20 @@ public final class DrawingPanel extends FileFilter
     }
     
     // listens to mouse dragging
-    public void mouseDragged(MouseEvent e) {}
+    @Override
+	public void mouseDragged(MouseEvent e) {}
     
     // listens to mouse movement
-    public void mouseMoved(MouseEvent e) {
+    @Override
+	public void mouseMoved(MouseEvent e) {
         int x = e.getX() / currentZoom;
         int y = e.getY() / currentZoom;
         setStatusBarText("(" + x + ", " + y + ")");
     }
     
     // run on shutdown to save the image
-    public void run() {
+    @Override
+	public void run() {
         if (DEBUG) System.out.println("Running shutdown hook");
         try {
             String filename = System.getProperty(SAVE_PROPERTY);
@@ -744,7 +733,8 @@ public final class DrawingPanel extends FileFilter
     }
     
     // called when DrawingPanel closes, to potentially exit the program
-    public void windowClosing(WindowEvent event) {
+    @Override
+	public void windowClosing(WindowEvent event) {
         frame.setVisible(false);
         synchronized (getClass()) {
             instances--;
@@ -753,12 +743,18 @@ public final class DrawingPanel extends FileFilter
     }
     
     // methods required by WindowListener interface
-    public void windowActivated(WindowEvent event) {}
-    public void windowClosed(WindowEvent event) {}
-    public void windowDeactivated(WindowEvent event) {}
-    public void windowDeiconified(WindowEvent event) {}
-    public void windowIconified(WindowEvent event) {}
-    public void windowOpened(WindowEvent event) {}
+    @Override
+	public void windowActivated(WindowEvent event) {}
+    @Override
+	public void windowClosed(WindowEvent event) {}
+    @Override
+	public void windowDeactivated(WindowEvent event) {}
+    @Override
+	public void windowDeiconified(WindowEvent event) {}
+    @Override
+	public void windowIconified(WindowEvent event) {}
+    @Override
+	public void windowOpened(WindowEvent event) {}
 
     // zooms the drawing panel in/out to the given factor
     // factor should be >= 1
@@ -1183,6 +1179,7 @@ public final class DrawingPanel extends FileFilter
 				final JButton button = new JButton(names[i]);
 				button.setActionCommand(String.valueOf(i));
 				button.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent e) {
 						hack[0] = Integer.parseInt(button.getActionCommand());
 						dialog.setVisible(false);
@@ -1197,13 +1194,14 @@ public final class DrawingPanel extends FileFilter
         cancel.setMnemonic('C');
         cancel.requestFocus();
         cancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+            @Override
+			public void actionPerformed(ActionEvent e) {
                 dialog.setVisible(false);
             }
         });
         south.add(cancel);
         
-        dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+        dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         dialog.getContentPane().setLayout(new BorderLayout(10, 5));
         // ((JComponent) dialog.getContentPane()).setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         
@@ -1226,7 +1224,8 @@ public final class DrawingPanel extends FileFilter
     // brings the given window to the front of the z-ordering
     private void toFront(final Window window) {
         EventQueue.invokeLater(new Runnable() {
-            public void run() {
+            @Override
+			public void run() {
                 if (window != null) {
                     window.toFront();
                     window.repaint();
@@ -1269,7 +1268,8 @@ public final class DrawingPanel extends FileFilter
             display();
         }
         
-        public void actionPerformed(ActionEvent e) {
+        @Override
+		public void actionPerformed(ActionEvent e) {
             Object source = e.getSource();
             if (source == box) {
                 highlightDiffs = box.isSelected();
@@ -1355,7 +1355,8 @@ public final class DrawingPanel extends FileFilter
         }
         
         // paints the DiffImage panel
-        public void paintComponent(Graphics g) {
+        @Override
+		public void paintComponent(Graphics g) {
             super.paintComponent(g);
             Graphics2D g2 = (Graphics2D) g;
             
@@ -1599,7 +1600,8 @@ public final class DrawingPanel extends FileFilter
         }
         
         // method of ChangeListener interface
-        public void stateChanged(ChangeEvent e) {
+        @Override
+		public void stateChanged(ChangeEvent e) {
             opacity = slider.getValue();
             repaint();
         }
@@ -1693,7 +1695,8 @@ public final class DrawingPanel extends FileFilter
       }
     
       //----------------------------------------------------------------------------
-      Object getPixelSource() { return argbPixels; }
+      @Override
+	Object getPixelSource() { return argbPixels; }
     }
     
     
@@ -2057,7 +2060,7 @@ public final class DrawingPanel extends FileFilter
         }
     
         // write GIF TRAILER
-        out.write((int) ';');
+        out.write(';');
         
         out.flush();
       }
@@ -2109,7 +2112,7 @@ public final class DrawingPanel extends FileFilter
     
       public void endEncoding(OutputStream out) throws IOException {
         // write GIF TRAILER
-        out.write((int) ';');
+        out.write(';');
         
         out.flush();
       }
@@ -2175,7 +2178,7 @@ public final class DrawingPanel extends FileFilter
         // (i.e., interations beyond 1) rather than as an iteration count
         // (thus, to avoid repeating we have to omit the whole extension)
         
-        os.write((int) '!');           // GIF Extension Introducer
+        os.write('!');           // GIF Extension Introducer
         os.write(0xff);             // Application Extension Label
         
         os.write(11);                 // application ID block size
@@ -2193,7 +2196,7 @@ public final class DrawingPanel extends FileFilter
       //----------------------------------------------------------------------------
       private void writeCommentExtension(OutputStream os) throws IOException
       {
-        os.write((int) '!');     // GIF Extension Introducer
+        os.write('!');     // GIF Extension Introducer
         os.write(0xfe);       // Comment Extension Label
     
         int remainder = theComments.length() % 255;
@@ -2616,7 +2619,7 @@ public final class DrawingPanel extends FileFilter
         int transflag = itransparent == -1 ? 0 : 1;
         if (transflag == 1 || epluribus)   // using transparency or animating ?
         {
-          os.write((int) '!');           // GIF Extension Introducer
+          os.write('!');           // GIF Extension Introducer
           os.write(0xf9);                 // Graphic Control Label
           os.write(4);                   // subsequent data block size
           os.write((disposalCode << 2) | transflag); // packed fields (1 byte)
@@ -2629,7 +2632,7 @@ public final class DrawingPanel extends FileFilter
       //----------------------------------------------------------------------------
       private void writeImageDescriptor(OutputStream os) throws IOException
       {
-        os.write((int) ',');                // Image Separator
+        os.write(',');                // Image Separator
         putShort(thePosition.x, os);
         putShort(thePosition.y, os);
         putShort(theWidth, os);
@@ -3079,7 +3082,8 @@ public final class DrawingPanel extends FileFilter
       }
     
       //----------------------------------------------------------------------------
-      Object getPixelSource() { return ciPixels; }  
+      @Override
+	Object getPixelSource() { return ciPixels; }  
     }
     
     

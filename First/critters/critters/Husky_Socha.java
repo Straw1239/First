@@ -10,6 +10,7 @@ public class Husky_Socha extends Critter {
 		
 	}
 	
+	@Override
 	public Action getMove(CritterInfo info)
 	{
 		if (info.getFront() == Neighbor.OTHER)
@@ -24,11 +25,13 @@ public class Husky_Socha extends Critter {
 			return Action.RIGHT;
 	}
 	
+	@Override
 	public Color getColor()
 	{
 		return Color.PINK;
 	}
 	
+	@Override
 	public String toString()
 	{
 		return "+";

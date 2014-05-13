@@ -9,6 +9,7 @@ public class Lion extends Critter {
 		rand = new Random();
 	}
 	
+	@Override
 	public Action getMove(CritterInfo info) {
         if (info.getFront() == Neighbor.OTHER) {
             return Action.INFECT;
@@ -23,7 +24,8 @@ public class Lion extends Critter {
         	return Action.HOP;
     }
 
-    public Color getColor() {
+    @Override
+	public Color getColor() {
         int which = rand.nextInt(3);
         if (which == 0) {
             return Color.RED;
@@ -34,7 +36,8 @@ public class Lion extends Critter {
         }
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
         return "L";
     }
 }

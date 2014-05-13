@@ -14,6 +14,7 @@ public class Painter extends JPanel implements KeyListener
 		addKeyListener(this);
 	}
 	
+	@Override
 	public void paintComponent(Graphics g)
 	{
 		g.setColor(Color.red);

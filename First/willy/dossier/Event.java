@@ -100,6 +100,7 @@ public class Event {
 	
 	/**Converts this Event into a single String, so that it can be put into a text file for saving
 	 * @return the text version of the Event */
+	@Override
 	public String toString () {
 		return (this.EName + "~" + this.EMonth + "~" + this.EDay + "~" + this.EYear + "~" +
 		this.EStartTime + "~" + this.EEndTime + "~" + this.EDescription + "~" + this.EPriority);
