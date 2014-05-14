@@ -34,7 +34,12 @@ public class Vector
 	
 	public Vector normalized()
 	{
-		return scale(1 / getLength());
+		return normalized(1);
+	}
+	
+	public Vector normalized(double length)
+	{
+		return scale(length / getLength());
 	}
 	
 	public Vector add(Vector v)
@@ -57,9 +62,19 @@ public class Vector
 		return new Vector(-y, x);
 	}
 	
+	public Vector scaleAdd(double scale, Vector other)
+	{
+		return new Vector(x * scale + other.x, y * scale + other.y);
+	}
+	
+	public Vector addScaled(Vector other, double scale)
+	{
+		return new Vector(x + scale * other.x, y + scale * other.y);
+	}
+	
 	public Vector reflect(Vector normal)
 	{
-		return normal.scale(dotProduct(this, normal) / normal.lengthSquared() * 2).sub(this);
+		return normal.scaleAdd(-2 * dotProduct(this, normal) / normal.lengthSquared(), this);
 	}
 	
 	@Override

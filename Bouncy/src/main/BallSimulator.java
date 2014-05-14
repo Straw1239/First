@@ -13,10 +13,10 @@ public class BallSimulator
 	private List<Ball> balls;
 	public final Vector dimensions;
 	private ImmutableList<Ball> state;
-	private static final Vector TOP_WALL = new Vector(1, 0);
-	private static final Vector RIGHT_WALL = new Vector(0, 1);
-	private static final Vector LEFT_WALL = new Vector(0, 1);
-	private static final Vector BOTTOM_WALL = new Vector(1, 0);
+	private static final Vector BOTTOM_WALL = new Vector(0, -1);
+	private static final Vector RIGHT_WALL = new Vector(-1, 0);
+	private static final Vector LEFT_WALL = new Vector(1, 0);
+	private static final Vector TOP_WALL = new Vector(0, 1);
 	private double timeSimulated = 0;
 	
 	public BallSimulator(Vector dimensions)
@@ -60,7 +60,7 @@ public class BallSimulator
 		double maxX = dimensions.x - radius, maxY = dimensions.y - radius, minX = radius, minY = radius;
 		if(p.y >= maxY && v.y > 0)
 		{
-			b.velocity = b.velocity.reflect(TOP_WALL);
+			b.velocity = b.velocity.reflect(BOTTOM_WALL);
 		}
 		if(p.x >= maxX && v.x > 0)
 		{
@@ -68,7 +68,7 @@ public class BallSimulator
 		}
 		if(p.y <= minY && v.y < 0)
 		{
-			b.velocity = b.velocity.reflect(BOTTOM_WALL);
+			b.velocity = b.velocity.reflect(TOP_WALL);
 		}
 		if(p.x <= minX && v.x < 0)
 		{

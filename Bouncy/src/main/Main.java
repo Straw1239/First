@@ -44,12 +44,13 @@ public class Main extends Application
 				System.exit(0);
 			}
 		});
-		renderer = new Renderer(1920, 1080);
+		double width = 1366, height = 768;
+		renderer = new Renderer(width, height);
 		BorderPane pane = new BorderPane();
 		pane.setCenter(renderer);
 		stage.setScene(new Scene(pane));
-		simulation = new BallSimulator(1920 * 4, 1080 * 4);
-		int balls = 2048;
+		simulation = new BallSimulator(width * 4, height * 4);
+		int balls = 1024;
 		List<Color> colors = new ArrayList<>(Arrays.asList(Color.RED, Color.ORANGERED, Color.ORANGE, Color.YELLOW, Color.YELLOWGREEN, Color.GREEN, Color.TURQUOISE, Color.BLUE, Color.BLUEVIOLET, Color.INDIGO, Color.VIOLET));
 		List<Color> temp = new ArrayList<>(colors);
 		Collections.reverse(temp);
@@ -57,7 +58,7 @@ public class Main extends Application
 		for(int i = 0; i < balls; i++)
 		{
 			double angle = i * 2 * Math.PI / balls;
-			Vector v = Vector.fromPolar(1 / Math.sin(angle) * 100, angle);
+			Vector v = Vector.fromPolar( 250, angle);
 			Color c = colors.get(i % colors.size());//new Color(rand.nextDouble(), rand.nextDouble(), rand.nextDouble(), rand.nextDouble());
 			simulation.addBall(new Ball(simulation.dimensions.scale(.5), v, 20, c));
 		}
