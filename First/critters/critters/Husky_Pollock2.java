@@ -3,7 +3,7 @@ package critters;
 //they become adjacent to another friendly critter. This starts phase two, in which the critters
 //stay in the same spot, but orient themselves outward away from the cluster so they are ready for a fight.
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.Random;
 
 

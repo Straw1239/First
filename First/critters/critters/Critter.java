@@ -28,7 +28,7 @@ package critters;
 //     public int getInfectCount();        returns your current infect count
 //                                         (# of Critters you have infected)
 
-import java.awt.*;
+import java.awt.Color;
 
 public class Critter {
     public static enum Neighbor {

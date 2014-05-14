@@ -59,6 +59,7 @@ public class Vector {
 		return normal.scale(dotProduct(this, normal) / normal.lengthSquared() * 2).sub(this);
 	}
 	
+	@Override
 	public String toString()
 	{
 		return "(" + x + ", " + y + ")";

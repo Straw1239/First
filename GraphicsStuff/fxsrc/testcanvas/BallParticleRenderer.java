@@ -10,7 +10,6 @@ package testcanvas;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.effect.Bloom;
 import javafx.scene.effect.GaussianBlur;
 
 /**

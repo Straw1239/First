@@ -29,13 +29,14 @@ public class Cursor extends GameObject
 		return false;
 	}
 
+	@Override
 	public void draw(GraphicsContext g)
 	{
 		g.setStroke(color);
 		g.setLineWidth(5);
 		g.strokeOval(x - radius, y - radius,  2 * radius, 2 * radius);
 		g.setStroke(Color.WHITE);
-		double radius = this.radius - 5;
+		double radius = Cursor.radius - 5;
 		g.strokeOval(x - radius, y - radius, 2 * radius, 2 * radius);
 	}
 

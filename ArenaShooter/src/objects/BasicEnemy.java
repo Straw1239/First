@@ -1,16 +1,9 @@
 package objects;
 
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import objects.events.GameEvent;
-import player.Player;
-
-import com.google.common.collect.Multimap;
-
 import engine.EventHandler;
 import engine.State;
 import fxcore.MainGame;
@@ -74,6 +67,7 @@ public class BasicEnemy extends Enemy
 
 	
 	
+	@Override
 	public GameEvent event(State d)
 	{
 		if(MainGame.getTime() < shotTime + fireTime) return null;
@@ -86,6 +80,7 @@ public class BasicEnemy extends Enemy
 			
 			public void draw(GraphicsContext g){}
 			
+			@Override
 			public boolean hasExpired()
 			{
 				return hasExpired;

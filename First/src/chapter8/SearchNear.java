@@ -3,8 +3,10 @@ package chapter8;
 // location.  Read the giveIntro method for more details.  It depends on a file
 // called places.txt for the data.
 
-import java.util.*;
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class SearchNear {
     public static void main(String[] args) throws FileNotFoundException {

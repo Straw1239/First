@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 import objects.BasicEnemy;
 import objects.Bullet;
 import objects.Cursor;
-import objects.Enemy;
 import objects.Entity;
 import objects.Faction;
 import objects.GameObject;
@@ -22,7 +21,6 @@ import player.Player;
 import utils.Concatenator;
 import utils.Utils;
 
-import com.google.common.collect.Iterables;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Multimap;
 

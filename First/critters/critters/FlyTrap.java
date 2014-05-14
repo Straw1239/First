@@ -5,7 +5,7 @@ package critters;
 // otherwise just spin around, looking for critters to infect.  This simple
 // strategy turns out to be surpisingly successful.
 
-import java.awt.*;
+import java.awt.Color;
 
 public class FlyTrap extends Critter {
     @Override

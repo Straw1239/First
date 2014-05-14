@@ -4,8 +4,8 @@ package critters;
 // A simple critter that infects when possible and otherwise randomly picks
 // among the other three moves.
 
-import java.awt.*;
-import java.util.*;
+import java.awt.Color;
+import java.util.Random;
 
 public class Crab extends Critter {
     private Random r;

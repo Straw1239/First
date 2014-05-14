@@ -6,10 +6,14 @@ package critters;
 //
 // Class CritterPanel displays a grid of critters
 
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.*;
-import java.util.*;
+import java.util.Iterator;
+
+import javax.swing.JPanel;
 
 public class CritterPanel extends JPanel {
     private CritterModel myModel;

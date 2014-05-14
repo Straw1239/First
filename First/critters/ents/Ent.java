@@ -1,6 +1,10 @@
 package ents;
 
-import java.awt.*;
+
+import java.awt.AWTPermission;
+import java.awt.Color;
+import java.awt.Frame;
+import java.awt.Point;
 import java.io.FilePermission;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -16,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumMap;
+import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.Random;
 
@@ -26,7 +31,7 @@ import critters.CritterFrame;
 import critters.CritterInfo;
 import critters.CritterModel;
 
-public class Ent extends Critter
+public final class Ent extends Critter
 {
 	/**
 	 * Store default System.out printstream so we can change the System.out version
@@ -52,13 +57,12 @@ public class Ent extends Critter
 	 */
 	private static EntSecurity security = new EntSecurity(password);
 	private static String symbol = "E";
-	private static Random rand = new XRandom();
-	private static Robot robot;
+	private static Random rand = new Random();
+	private static IdentityHashMap<Ent, Point> locations = new IdentityHashMap<>();
 	
 	
 	
 	
-	private Point location = new Point(0, 0);
 	private Direction direction;
 	
 	
@@ -66,17 +70,7 @@ public class Ent extends Critter
 	
 	public Ent()
 	{
-		if(robot == null)
-		{
-			try
-			{
-				robot = new Robot();
-			}
-			catch (AWTException e)
-			{
-				throw new RuntimeException(e);
-			}
-		}
+		
 	}
 	
 	
@@ -84,7 +78,6 @@ public class Ent extends Critter
 	@Override
 	public Action getMove(CritterInfo info)
 	{
-		if(1 != 2)throw new RuntimeException();
 		direction = info.getDirection();
 		if(info.getFront() == Neighbor.OTHER)
 		{
@@ -94,6 +87,7 @@ public class Ent extends Critter
 		{
 			return logMove(rand.nextBoolean() ? Action.RIGHT : Action.LEFT);
 		}
+		
 		return logMove(Action.HOP);
 	}
 	
@@ -186,7 +180,7 @@ public class Ent extends Critter
 		
 	}
 	
-	private static class EntSecurity extends SecurityManager
+	private static final class EntSecurity extends SecurityManager
 	{
 		private MessageDigest hasher;
 		private boolean unlocked = false;
@@ -195,7 +189,11 @@ public class Ent extends Critter
 		
 		public EntSecurity(byte[] password)
 		{
-			Thread current = Thread.currentThread();
+			Thread.setDefaultUncaughtExceptionHandler((e, t) -> 
+			{
+				err.println("ERROR: " + t + " THROWN BY CRITTER; SHOULD BE DISQUALIFIED");
+				t.printStackTrace(err);
+			}); 
 			PrintStream nothing = new PrintStream(new OutputStream()
 			{
 
@@ -205,8 +203,8 @@ public class Ent extends Critter
 					
 				}
 			});
-			//System.setErr(nothing);
-			//System.setOut(nothing);
+			System.setErr(nothing);
+			System.setOut(nothing);
 			this.password = getHash(Arrays.copyOf(password, password.length));
 			setIllegals();
 			System.setSecurityManager(this);
@@ -271,7 +269,7 @@ public class Ent extends Critter
 		
 		
 		@Override
-		public void checkPermission(Permission p)
+		public synchronized void checkPermission(Permission p)
 		{
 			if(unlocked) return;
 			
@@ -283,29 +281,29 @@ public class Ent extends Critter
 			
 			for(StackTraceElement e : stack)
 			{
+				
+				
+					
+				unlocked = true;
+				Class<?> next;
 				try
 				{
-					if(Critter.class.isAssignableFrom(Class.forName(e.getClassName())));
-					{
-						for(Permission i : illegals)
-						{
-							if(p.implies(i)) throw new SecurityException();
-							if(i.implies(p)) throw new SecurityException();
-						}
-					}
+					next = Class.forName(e.getClassName());
 				}
 				catch (ClassNotFoundException e1)
 				{
-					e1.printStackTrace(err);
-					if(e.getMethodName().equals("getMove"))
+					throw new InternalError(e1);
+				}
+				unlocked = false;
+				if(e.getMethodName().equals("getMove") || (e.getMethodName().equals("<init>") && Critter.class.isAssignableFrom(next)))
+				{
+					for(Permission i : illegals)
 					{
-						for(Permission i : illegals)
-						{
-							if(p.implies(i)) throw new SecurityException();
-							if(i.implies(p)) throw new SecurityException();
-						}
+						if(p.implies(i)) throw new SecurityException();
+						if(i.implies(p)) throw new SecurityException();
 					}
-				}	
+				}
+					
 			}
 			
 			

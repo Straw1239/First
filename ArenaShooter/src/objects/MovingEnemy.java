@@ -3,7 +3,6 @@ package objects;
 
 
 
-import player.Player;
 import player.PlayerDataHolder;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -71,6 +70,7 @@ public class MovingEnemy extends Enemy
 		y += speed * (p.getY() - y) / distance;
 	}
 
+	@Override
 	public boolean collidesWith(GameObject entity) 
 	{
 		assert(entity != null);

@@ -1,7 +1,6 @@
 package objects;
 
 import objects.events.GameEvent;
-import player.Player;
 import utils.Utils;
 import engine.State;
 /**
@@ -49,16 +48,19 @@ public abstract class GameObject implements ObjectDataHolder
 		return null;
 	}
 	
+	@Override
 	public double getX()
 	{
 		return x;
 	}
 	
+	@Override
 	public double getY()
 	{
 		return y;
 	}
 	
+	@Override
 	public Faction getFaction()
 	{
 		return faction;
@@ -110,6 +112,7 @@ public abstract class GameObject implements ObjectDataHolder
 		return true;
 	}
 	
+	@Override
 	public Object clone()
 	{
 		try

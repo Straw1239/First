@@ -39,7 +39,7 @@ public class EldraziSwarmIII extends Critter {
     //Returns the String that this ESC is (omega)
     @Override
 	public String toString () {
-    	return "ï¿½";
+    	return "½";
     }
 	
 	//Returns how this ESC will act

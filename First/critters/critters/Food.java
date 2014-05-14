@@ -4,7 +4,7 @@ package critters;
 // This defines a simple class of critters that sit around waiting to be
 // taken over by other critters.
 
-import java.awt.*;
+import java.awt.Color;
 
 public class Food extends Critter {
     @Override

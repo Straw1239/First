@@ -1,5 +1,7 @@
 package main;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
 public class Quine {
 static Deque<String> toPrint = new LinkedList<>();
 static Deque<String> printA = new LinkedList<>();

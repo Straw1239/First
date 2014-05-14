@@ -1,8 +1,5 @@
 package objects;
 
-import player.Player;
-import javafx.scene.canvas.GraphicsContext;
-
 
 public abstract class Enemy extends Entity implements EnemyDataHolder
 {

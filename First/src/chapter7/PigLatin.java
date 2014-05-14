@@ -1,5 +1,5 @@
 package chapter7;
-import java.util.*;
+import java.util.Scanner;
 public class PigLatin 
 {
 	public static void main(String[] args) 

@@ -52,6 +52,7 @@ public abstract class Circle implements Bounds
 		return Utils.distance(centerX(), centerY(), other.centerX(), other.centerY()) < (radius + other.radius);
 	}
 	
+	@Override
 	public boolean intersectsRectangle(Rectangle other)
 	{
 		return other.intersectsCircle(this);

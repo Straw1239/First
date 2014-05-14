@@ -7,11 +7,19 @@ package chapter8;
 // Sample call:
 //     GeoLocation location = GeoLocator.find("space needle");
 
-import java.io.*;
+import static javax.xml.xpath.XPathConstants.DOM_OBJECT_MODEL;
+import static javax.xml.xpath.XPathConstants.NUMBER;
+import static javax.xml.xpath.XPathConstants.STRING;
+
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import javax.xml.parsers.*;
-import javax.xml.xpath.*;
-import static javax.xml.xpath.XPathConstants.*;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathFactory;
+
 import org.w3c.dom.Document;
 
 public class GeoLocator {

@@ -33,12 +33,14 @@ public class Ball implements Drawable, Cloner, Copyable<Ball>
 		position = position.add(velocity.scale(dt));
 	}
 	
+	@Override
 	public void draw(GraphicsContext g)
 	{
 		g.setFill(color);
 		g.fillOval(position.x - radius, position.y - radius, 2 * radius, 2 * radius);
 	}
 	
+	@Override
 	public Object clone()
 	{
 		try 

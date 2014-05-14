@@ -8,8 +8,6 @@
 
 package testcanvas;
 
-import java.io.InputStream;
-
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.GaussianBlur;

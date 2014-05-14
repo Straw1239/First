@@ -6,10 +6,19 @@ package critters;
 //
 // Class CritterModel keeps track of the state of the critter simulation.
 
-import java.util.*;
-import java.awt.Point;
 import java.awt.Color;
-import java.lang.reflect.*;
+import java.awt.Point;
+import java.lang.reflect.Constructor;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 public class CritterModel {
     private int height;
@@ -64,6 +73,7 @@ public class CritterModel {
             } catch (Exception e) {
                 System.out.println("ERROR: " + critter + " does not have" +
                                    " the appropriate constructor.");
+                e.printStackTrace();
                 System.exit(1);
                 return;
             }

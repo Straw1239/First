@@ -33,7 +33,8 @@ public class XRandom extends Random
 		 seed = seed * prime + Thread.currentThread().hashCode();
 	 }
 
-	 protected int next(int nbits) 
+	 @Override
+	protected int next(int nbits) 
 	 {
 		 long x = seed;
 		 x ^= (x << 21);

@@ -2,7 +2,7 @@ package critters;
 
 //Saritha Beauchamp
 //advocate4tigers@gmail.com
-import java.awt.*;
+import java.awt.Color;
 public class Husky_Saritha2 extends Critter{
 	private boolean swarm;
 	public Husky_Saritha2(){

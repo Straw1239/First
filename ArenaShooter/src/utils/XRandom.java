@@ -23,7 +23,8 @@ public class XRandom extends Random
 		 this.seed = seed;
 	 }
 
-	 protected int next(int nbits) 
+	 @Override
+	protected int next(int nbits) 
 	 {
 		 long x = seed;
 		 x ^= (x << 21);

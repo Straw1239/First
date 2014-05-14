@@ -4,9 +4,6 @@ package objects;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import objects.events.Explosion;
-import objects.events.GameEvent;
-import player.Player;
 import utils.Utils;
 import engine.State;
 import fxcore.MainGame;
@@ -188,11 +185,13 @@ public class Bullet extends GameObject implements BulletDataHolder
 		e.damage(damage);
 	}
 	
+	@Override
 	public double getDX()
 	{
 		return dx;
 	}
 	
+	@Override
 	public double getDY()
 	{
 		return dy;

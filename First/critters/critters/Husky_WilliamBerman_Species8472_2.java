@@ -1,7 +1,7 @@
 ﻿package critters;
 
-import java.awt.*;
-import java.util.*;
+import java.awt.Color;
+import java.util.Random;
 //UNABLE TO BEAT:
 //Dabo
 //Dickson

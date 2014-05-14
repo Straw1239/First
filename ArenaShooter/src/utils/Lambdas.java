@@ -7,9 +7,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import player.Player;
-import player.PlayerDataHolder;
-
 public class Lambdas 
 {
 

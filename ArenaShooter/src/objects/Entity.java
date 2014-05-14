@@ -19,16 +19,19 @@ public abstract class Entity extends GameObject implements EntityDataHolder
 	protected double health;
 	protected double maxHealth;
 	
+	@Override
 	public boolean isDead()
 	{
 		return health == 0;
 	}
 	
+	@Override
 	public double health()
 	{
 		return health;
 	}
 	
+	@Override
 	public double maxHealth()
 	{
 		return maxHealth;

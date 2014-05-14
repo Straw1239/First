@@ -14,11 +14,13 @@ public abstract class Concatenator<E> implements Collection<E>
 		this.collections = collections;
 	}
 	
+	@Override
 	public Iterator<E> iterator()
 	{
 		return Iterables.concat(collections).iterator();
 	}
 	
+	@Override
 	public boolean remove(Object obj)
 	{
 		Iterator<E> iterator = iterator();
@@ -35,6 +37,7 @@ public abstract class Concatenator<E> implements Collection<E>
 		return found;
 	}
 	
+	@Override
 	public boolean removeAll(Collection<?> objects)
 	{
 		Iterator<E> iterator = iterator();
@@ -51,6 +54,7 @@ public abstract class Concatenator<E> implements Collection<E>
 		return found;
 	}
 	
+	@Override
 	public boolean contains(Object obj)
 	{
 		for(Collection<? extends E> c : collections)
@@ -60,11 +64,13 @@ public abstract class Concatenator<E> implements Collection<E>
 		return false;
 	}
 	
+	@Override
 	public boolean containsAll(Collection<?> objects)
 	{
 		throw new UnsupportedOperationException();
 	}
 	
+	@Override
 	public void clear()
 	{
 		for(Collection<? extends E> c : collections)
@@ -73,6 +79,7 @@ public abstract class Concatenator<E> implements Collection<E>
 		}
 	}
 	
+	@Override
 	public int size()
 	{
 		int size = 0;
@@ -83,11 +90,13 @@ public abstract class Concatenator<E> implements Collection<E>
 		return size;
 	}
 	
+	@Override
 	public boolean isEmpty()
 	{
 		return size() == 0;
 	}
 	
+	@Override
 	public boolean retainAll(Collection<?> objects)
 	{
 		boolean changed = false;
@@ -98,11 +107,13 @@ public abstract class Concatenator<E> implements Collection<E>
 		return changed;
 	}
 	
+	@Override
 	public Object[] toArray()
 	{
 		throw new UnsupportedOperationException();
 	}
 	
+	@Override
 	public <T> T[] toArray(T[] arg)
 	{
 		throw new UnsupportedOperationException();

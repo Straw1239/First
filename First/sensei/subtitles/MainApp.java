@@ -41,7 +41,7 @@ public class MainApp extends Application
 				}
 			});
 		
-			player.rateProperty().set(.9);
+			player.rateProperty().set(.8);
 		
 			
 			StackPane p = new StackPane();

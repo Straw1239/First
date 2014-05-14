@@ -1,6 +1,5 @@
 package utils;
 
-import objects.GameObject;
 import objects.ObjectDataHolder;
 
 /**

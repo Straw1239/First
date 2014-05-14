@@ -3,7 +3,7 @@ package chapter8;
 // GeoLocation class.  It prompts the user for two locations and reports the
 // distance between them.
 
-import java.util.*;
+import java.util.Scanner;
 
 public class DistanceFinder {
     public static void main(String[] args) {

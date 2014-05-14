@@ -1,16 +1,7 @@
 package objects.events;
 
-import java.util.Collection;
-
-import objects.Bullet;
-import objects.Enemy;
-import objects.Entity;
 import objects.Faction;
 import objects.ObjectDataHolder;
-import player.Player;
-
-import com.google.common.collect.Multimap;
-
 import fxcore.MainGame;
 /**
  * Basic abstract base class for all events. See EventDataHolder. 
@@ -38,26 +29,31 @@ public abstract class GameEvent implements EventDataHolder
 		this(source.getX(), source.getY(), source.getFaction());
 	}
 	
+	@Override
 	public double getX()
 	{
 		return x;
 	}
 	
+	@Override
 	public double getY()
 	{
 		return y;
 	}
 	
+	@Override
 	public Faction getFaction()
 	{
 		return faction;
 	}
 	
+	@Override
 	public long startTime()
 	{
 		return startTime;
 	}
 	
+	@Override
 	public Object clone()
 	{
 		try

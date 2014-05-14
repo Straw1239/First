@@ -10,6 +10,7 @@ public interface EntityDataHolder extends ObjectDataHolder
 	
 	public double maxHealth();
 	
+	@Override
 	public void draw(GraphicsContext g);
 	
 	

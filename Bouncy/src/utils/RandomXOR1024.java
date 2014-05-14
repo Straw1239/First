@@ -47,6 +47,7 @@ public class RandomXOR1024 implements Random
 		state = Arrays.copyOf(seed, 16);
 	}
 	
+	@Override
 	public synchronized long nextULong()
 	{
 		long temp1 = state[p];
@@ -69,6 +70,7 @@ public class RandomXOR1024 implements Random
 			this.state = state;
 		}
 		
+		@Override
 		public long nextULong()
 		{
 			state ^= state >>> 12;

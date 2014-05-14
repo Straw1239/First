@@ -17,7 +17,6 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import player.Player;
 import utils.XRandom;
@@ -60,6 +59,7 @@ public class MainGame extends Application
 	private Renderer renderer;
 	
 	
+	@Override
 	public void init()
 	{
 		Platform.setImplicitExit(true);

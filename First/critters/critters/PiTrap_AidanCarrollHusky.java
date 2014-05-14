@@ -4,7 +4,7 @@ package critters;
 // The PiTrap class
 
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.Random;
 
 public class PiTrap_AidanCarrollHusky extends Critter {

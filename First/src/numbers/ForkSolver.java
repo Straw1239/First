@@ -1,9 +1,14 @@
 package numbers;
 
-import java.awt.*;
-import java.io.*;
-import java.util.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.io.FileNotFoundException;
+import java.util.Collection;
+import java.util.Iterator;
+
+import javax.swing.JComponent;
+import javax.swing.JFrame;
 
 
 
