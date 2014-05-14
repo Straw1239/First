@@ -23,8 +23,6 @@ public class Renderer extends Canvas
 	public void render(Collection<? extends Drawable> stuff, Vector dimensions)
 	{
 		GraphicsContext g = getGraphicsContext2D();
-		g.setFill(Color.BLACK);
-		g.fillRect(0, 0, getWidth(), getHeight());
 		g.save();
 		g.scale(getWidth() / dimensions.x, getHeight() / dimensions.y);
 		//GaussianBlur b = new GaussianBlur();

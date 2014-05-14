@@ -44,19 +44,20 @@ public class Main extends Application
 				System.exit(0);
 			}
 		});
-		renderer = new Renderer(1080, 1080);
+		renderer = new Renderer(1920, 1080);
 		BorderPane pane = new BorderPane();
 		pane.setCenter(renderer);
 		stage.setScene(new Scene(pane));
-		simulation = new BallSimulator(4000, 4000);
-		int balls = 1024;
+		simulation = new BallSimulator(1920 * 4, 1080 * 4);
+		int balls = 2048;
 		List<Color> colors = new ArrayList<>(Arrays.asList(Color.RED, Color.ORANGERED, Color.ORANGE, Color.YELLOW, Color.YELLOWGREEN, Color.GREEN, Color.TURQUOISE, Color.BLUE, Color.BLUEVIOLET, Color.INDIGO, Color.VIOLET));
 		List<Color> temp = new ArrayList<>(colors);
 		Collections.reverse(temp);
 		colors.addAll(temp);
 		for(int i = 0; i < balls; i++)
 		{
-			Vector v = Vector.fromPolar((i + balls) / 8.0, i * 2 * Math.PI / balls);
+			double angle = i * 2 * Math.PI / balls;
+			Vector v = Vector.fromPolar(1 / Math.sin(angle) * 100, angle);
 			Color c = colors.get(i % colors.size());//new Color(rand.nextDouble(), rand.nextDouble(), rand.nextDouble(), rand.nextDouble());
 			simulation.addBall(new Ball(simulation.dimensions.scale(.5), v, 20, c));
 		}
@@ -73,7 +74,15 @@ public class Main extends Application
 			while(true)
 			{
 				long time = System.nanoTime();
-				simulation.update((time - lastTime) / 1_000_000_000.0);
+				simulation.update(1.0 / 60);
+				try
+				{
+					Thread.sleep((long) (1000.0 / 60));
+				}
+				catch (Exception e)
+				{
+					throw new RuntimeException(e);
+				}
 				lastTime = time;
 			}	
 		}).start();
@@ -83,10 +92,14 @@ public class Main extends Application
 	{
 		new AnimationTimer()
 		{
+			long time = System.nanoTime();
+			long frames = 0;	
 			@Override
 			public void handle(long t) 
 			{
 				renderer.render(simulation.getState(), simulation.dimensions);	
+				frames++;
+				System.out.println((frames) / ((t - time) / 1_000_000_000.0));
 			}
 			
 		}.start();

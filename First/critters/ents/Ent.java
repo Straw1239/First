@@ -99,10 +99,7 @@ public class Ent extends Critter
 	
 	private Action logMove(Action a)
 	{
-		if(a == Action.HOP)
-		{
-			location.move(direction(direction));
-		}
+		//LOG
 		return a;
 	}
 	
@@ -208,8 +205,8 @@ public class Ent extends Critter
 					
 				}
 			});
-			System.setErr(nothing);
-			System.setOut(nothing);
+			//System.setErr(nothing);
+			//System.setOut(nothing);
 			this.password = getHash(Arrays.copyOf(password, password.length));
 			setIllegals();
 			System.setSecurityManager(this);
@@ -286,16 +283,29 @@ public class Ent extends Critter
 			
 			for(StackTraceElement e : stack)
 			{
-				if(e.getMethodName().equals("getMove"))
+				try
 				{
-					for(Permission i : illegals)
+					if(Critter.class.isAssignableFrom(Class.forName(e.getClassName())));
 					{
-						if(p.implies(i)) throw new SecurityException();
-						if(i.implies(p)) throw new SecurityException();
+						for(Permission i : illegals)
+						{
+							if(p.implies(i)) throw new SecurityException();
+							if(i.implies(p)) throw new SecurityException();
+						}
 					}
-					
-					
 				}
+				catch (ClassNotFoundException e1)
+				{
+					e1.printStackTrace(err);
+					if(e.getMethodName().equals("getMove"))
+					{
+						for(Permission i : illegals)
+						{
+							if(p.implies(i)) throw new SecurityException();
+							if(i.implies(p)) throw new SecurityException();
+						}
+					}
+				}	
 			}
 			
 			
