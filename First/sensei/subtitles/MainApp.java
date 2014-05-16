@@ -4,6 +4,7 @@ import java.io.File;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
@@ -46,6 +47,7 @@ public class MainApp extends Application
 			
 			StackPane p = new StackPane();
 			p.getChildren().add(view);
+			p.getChildren().add(new Label("SUBTITLES"));
 			
 			Scene scene = new Scene(p, 500, 500);
 			

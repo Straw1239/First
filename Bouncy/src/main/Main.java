@@ -44,7 +44,7 @@ public class Main extends Application
 				System.exit(0);
 			}
 		});
-		double width = 1366, height = 768;
+		double width = 1280, height = 1024;
 		renderer = new Renderer(width, height);
 		BorderPane pane = new BorderPane();
 		pane.setCenter(renderer);
@@ -58,7 +58,9 @@ public class Main extends Application
 		for(int i = 0; i < balls; i++)
 		{
 			double angle = i * 2 * Math.PI / balls;
-			Vector v = Vector.fromPolar( 250, angle);
+			double sin = Math.sin(angle);
+			double cos = Math.cos(angle);
+			Vector v = Vector.fromPolar(200 / sin, angle);
 			Color c = colors.get(i % colors.size());//new Color(rand.nextDouble(), rand.nextDouble(), rand.nextDouble(), rand.nextDouble());
 			simulation.addBall(new Ball(simulation.dimensions.scale(.5), v, 20, c));
 		}
