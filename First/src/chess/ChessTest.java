@@ -5,11 +5,11 @@ import java.awt.Graphics;
 public class ChessTest {
 
 	public static void main(String[] args) {
-		BoardState start = BoardState.getStartingPosition();
-		BoardState e4 = start.move(1, 4, 3, 4);
-		BoardState d5 = e4.move(6, 3, 4, 3);
-		BoardState check = d5.move(0, 5, 4, 1);
-		BoardState recovery = check.move(6, 2, 5, 2);
+		State start = State.getStartingPosition();
+		State e4 = start.move(1, 4, 3, 4);
+		State d5 = e4.move(6, 3, 4, 3);
+		State check = d5.move(0, 5, 4, 1);
+		State recovery = check.move(6, 2, 5, 2);
 		System.out.println(start.isWhiteToPlay());
 		System.out.println(e4.isWhiteToPlay());
 		System.out.println();

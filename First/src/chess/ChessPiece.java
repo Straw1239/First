@@ -16,7 +16,7 @@ public enum ChessPiece
 		 g.setColor((isWhite) ? Color.white : Color.black);
 		 g.drawString(p.toString(), x, y);
 	 }
-	 public static Collection<BoardState> possibleMoves(BoardState board,int rank, int file)
+	 public static Collection<State> possibleMoves(State board,int rank, int file)
 	 {
 		 if(board.getSquare(rank,file).isEmpty()) throw new IllegalArgumentException();
 		 Piece p = board.getSquare(rank,file).occupant;
@@ -36,9 +36,9 @@ public enum ChessPiece
 		 
 	 }
 	
-	 public static Collection<BoardState> kingMoves(BoardState board,int rank, int file,boolean isWhite)
+	 public static Collection<State> kingMoves(State board,int rank, int file,boolean isWhite)
 	 {
-		 Collection<BoardState> results = board.castling();
+		 Collection<State> results = board.castling();
 		 for(int i = -1; i < 2; i++)
 		 {
 			 for(int j = -1; j < 2; j++)
@@ -51,7 +51,7 @@ public enum ChessPiece
 						 Square s = board.getSquare(r, f);
 						 if(s.isEmpty() || s.occupant.isWhite != isWhite)
 						 {
-							 BoardState temp = board.move(rank, file, r, f);
+							 State temp = board.move(rank, file, r, f);
 							 if(!(isWhite ? temp.isWhiteinCheck() : temp.isBlackinCheck()))
 							 {
 								 results.add(temp);
@@ -63,15 +63,15 @@ public enum ChessPiece
 		 }
 		 return results;
 	 }
-	 public static Collection<BoardState> queenMoves(BoardState board, int rank, int file, boolean isWhite)
+	 public static Collection<State> queenMoves(State board, int rank, int file, boolean isWhite)
 	 {
-		 Collection<BoardState> moves = rookMoves(board,rank,file,isWhite);
+		 Collection<State> moves = rookMoves(board,rank,file,isWhite);
 		 moves.addAll(bishopMoves(board,rank,file,isWhite));
 		 return moves;
 	 }
-	 public static Collection<BoardState> rookMoves(BoardState board, int rank, int file, boolean isWhite)
+	 public static Collection<State> rookMoves(State board, int rank, int file, boolean isWhite)
 	 {
-		 Collection<BoardState> results = new ArrayList<>();
+		 Collection<State> results = new ArrayList<>();
 		 int[] rf = new int[2];
 		 for(int i = 0; i < 2; i++)
 		 {
@@ -82,7 +82,7 @@ public enum ChessPiece
 				 rf[i] += j;
 				 while(board.isOnBoard(rf[0], rf[1]) && board.getSquare(rf[0], rf[1]).isEmpty())
 				 {
-					BoardState temp = board.move(rank, file, rf[0], rf[1]);
+					State temp = board.move(rank, file, rf[0], rf[1]);
 					if(!(isWhite? temp.isWhiteinCheck() : temp.isBlackinCheck()))
 					{
 						results.add(temp);
@@ -93,7 +93,7 @@ public enum ChessPiece
 				 {
 					if(board.getSquare(rf[0], rf[1]).occupant.isWhite != isWhite)
 					{
-						BoardState temp = board.move(rank, file, rf[0], rf[1]);
+						State temp = board.move(rank, file, rf[0], rf[1]);
 						if(!(isWhite? temp.isWhiteinCheck() : temp.isBlackinCheck()))
 						{
 							 results.add(temp);
@@ -106,9 +106,9 @@ public enum ChessPiece
 		 }
 		 return results;
 	 }
-	 public static Collection<BoardState> bishopMoves(BoardState board, int rank, int file, boolean isWhite)
+	 public static Collection<State> bishopMoves(State board, int rank, int file, boolean isWhite)
 	 {
-		 ArrayList<BoardState> results = new ArrayList<>();
+		 ArrayList<State> results = new ArrayList<>();
 		 for(int i = -1; i < 2; i += 2)
 		 {
 			 for(int j = -1; j < 2; j += 2)
@@ -116,7 +116,7 @@ public enum ChessPiece
 				 int r = rank + i, f = file + j;
 				 while(board.isOnBoard(r, f) && board.getSquare(r, f).isEmpty())
 				 {
-					 BoardState temp = board.move(rank, file, r, f);
+					 State temp = board.move(rank, file, r, f);
 					 if(!(isWhite? temp.isWhiteinCheck() : temp.isBlackinCheck()))
 					 {
 						 results.add(temp);
@@ -129,7 +129,7 @@ public enum ChessPiece
 					 Piece p = board.getSquare(r, f).occupant;
 					 if(isWhite != p.isWhite)
 					 {
-						 BoardState temp = board.move(rank, file, r, f);
+						 State temp = board.move(rank, file, r, f);
 						 if(!(isWhite ? temp.isWhiteinCheck() : temp.isBlackinCheck()))
 						 {
 							 results.add(temp);
@@ -141,9 +141,9 @@ public enum ChessPiece
 		 }
 		 return results;
 	 }
-	 public static Collection<BoardState> knightMoves(BoardState board, int rank, int file, boolean isWhite)
+	 public static Collection<State> knightMoves(State board, int rank, int file, boolean isWhite)
 	 {
-		 ArrayList<BoardState> results = new ArrayList<>(8);
+		 ArrayList<State> results = new ArrayList<>(8);
 		 for(int i = -1; i < 2; i += 2)
 		 {
 			 for(int j = -2; j < 3; j += 4)
@@ -156,7 +156,7 @@ public enum ChessPiece
 					 {
 						 if(s.occupant.isWhite != isWhite)
 						 {
-							 BoardState temp = board.move(rank, file, r, f);
+							 State temp = board.move(rank, file, r, f);
 							 if(!(isWhite ? temp.isWhiteinCheck() : temp.isBlackinCheck()))
 							 {
 								 results.add(temp);
@@ -165,7 +165,7 @@ public enum ChessPiece
 					 }
 					 else
 					 {
-						 BoardState temp = board.move(rank, file, r, f);
+						 State temp = board.move(rank, file, r, f);
 						 if(!(isWhite ? temp.isWhiteinCheck() : temp.isBlackinCheck()))
 						 {
 							 results.add(temp);
@@ -182,7 +182,7 @@ public enum ChessPiece
 					 {
 						 if(s.occupant.isWhite != isWhite)
 						 {
-							 BoardState temp = board.move(rank, file, r, f);
+							 State temp = board.move(rank, file, r, f);
 							 if(!(isWhite ? temp.isWhiteinCheck() : temp.isBlackinCheck()))
 							 {
 								 results.add(temp);
@@ -191,7 +191,7 @@ public enum ChessPiece
 					 }
 					 else 
 					 {
-						 BoardState temp = board.move(rank, file, r, f);
+						 State temp = board.move(rank, file, r, f);
 						 if(!(isWhite ? temp.isWhiteinCheck() : temp.isBlackinCheck()))
 						 {
 							 results.add(temp);
@@ -202,9 +202,9 @@ public enum ChessPiece
 		 }
 		 return results;
 	 }
-	 public static Collection<BoardState> pawnMoves(BoardState board, int rank, int file, boolean isWhite)
+	 public static Collection<State> pawnMoves(State board, int rank, int file, boolean isWhite)
 	 {
-		 ArrayList<BoardState> results = new ArrayList<>(4);
+		 ArrayList<State> results = new ArrayList<>(4);
 		 int direction = (isWhite) ? 1 : -1;
 		 int r,f;
 		 for(int i = -1; i < 2; i += 2)
@@ -216,7 +216,7 @@ public enum ChessPiece
 				 Square s = board.getSquare(r, f);
 				 if(s.isEmpty() || s.occupant.isWhite != isWhite)
 				 {
-					 BoardState temp = board.move(rank, file, r, f);
+					 State temp = board.move(rank, file, r, f);
 					 if(!(isWhite ? temp.isWhiteinCheck() : temp.isBlackinCheck()))
 					 {
 						 results.add(temp);

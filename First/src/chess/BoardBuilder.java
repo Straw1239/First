@@ -11,7 +11,7 @@ public class BoardBuilder
 	{
 		
 	}
-	public BoardBuilder(BoardState b)
+	public BoardBuilder(State b)
 	{
 		board = new Square[8][8];
 		for(int i = 0; i < 8;i++)
@@ -48,8 +48,8 @@ public class BoardBuilder
 	{
 		this.turn = turn;
 	}
-	public BoardState getBoardState()
+	public State getBoardState()
 	{
-		return new BoardState(board,turn,turns,enPassant,hasInvalidatedCastling);
+		return new State(board,turn,turns,enPassant,hasInvalidatedCastling);
 	}
 }

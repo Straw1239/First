@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 public class Chessboard 
 {
-	ArrayList<BoardState> history = new ArrayList<>();
+	ArrayList<State> history = new ArrayList<>();
 	public Chessboard()
 	{
-		history.add(BoardState.getStartingPosition());
+		history.add(State.getStartingPosition());
 	}
 }

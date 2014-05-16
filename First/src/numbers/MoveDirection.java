@@ -1,6 +1,6 @@
 package numbers;
 
-public enum Direction 
+public enum MoveDirection 
 {
 	Up,Down,Right,Left;	
 }

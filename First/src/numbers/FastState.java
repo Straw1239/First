@@ -146,9 +146,9 @@ public class FastState
 			g.drawLine(i * width, 0, i * width, size);
 		}
 	}
-	public FastState move(Direction d)
+	public FastState move(MoveDirection d)
 	{
-		if(d == Direction.Down)
+		if(d == MoveDirection.Down)
 		{
 			byte[][] newBoard = arrayCopy(board);
 			for(int i = 0; i < newBoard.length;i++)
@@ -157,7 +157,7 @@ public class FastState
 			}
 			return new FastState(newBoard, false);
 		} 
-		else if(d == Direction.Up) 
+		else if(d == MoveDirection.Up) 
 		{
 			byte[][] newBoard = arrayCopy(board);
 			for(int i = 0; i < newBoard.length;i++)
@@ -166,7 +166,7 @@ public class FastState
 			}
 			return new FastState(newBoard,false);
 		} 
-		else if(d == Direction.Right)
+		else if(d == MoveDirection.Right)
 		{
 			byte[][] newBoard = new byte[board.length][board.length];
 			for(int i = 0; i < board.length;i++)

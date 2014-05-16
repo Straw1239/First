@@ -76,9 +76,9 @@ public class State
 	{
 		
 	}
-	public State move(Direction d)
+	public State move(MoveDirection d)
 	{
-		if(d == Direction.Down)
+		if(d == MoveDirection.Down)
 		{
 			int[][] newBoard = arrayCopy(board);
 			for(int i = 0; i < newBoard.length;i++)
@@ -87,7 +87,7 @@ public class State
 			}
 			return new State(newBoard, false);
 		} 
-		else if(d == Direction.Up) 
+		else if(d == MoveDirection.Up) 
 		{
 			int[][] newBoard = arrayCopy(board);
 			for(int i = 0; i < newBoard.length;i++)
@@ -98,7 +98,7 @@ public class State
 			}
 			return new State(newBoard,false);
 		} 
-		else if(d == Direction.Right)
+		else if(d == MoveDirection.Right)
 		{
 			int[][] newBoard = new int[board.length][board.length];
 			for(int i = 0; i < board.length;i++)

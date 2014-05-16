@@ -57,7 +57,7 @@ public class FastSolver
 				painter.setState(state);
 				frame.repaint();			
 				long a = System.nanoTime();
-				Direction d = bestMove(state,depth);
+				MoveDirection d = bestMove(state,depth);
 				long b = System.nanoTime() - a;
 				totalPositions += positions;
 				System.out.println("TPPS: " + ((totalPositions* 1000000.0)/(System.nanoTime() - startTime)) );
@@ -108,12 +108,12 @@ public class FastSolver
 	
 	
 	
-	public static Direction bestMove(FastState s, int depth)
+	public static MoveDirection bestMove(FastState s, int depth)
 	{
 		if(depth == 0) throw new IllegalArgumentException();
 		double best = Double.NEGATIVE_INFINITY;
-		Direction result = null;
-		for(Direction d : Direction.values())
+		MoveDirection result = null;
+		for(MoveDirection d : MoveDirection.values())
 		{
 			FastState after = s.move(d);
 			if(!after.equals(s))
@@ -165,9 +165,9 @@ public class FastSolver
 		if(depth == 0) return evaluate(s);
 		double bestCase = Double.NEGATIVE_INFINITY;
 			
-		for(int i = 0; i < Direction.values().length;i++)
+		for(int i = 0; i < MoveDirection.values().length;i++)
 		{
-			FastState after = s.move(Direction.values()[i]);
+			FastState after = s.move(MoveDirection.values()[i]);
 			if(!after.equals(s))
 			{
 				Collection<FastState> possibleStates = after.possibleRandomAdditions();

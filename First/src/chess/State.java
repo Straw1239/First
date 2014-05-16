@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
-public class BoardState 
+public class State 
 {
 	private Square[][] board = new Square[8][8];
 	private ArrayList<PiecePosition>[] pieceList = new ArrayList[2];
@@ -13,7 +13,7 @@ public class BoardState
 	private int moveCount;
 	private char enPassant;
 	private boolean[] hasInvalidatedCastling = new boolean[4];
-	public BoardState(ArrayList<PiecePosition>[] pieces)
+	public State(ArrayList<PiecePosition>[] pieces)
 	{
 		pieceList = pieces;
 		updateBoard();
@@ -21,9 +21,9 @@ public class BoardState
 		moveCount = 0;
 		enPassant = 'x';
 	}
-	public Collection<BoardState> castling()
+	public Collection<State> castling()
 	{
-		Collection<BoardState> results = new ArrayList<>(4);
+		Collection<State> results = new ArrayList<>(4);
 		for(int i = 0; i < 8; i += 7)
 		{
 			for(int j = 0; j < 8; j += 7)
@@ -49,9 +49,9 @@ public class BoardState
 		}
 		return results;
 	}
-	public Collection<BoardState> getAllMoves()
+	public Collection<State> getAllMoves()
 	{
-		ArrayList<BoardState> results = new ArrayList<>();
+		ArrayList<State> results = new ArrayList<>();
 		int white = (turn) ? 0 : 1;
 		ArrayList<PiecePosition> movables = pieceList[white];
 		for(int i = 0; i < movables.size();i++)
@@ -85,7 +85,7 @@ public class BoardState
 		}
 	}	
 	
-	public boolean isTranspositionOf(BoardState b)
+	public boolean isTranspositionOf(State b)
 	{
 		for(int i = 0; i < 8;i++)
 		{
@@ -131,9 +131,9 @@ public class BoardState
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof BoardState))
+		if (!(obj instanceof State))
 			return false;
-		BoardState other = (BoardState) obj;
+		State other = (State) obj;
 		if (!Arrays.deepEquals(board, other.board))
 			return false;
 		if (enPassant != other.enPassant)
@@ -152,11 +152,11 @@ public class BoardState
 	{
 		return moveCount;
 	}
-	public BoardState(Square[][] board)
+	public State(Square[][] board)
 	{
 		
 	}
-	public BoardState(Square[][] board, boolean turn, int moveCount, char enPassant, boolean[] hasInvalidatedCastling)
+	public State(Square[][] board, boolean turn, int moveCount, char enPassant, boolean[] hasInvalidatedCastling)
 	{
 		this.board  = board;
 		this.turn = turn;
@@ -165,7 +165,7 @@ public class BoardState
 		this.hasInvalidatedCastling = Arrays.copyOf(hasInvalidatedCastling, 4);
 		updatePieceList();
 	}
-	public BoardState(String state)
+	public State(String state)
 	{
 		
 	}
@@ -367,7 +367,7 @@ public class BoardState
 		if(file < 0 || file > 7) return false;
 		return true;
 	}
-	public BoardState move(int startRank,int startFile,int rank, int file)
+	public State move(int startRank,int startFile,int rank, int file)
 	{
 		if(board[startRank][startFile].isEmpty()) return this;
 		BoardBuilder b = new BoardBuilder(this);
@@ -403,7 +403,7 @@ public class BoardState
 				}
 			}
 	}
-	public static BoardState getStartingPosition()
+	public static State getStartingPosition()
 	{
 		ArrayList<PiecePosition>[] pieces = new ArrayList[2];
 		for(int i = 0; i < pieces.length;i++) pieces[i] = new ArrayList<>();
@@ -425,7 +425,7 @@ public class BoardState
 			pieces[0].add(new PiecePosition(new Piece(true,ChessPiece.Pawn),1,i));
 			pieces[1].add(new PiecePosition(new Piece(false,ChessPiece.Pawn),6,i));
 		}
-		return new BoardState(pieces);
+		return new State(pieces);
 	}
 	private static class PiecePosition
 	{
