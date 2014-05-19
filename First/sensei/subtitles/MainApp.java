@@ -29,7 +29,7 @@ public class MainApp extends Application
 		MediaPlayer player;
 		try
 		{
-			media = new Media(new File("media/music.mp4").toURI().toString());
+			media = new Media(new File("D:/Videos/Music/Rachmaninov- Prelude in G minor - Evgeny Kissin.mp4").toURI().toString());
 			player = new MediaPlayer(media);
 			player.setAutoPlay(true);
 			player.startTimeProperty().set(Duration.seconds(15));
@@ -42,12 +42,12 @@ public class MainApp extends Application
 				}
 			});
 		
-			player.rateProperty().set(.8);
+			player.rateProperty().set(.9);
 		
 			
 			StackPane p = new StackPane();
 			p.getChildren().add(view);
-			p.getChildren().add(new Label("SUBTITLES"));
+			
 			
 			Scene scene = new Scene(p, 500, 500);
 			

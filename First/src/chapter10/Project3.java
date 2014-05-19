@@ -1,9 +1,14 @@
 package chapter10;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
+
+import static java.util.Map.Entry;
 
 /* THIS IS A VERY LENGTHY ASSIGNMENT AND WILL TAKE YOU A SIGNIFICANT AMOUNT OF TIME.
  * DO NOT WAIT UNTIL THERE IS ONLY 2 OR 3 DAYS LEFT TO WORK ON IT.
@@ -90,18 +95,23 @@ import java.util.Map;
 
 public class Project3  
 {
+	public static void main(String[] args)
+	{
+		ArrayList<String> customers = new ArrayList<>(Arrays.asList("Bob", "Fred", "Nancy", "Bob"));
+		ArrayList<Double> sales = new ArrayList<>(Arrays.asList(10.0, 20.0, 30.0, 25.0));
+		System.out.println(nameOfBestCustomers(sales, customers, 5));
+	}
+	
+	/**
+	 * Searches and finds the best customer for a day. Equivalent to nameOfBestCustomers(sales, customers, 1).get(0)
+	 * @param list of all sales for the day
+	 * @param list of all customers for the day; names may be repeated as 
+	 * each one corresponds to one transaction with the price at the same index in sales
+	 * @return Name of customer who bought the most stuff ($)
+	 */
 	public static String nameOfBestCustomer(ArrayList<Double> sales, ArrayList<String> customers)
 	{
-		if(sales.size() != customers.size()) throw new IllegalArgumentException();
-		Map<String, ReferencedDouble> transactions = buildMap(sales, customers);
-		String name = "";
-		double best = Double.NEGATIVE_INFINITY;
-		for(Map.Entry<String, ReferencedDouble> m : transactions.entrySet())
-		{
-			best = Math.max(best, m.getValue().value);
-			if(m.getValue().value == best) name = m.getKey();
-		}
-		return name;
+		return nameOfBestCustomers(sales, customers, 1).get(0);
 	}
 	
 	private static Map<String, ReferencedDouble> buildMap(List<Double> sales, List<String> customers)
@@ -110,62 +120,44 @@ public class Project3
 		for(int i = 0; i < sales.size(); i++)
 		{
 			ReferencedDouble d = customerSales.get(customers.get(i));
-			if(d == null)
+			if(d == null) 
 			{
 				customerSales.put(customers.get(i), new ReferencedDouble(sales.get(i)));
 			}
-			else
-			{
-				d.value += sales.get(i);
-			}
+			else d.value += sales.get(i);	
 		}
 		return customerSales;
 	}
 	
-	private static class ReferencedDouble implements Comparable<ReferencedDouble>
+	public static ArrayList<String> nameOfBestCustomers(ArrayList<Double> sales, ArrayList<String> names, int topN)
 	{
-		public double value;
-		
-		public ReferencedDouble(double value)
+		if(sales.size() != names.size()) throw new IllegalArgumentException();
+		Map<String, ReferencedDouble> transactions = buildMap(sales, names);
+		PriorityQueue<Entry<String, ReferencedDouble>> queue = buildQueue();
+		for(Entry<String, ReferencedDouble> m : transactions.entrySet()) 
 		{
-			this.value = value;
+			queue.add(m);
 		}
-
-		@Override
-		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			long temp;
-			temp = Double.doubleToLongBits(value);
-			result = prime * result + (int) (temp ^ (temp >>> 32));
-			return result;
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj) {
-				return true;
-			}
-			if (obj == null) {
-				return false;
-			}
-			if (!(obj instanceof ReferencedDouble)) {
-				return false;
-			}
-			ReferencedDouble other = (ReferencedDouble) obj;
-			if (Double.doubleToLongBits(value) != Double
-					.doubleToLongBits(other.value)) {
-				return false;
-			}
-			return true;
-		}
-
-		@Override
-		public int compareTo(ReferencedDouble d) 
+		ArrayList<String> results = new ArrayList<>(queue.size());
+		for(int i = 0; i < topN; i++) 
 		{
-			return Double.compare(value, d.value);
+			if(queue.peek() != null) 
+			{
+				results.add(queue.poll().getKey());
+			} else break;
 		}
+		return results;
 	}
 	
-	
+	private static PriorityQueue<Entry<String, ReferencedDouble>> buildQueue()
+	{
+		return new PriorityQueue<>(
+				new Comparator<Entry<String, ReferencedDouble>>()
+				{
+					public int compare(Entry<String, ReferencedDouble> o1, Entry<String, ReferencedDouble> o2)
+					{
+						return o2.getValue().compareTo(o1.getValue());
+					}
+				});		
+	}
 }
