@@ -29,10 +29,10 @@ public class MainApp extends Application
 		MediaPlayer player;
 		try
 		{
-			media = new Media(new File("D:/Videos/Music/Rachmaninov- Prelude in G minor - Evgeny Kissin.mp4").toURI().toString());
+			media = new Media(new File("D:").toURI().toString());
 			player = new MediaPlayer(media);
 			player.setAutoPlay(true);
-			player.startTimeProperty().set(Duration.seconds(15));
+		//	player.startTimeProperty().set(Duration.seconds(15));
 			MediaView view = new MediaView(player);
 			primaryStage.addEventFilter(KeyEvent.KEY_PRESSED, (e) ->
 			{
