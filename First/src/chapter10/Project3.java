@@ -135,10 +135,28 @@ public class Project3
 	
 	public static void main(String[] args) throws FileNotFoundException
 	{
+		Menu mainMenu = new Menu("Main Menu...", 
+		"RewardCustomers", "ProcessTransactionFiles", "TopCustomers", "QueryStatsFile", "Quit");
+		int selection = mainMenu.printMenuGetSelection();
+		switch (selection)
+		{
+		case 1: rewardCustomersMenu(); break;
+		}
+	}
+	
+	private static void rewardCustomersMenu()
+	{
+		Menu menu = new Menu("Reward Customers Menu...", "Use transactions1.dat",  "Use transactions2.dat",  "Quit");
+		int selection = menu.printMenuGetSelection();
+		String filename = "";
+		switch(selection)
+		{
+		case 1: filename = "transactions1.dat"; break;
+		case 2: filename = "transactions2.dat"; break;
+		case 3: return;// Change?
+		default: throw new InternalError();
+		}
 		
-		InputStream input = new BufferedInputStream(new FileInputStream(new File("src/chapter10/transactions1.dat")));
-		ArrayList<Sale> sales = buildFromInput(input);
-		System.out.println(nameOfBestCustomers(values(sales), names(sales), 1));
 	}
 	
 	public static void buildRandomFile(String name, int numEntries)

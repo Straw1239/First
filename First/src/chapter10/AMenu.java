@@ -1,9 +1,15 @@
 package chapter10;
 
-import java.io.InputStream;
-import java.io.PrintStream;
-
-public interface AMenu
+public interface AMenu 
 {
-	public void showAndRun(PrintStream p, InputStream s);
+	/**
+	 * Prints a menu with selections and logic to return a valid selection.
+	 * @return the selected item
+	 */
+	public int printMenuGetSelection();
+	
+	 /**
+	 * @return the numberOfMenuItems
+	 */
+	public int getNumberOfMenuItems();
 }
