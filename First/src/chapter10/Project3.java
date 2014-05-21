@@ -1,8 +1,19 @@
 package chapter10;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+import java.util.Scanner;
 
 /* THIS IS A VERY LENGTHY ASSIGNMENT AND WILL TAKE YOU A SIGNIFICANT AMOUNT OF TIME.
  * DO NOT WAIT UNTIL THERE ARE ONLY 3 OR 4 DAYS LEFT TO WORK ON IT!!!
@@ -119,12 +130,94 @@ import java.util.Collections;
 
 public class Project3  
 {
-	public static void main(String[] args)
+	private static final Random rand = new Random();
+	public static final String alphabet = buildAlphabet();
+	
+	public static void main(String[] args) throws FileNotFoundException
 	{
-		ArrayList<String> customers = new ArrayList<>(Arrays.asList("Bob", "Fred", "Nancy", "Bob"));
-		ArrayList<Double> sales = new ArrayList<>(Arrays.asList(10.0, 20.0, 30.0, 25.0));
-		System.out.println(nameOfBestCustomers(sales, customers, 5));
+		
+		InputStream input = new BufferedInputStream(new FileInputStream(new File("src/chapter10/transactions1.dat")));
+		ArrayList<Sale> sales = buildFromInput(input);
+		System.out.println(nameOfBestCustomers(values(sales), names(sales), 1));
 	}
+	
+	public static void buildRandomFile(String name, int numEntries)
+	{
+		File f = new File(name);
+		PrintStream printer = null;
+		try
+		{
+			if(!f.exists()) f.createNewFile();
+			printer = new PrintStream(new BufferedOutputStream(new FileOutputStream(f)));
+		} 
+		catch(IOException e)
+		{
+			throw new RuntimeException(e);
+		}
+		ArrayList<Character> names = new ArrayList<>();
+		for(int i = 0; i < alphabet.length(); i++)
+		{
+			names.add(alphabet.charAt(i));
+			names.add(Character.toUpperCase(alphabet.charAt(i)));
+		}
+		for(int i = names.size(); i < numEntries; i++)
+		{
+			char c = alphabet.charAt(rand.nextInt(alphabet.length()));
+			names.add(rand.nextBoolean() ? c : Character.toUpperCase(c));
+		}
+		Collections.shuffle(names, rand);
+		for(int i = 0; i < numEntries; i++)
+		{
+			printer.printf("%.2f %s\n", rand.nextDouble() * 100, names.get(i).toString());
+		}
+		printer.close();
+	}
+	
+	private static String buildAlphabet()
+	{
+		String result = "";
+		for(char c = 'a'; c <= 'z'; c++)
+		{
+			result += c;
+		}
+		return result;
+	}
+	
+	private static ArrayList<Sale> buildFromInput(InputStream s) 
+	{
+		Scanner input = null;
+		input = new Scanner(s);
+		input.useDelimiter("[,\\s]+");
+		ArrayList<Sale> results = new ArrayList<>();
+		while(input.hasNext())
+		{
+			results.add(new Sale(input.nextDouble(), input.next()));
+		}
+		input.close();
+		return results;
+	}
+	
+	private static ArrayList<String> names(ArrayList<Sale> sales)
+	{
+		ArrayList<String> names = new ArrayList<>();
+		for(Sale s : sales)
+		{
+			names.add(s.name);
+		}
+		return names;
+	}
+	
+	private static ArrayList<Double> values(ArrayList<Sale> sales)
+	{
+		ArrayList<Double> values = new ArrayList<>();
+		for(Sale s : sales)
+		{
+			values.add(s.value);
+		}
+		return values;
+	}
+	
+	
 	
 	/**
 	 * Searches and finds the best customer for a day. Equivalent to nameOfBestCustomers(sales, customers, 1).get(0)
@@ -138,15 +231,15 @@ public class Project3
 		return nameOfBestCustomers(sales, customers, 1).get(0);
 	}
 	
-	
-	
-	private static ArrayList<Sale> combine(ArrayList<String> names, ArrayList<Double> sales)
+	private static ArrayList<Sale> combine(List<String> names, List<Double> sales)
 	{
+		if(names.size() != sales.size()) throw new IllegalArgumentException();
 		ArrayList<Sale> results = new ArrayList<>();
 		for(int i = 0; i < names.size(); i++)
 		{
-			
+			results.add(new Sale(names.get(i), sales.get(i)));
 		}
+		return results;
 	}
 	
 	public static ArrayList<String> nameOfBestCustomers(ArrayList<Double> sales, ArrayList<String> names, int topN)
@@ -154,12 +247,12 @@ public class Project3
 		if(sales.size() != names.size()) throw new IllegalArgumentException();
 		ArrayList<String> customers = new ArrayList<>();
 		ArrayList<Double> totalSales = new ArrayList<>();
-		for(int i = 0; i < names.size(); i++)
+		for(int i = 0; i < sales.size(); i++)
 		{
 			int index = customers.indexOf(names.get(i));
 			if(index >= 0)
 			{
-				totalSales.set(i, totalSales.get(i) + sales.get(i));
+				totalSales.set(index, totalSales.get(index) + sales.get(i));
 			}
 			else
 			{
@@ -173,13 +266,9 @@ public class Project3
 		for (int i = 0; i < topN; i++)
 		{
 			if(i >= customerTotals.size()) break;
-			results.add(customerTotals.get(i).name)
+			results.add(customerTotals.get(i).name);
 		}
 		return results;
-		
-		
-		
-	
 	}
 	
 	
