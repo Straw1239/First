@@ -141,7 +141,27 @@ public class Project3
 		switch (selection)
 		{
 		case 1: rewardCustomersMenu(); break;
+		case 2: fileGeneratorMenu(); break;
+		case 3: topCustomersMenu(); break;
+		case 4: statsMenu(); break;
+		case 5: System.exit(0);
+		default: throw new InternalError("missing case statement");
 		}
+	}
+	
+	private static void statsMenu()
+	{
+		
+	}
+	
+	private static void topCustomersMenu()
+	{
+		
+	}
+	
+	private static void fileGeneratorMenu()
+	{
+		
 	}
 	
 	private static void rewardCustomersMenu()
@@ -156,7 +176,21 @@ public class Project3
 		case 3: return;// Change?
 		default: throw new InternalError();
 		}
-		
+		filename = "src/chapter10/" + filename;
+		File f = new File(filename);
+		InputStream stream;
+		try
+		{
+			stream = new BufferedInputStream(new FileInputStream(f));	
+		}
+		catch (FileNotFoundException e)
+		{
+			System.out.println("Error: file not found");
+			throw new InternalError(e);
+		}
+		ArrayList<Sale> sales = buildFromInput(stream);
+		ArrayList<String> best = namesOfBestCustomers(values(sales), names(sales));
+		System.out.println("The best customer(s) are: " + best);
 	}
 	
 	public static void buildRandomFile(String name, int numEntries)
@@ -249,6 +283,21 @@ public class Project3
 		return nameOfBestCustomers(sales, customers, 1).get(0);
 	}
 	
+	public static ArrayList<String> namesOfBestCustomers(ArrayList<Double> sales, ArrayList<String> names)
+	{
+		ArrayList<Sale> combined = build(sales, names);
+		Collections.sort(combined);
+		ArrayList<String> results = new ArrayList<>();
+		int i = 0;
+		double best = combined.get(0).value;
+		while(combined.get(i).value >= best)
+		{
+			results.add(combined.get(i).name);
+			i++;
+		}
+		return results;
+	}
+	
 	private static ArrayList<Sale> combine(List<String> names, List<Double> sales)
 	{
 		if(names.size() != sales.size()) throw new IllegalArgumentException();
@@ -260,7 +309,7 @@ public class Project3
 		return results;
 	}
 	
-	public static ArrayList<String> nameOfBestCustomers(ArrayList<Double> sales, ArrayList<String> names, int topN)
+	private static ArrayList<Sale> build(ArrayList<Double> sales, ArrayList<String> names)
 	{
 		if(sales.size() != names.size()) throw new IllegalArgumentException();
 		ArrayList<String> customers = new ArrayList<>();
@@ -278,7 +327,12 @@ public class Project3
 				totalSales.add(sales.get(i));
 			}
 		}
-		ArrayList<Sale> customerTotals = combine(customers, totalSales);
+		return combine(customers, totalSales);
+	}
+	
+	public static ArrayList<String> nameOfBestCustomers(ArrayList<Double> sales, ArrayList<String> names, int topN)
+	{
+		ArrayList<Sale> customerTotals = build(sales, names);
 		ArrayList<String> results = new ArrayList<>();
 		Collections.sort(customerTotals);
 		for (int i = 0; i < topN; i++)
