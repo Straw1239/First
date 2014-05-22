@@ -161,7 +161,30 @@ public class Project3
 	
 	private static void fileGeneratorMenu()
 	{
+		Menu fileMenu = new Menu("File Generation Menu...", "Generate transactions2.dat", "Display transactions1.dat",
+				"Display transactions2.dat", "Query transactions1.dat", "Query transactions2.dat", "Quit");
+		int selection = fileMenu.printMenuGetSelection();
+		switch (selection)
+		{
+		case 1: generatorOptionsMenu(); break;
+		case 2:
+		case 3:
+		case 4:
+		case 5:
+		case 6: return; // Change?
+			default: throw new InternalError("missing case label");
+		}
+	}
+	
+	private static void generatorOptionsMenu()
+	{
+		//0, 26, 52, 53 and 100
+		Menu generatorMenu = new Menu("File generation options...", "0 entries", "26 entries", "52 entries", "53 entries", "100 entries", "Quit");
+		int selection = generatorMenu.printMenuGetSelection();
+		switch (selection)
+		{
 		
+		}
 	}
 	
 	private static void rewardCustomersMenu()
