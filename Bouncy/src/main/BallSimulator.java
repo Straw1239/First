@@ -33,7 +33,7 @@ public class BallSimulator
 	
 	public void addBall(Ball b)
 	{
-		balls.add(Cloner.clone(b));
+		balls.add(b.copy());
 	}
 	
 	public ImmutableList<Ball> getState()
@@ -41,7 +41,7 @@ public class BallSimulator
 		return state;
 	}
 	
-	public void update(double dt)
+	public synchronized void update(double dt)
 	{
 		for(Ball b : balls)
 		{
@@ -49,7 +49,7 @@ public class BallSimulator
 			wallBounce(b);
 		}
 		state = ImmutableList.copyOf(balls.stream().map((b) -> b.copy()).iterator());
-		timeSimulated += dt ;
+		timeSimulated += dt;
 	}
 	
 	private void wallBounce(Ball b)

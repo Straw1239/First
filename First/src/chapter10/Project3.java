@@ -1,3 +1,6 @@
+//Rajan Troll
+//Straw1239@gmail.com
+
 package chapter10;
 
 import java.io.BufferedInputStream;
@@ -128,25 +131,49 @@ import java.util.Scanner;
  *********************************************************************************************************  
  */
 
+/**
+ * Main Class for this program. Contains many functions to perform parts of the program.
+ * @author Rajan Troll
+ *
+ */
 public class Project3  
 {
+	/**
+	 * Random number generator for this application
+	 */
 	private static final Random rand = new Random();
+	/**
+	 * Stores the lowercase alphabet, a-z. Generated runtime.
+	 */
 	public static final String alphabet = buildAlphabet();
+	/**
+	 * Represents the path to the data files used by this program
+	 */
+	private static final String path = "src/chapter10/";
 	
-	public static void main(String[] args) throws FileNotFoundException
+	/**
+	 * entry point for the program. Creates and opens the main menu, and calls the appropriate functions based on user input.
+	 * Loops until quit is selected on main menu, quitting lower menus will go back to the main menu
+	 * @param ignored
+	 */
+	public static void main(String[] args) 
 	{
-		Menu mainMenu = new Menu("Main Menu...", 
-		"RewardCustomers", "ProcessTransactionFiles", "TopCustomers", "QueryStatsFile", "Quit");
-		int selection = mainMenu.printMenuGetSelection();
-		switch (selection)
+		while(true) // Keep looping until they quit from the main menu...
 		{
-		case 1: rewardCustomersMenu(); break;
-		case 2: fileGeneratorMenu(); break;
-		case 3: topCustomersMenu(); break;
-		case 4: statsMenu(); break;
-		case 5: System.exit(0);
-		default: throw new InternalError("missing case statement");
+			Menu mainMenu = new Menu("Main Menu...", 
+					"RewardCustomers", "ProcessTransactionFiles", "TopCustomers", "QueryStatsFile", "Quit"); // Main menu options
+			int selection = mainMenu.printMenuGetSelection();
+			switch (selection)
+			{
+			case 1: rewardCustomersMenu(); break;
+			case 2: fileGeneratorMenu(); break;
+			case 3: topCustomersMenu(); break;
+			case 4: statsMenu(); break;
+			case 5: return; //This will quit the program, escaping the while loop
+			default: throw new InternalError("missing case statement"); // This should never happen
+			}
 		}
+	
 	}
 	
 	private static void statsMenu()
@@ -159,6 +186,34 @@ public class Project3
 		
 	}
 	
+	/**
+	 * Prints a file to System.out, line by line
+	 * similar to cat filename on unix-like systems
+	 * @param name of file to print to console
+	 */
+	private static void viewFile(String filename)
+	{
+		Scanner s;
+		try
+		{
+			s = new Scanner(new File(filename));
+		}
+		catch (FileNotFoundException e) // Should never happen, if it does, there is a serious problem, execution should be stopped. (Perhaps program is in incorrect folder)
+		{
+			System.err.println("File not found");
+			throw new InternalError(e);
+		}
+		while(s.hasNextLine())
+		{
+			System.out.println(s.nextLine());
+		}
+		s.close();
+	}
+	
+	/**
+	 * Displays the file generation options menu. 
+	 * 
+	 */
 	private static void fileGeneratorMenu()
 	{
 		Menu fileMenu = new Menu("File Generation Menu...", "Generate transactions2.dat", "Display transactions1.dat",
@@ -167,24 +222,77 @@ public class Project3
 		switch (selection)
 		{
 		case 1: generatorOptionsMenu(); break;
-		case 2:
-		case 3:
-		case 4:
-		case 5:
-		case 6: return; // Change?
-			default: throw new InternalError("missing case label");
+		case 2: viewFile(path + "transactions1.dat"); break;
+		case 3: viewFile(path + "transactions2.dat"); break;
+		case 4: queryMenu(path + "transactions1.dat"); break;
+		case 5: queryMenu(path + "transactions2.dat"); break;
+		case 6: return; // Return to the main menu
+			default: throw new InternalError("missing case statement"); // Should never happen
 		}
 	}
 	
+	/**
+	 * File querying options. Allows viewing of file in alphabetical, ascending, or descending order.
+	 * @param file to query
+	 */
+	private static void queryMenu(String filename)
+	{
+		ArrayList<Sale> sales;
+		try
+		{
+			sales = buildFromInput(new BufferedInputStream(new FileInputStream(new File(filename))));
+		}
+		catch (FileNotFoundException e)
+		{
+			System.err.println("file not found");
+			throw new InternalError(e);
+		}
+		sales = combineDuplicates(sales);
+		Menu queryMenu = new Menu("Query options...", "Alphabetical order", "Ascending order", "Descending order", "Quit");
+		int selection = queryMenu.printMenuGetSelection();
+		switch(selection)
+		{
+		case 1: Collections.sort(sales, Sale.ALPHABETICAL_ORDER); break;
+		case 2: Collections.sort(sales, Sale.ASCENDING_ORDER); break;
+		case 3: Collections.sort(sales, Sale.DESCENDING_ORDER); break;
+		case 4: return; // Return to the fileGeneratorMenu() function, which will return to the main menu.
+		default: throw new InternalError("missing case statement"); // Should never happen
+		}
+		printSales(sales);
+	}
+	
+	/**
+	 * Prints a list of sales to the console, each on a new line
+	 * @param sales to print
+	 */
+	private static void printSales(List<Sale> sales)
+	{
+		for(Sale s : sales)
+		{
+			System.out.println(s);
+		}
+	}
+	
+	/**
+	 * File generation options menu, allows selection between different numbers of entries in the file.
+	 */
 	private static void generatorOptionsMenu()
 	{
 		//0, 26, 52, 53 and 100
 		Menu generatorMenu = new Menu("File generation options...", "0 entries", "26 entries", "52 entries", "53 entries", "100 entries", "Quit");
 		int selection = generatorMenu.printMenuGetSelection();
+		int entries;
 		switch (selection)
 		{
-		
+		case 1: entries = 0; break;
+		case 2: entries = 26; break;
+		case 3: entries = 52; break;
+		case 4: entries = 53; break;
+		case 5: entries = 100; break;
+		case 6: return;
+		default: throw new InternalError("missing case statement"); // Should never happen
 		}
+		buildRandomFile("src/chapter10/transactions2.dat", entries);
 	}
 	
 	private static void rewardCustomersMenu()
@@ -199,7 +307,7 @@ public class Project3
 		case 3: return;// Change?
 		default: throw new InternalError();
 		}
-		filename = "src/chapter10/" + filename;
+		filename = path + filename;
 		File f = new File(filename);
 		InputStream stream;
 		try
@@ -216,12 +324,19 @@ public class Project3
 		System.out.println("The best customer(s) are: " + best);
 	}
 	
+	/** 
+	 * Builds a file with random sales, each one consisting of a name and a value
+	 * Names are chosen from a-z and A-Z, and will not be repeated if the number of entries requested is less than 53.
+	 * @param name of file to build entries in
+	 * @param number of entries to generate in file
+	 */
 	public static void buildRandomFile(String name, int numEntries)
 	{
 		File f = new File(name);
 		PrintStream printer = null;
 		try
 		{
+			f.delete();
 			if(!f.exists()) f.createNewFile();
 			printer = new PrintStream(new BufferedOutputStream(new FileOutputStream(f)));
 		} 
@@ -260,8 +375,7 @@ public class Project3
 	
 	private static ArrayList<Sale> buildFromInput(InputStream s) 
 	{
-		Scanner input = null;
-		input = new Scanner(s);
+		Scanner input = new Scanner(s);
 		input.useDelimiter("[,\\s]+");
 		ArrayList<Sale> results = new ArrayList<>();
 		while(input.hasNext())
@@ -308,7 +422,7 @@ public class Project3
 	
 	public static ArrayList<String> namesOfBestCustomers(ArrayList<Double> sales, ArrayList<String> names)
 	{
-		ArrayList<Sale> combined = build(sales, names);
+		ArrayList<Sale> combined = combineDuplicates(sales, names);
 		Collections.sort(combined);
 		ArrayList<String> results = new ArrayList<>();
 		int i = 0;
@@ -332,30 +446,34 @@ public class Project3
 		return results;
 	}
 	
-	private static ArrayList<Sale> build(ArrayList<Double> sales, ArrayList<String> names)
+	private static ArrayList<Sale> combineDuplicates(ArrayList<Sale> sales)
 	{
-		if(sales.size() != names.size()) throw new IllegalArgumentException();
 		ArrayList<String> customers = new ArrayList<>();
 		ArrayList<Double> totalSales = new ArrayList<>();
-		for(int i = 0; i < sales.size(); i++)
+		for(Sale s : sales)
 		{
-			int index = customers.indexOf(names.get(i));
+			int index = customers.indexOf(s.name);
 			if(index >= 0)
 			{
-				totalSales.set(index, totalSales.get(index) + sales.get(i));
+				totalSales.set(index, totalSales.get(index) + s.value);
 			}
 			else
 			{
-				customers.add(names.get(i));
-				totalSales.add(sales.get(i));
+				customers.add(s.name);
+				totalSales.add(s.value);
 			}
 		}
 		return combine(customers, totalSales);
 	}
 	
+	private static ArrayList<Sale> combineDuplicates(ArrayList<Double> sales, ArrayList<String> names)
+	{
+		return combineDuplicates(combine(names, sales));
+	}
+	
 	public static ArrayList<String> nameOfBestCustomers(ArrayList<Double> sales, ArrayList<String> names, int topN)
 	{
-		ArrayList<Sale> customerTotals = build(sales, names);
+		ArrayList<Sale> customerTotals = combineDuplicates(sales, names);
 		ArrayList<String> results = new ArrayList<>();
 		Collections.sort(customerTotals);
 		for (int i = 0; i < topN; i++)
