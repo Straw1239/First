@@ -21,8 +21,6 @@ public class Parser
 			builder.append(scan.nextLine());
 		}
 		source = builder.toString();
-		
-		
 		scan.close();
 	}
 	
