@@ -5,8 +5,7 @@ import java.util.Scanner;
 public class Menu implements AMenu 
 {
 	public final String title;
-	public final String[] options;
-
+	private final String[] options;
 	
 	public Menu(String title, String... options)
 	{

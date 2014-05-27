@@ -342,14 +342,16 @@ public class Project3
 		} 
 		catch(IOException e)
 		{
-			throw new RuntimeException(e);
+			throw new RuntimeException(e); // Shouldn't happen, something is seriously wrong if we get here
 		}
 		ArrayList<Character> names = new ArrayList<>();
+		//No duplicates added to list in this loop
 		for(int i = 0; i < alphabet.length(); i++)
 		{
 			names.add(alphabet.charAt(i));
 			names.add(Character.toUpperCase(alphabet.charAt(i)));
 		}
+		//Add extra entries if they have asked for more than 52, duplicates allowed now
 		for(int i = names.size(); i < numEntries; i++)
 		{
 			char c = alphabet.charAt(rand.nextInt(alphabet.length()));
@@ -363,6 +365,10 @@ public class Project3
 		printer.close();
 	}
 	
+	/**
+	 * Builds a string containing each lower case letter in the alphabet
+	 * @return String containing the lowercase alphabet, a-z
+	 */
 	private static String buildAlphabet()
 	{
 		String result = "";
@@ -373,10 +379,15 @@ public class Project3
 		return result;
 	}
 	
+	/**
+	 * Builds a list of sales from input. Takes input of the form of a double representing the value of the sale, 
+	 * then comma or space, then a string representing the name of the customer. Stores all sales in an ArrayList<Sale>
+	 * and returns them. 
+	 */
 	private static ArrayList<Sale> buildFromInput(InputStream s) 
 	{
 		Scanner input = new Scanner(s);
-		input.useDelimiter("[,\\s]+");
+		input.useDelimiter("[,\\s]+"); //Delimit on any number of commas or spaces
 		ArrayList<Sale> results = new ArrayList<>();
 		while(input.hasNext())
 		{
@@ -386,7 +397,12 @@ public class Project3
 		return results;
 	}
 	
-	private static ArrayList<String> names(ArrayList<Sale> sales)
+	/**
+	 * Returns a list of all the names in the List<Sale> provided
+	 * @param sales
+	 * @return names of customers in sales
+	 */
+	private static ArrayList<String> names(List<Sale> sales)
 	{
 		ArrayList<String> names = new ArrayList<>();
 		for(Sale s : sales)
@@ -395,8 +411,12 @@ public class Project3
 		}
 		return names;
 	}
-	
-	private static ArrayList<Double> values(ArrayList<Sale> sales)
+	/**
+	 * Returns a list of all the values in the List<Sale> provided.
+	 * @param sales
+	 * @return list of values of sales
+	 */
+	private static ArrayList<Double> values(List<Sale> sales)
 	{
 		ArrayList<Double> values = new ArrayList<>();
 		for(Sale s : sales)
@@ -419,6 +439,7 @@ public class Project3
 	{
 		return nameOfBestCustomers(sales, customers, 1).get(0);
 	}
+	
 	
 	public static ArrayList<String> namesOfBestCustomers(ArrayList<Double> sales, ArrayList<String> names)
 	{
@@ -471,6 +492,14 @@ public class Project3
 		return combineDuplicates(combine(names, sales));
 	}
 	
+	/**
+	 * Finds the top N customers in terms of total $ amount bought.
+	 * Returns all names if topN is greater than the number of customers
+	 * @param sales
+	 * @param names
+	 * @param topN
+	 * @return names of topN customers
+	 */
 	public static ArrayList<String> nameOfBestCustomers(ArrayList<Double> sales, ArrayList<String> names, int topN)
 	{
 		ArrayList<Sale> customerTotals = combineDuplicates(sales, names);
