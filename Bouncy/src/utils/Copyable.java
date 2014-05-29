@@ -5,8 +5,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 
-public interface Copyable<T> extends Cloneable
+import com.google.common.collect.ImmutableList;
+
+public interface Copyable<T extends Copyable<T>> extends Cloneable
 {
 	@SuppressWarnings("unchecked")
 	public default T copy()
@@ -24,7 +27,7 @@ public interface Copyable<T> extends Cloneable
 		}
 	}
 	
-	
+	@TreatAsProtected
 	public default T deepCopy()
 	{
 		Class<?> searcher = getClass();
@@ -62,6 +65,10 @@ public interface Copyable<T> extends Cloneable
 		}
 		return copy;
 		
+	}
+	public static <E extends Copyable<E>> ImmutableList<E> deepCopy(Collection<E> start)
+	{
+		return ImmutableList.copyOf(start.stream().map(e -> e.copy()).iterator());
 	}
 	
 }
