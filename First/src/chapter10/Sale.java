@@ -2,6 +2,10 @@ package chapter10;
 
 import java.util.Comparator;
 
+/**
+ * Represents a sale, with a name of the person who bought, and the value in $ of the sale.
+ * @author Rajan Troll 
+ */
 public class Sale implements Comparable<Sale>
 {
 	public final String name;
@@ -31,26 +35,35 @@ public class Sale implements Comparable<Sale>
 		return String.format("%.2f %s", value, name);
 	}
 	
+	/**
+	 * Orders sales in alphabetical order of name, ignoring value.
+	 */
 	public static final Comparator<Sale> ALPHABETICAL_ORDER = new Comparator<Sale>()
 	{
 		@Override
 		public int compare(Sale s1, Sale s2)
 		{
-			int value = s1.name.compareToIgnoreCase(s2.name);
+			int value = s1.name.compareTo(s2.name);
 			return value;
 		}
 	};
 	
+	/**
+	 * Orders sales by ascending value, breaking ties by alphabetical order.
+	 */
 	public static final Comparator<Sale> ASCENDING_ORDER = new Comparator<Sale>()
 	{
 		@Override
 		public int compare(Sale o1, Sale o2)
 		{
 			int value = Double.compare(o1.value, o2.value);
-			return value == 0 ? o1.name.compareToIgnoreCase(o2.name) : value;
+			return value == 0 ? o1.name.compareTo(o2.name) : value;
 		}
 	};
 	
+	/**
+	 * Orders sales by descending value, breaking ties by alpabetical order.
+	 */
 	public static final Comparator<Sale> DESCENDING_ORDER = new Comparator<Sale>()
 	{
 		@Override

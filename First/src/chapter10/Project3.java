@@ -212,7 +212,7 @@ public class Project3
 	
 	/**
 	 * Displays the file generation options menu. 
-	 * 
+	 * Will call appropriate functions based on user input.
 	 */
 	private static void fileGeneratorMenu()
 	{
@@ -289,12 +289,16 @@ public class Project3
 		case 3: entries = 52; break;
 		case 4: entries = 53; break;
 		case 5: entries = 100; break;
-		case 6: return;
+		case 6: return; // Return to calling function, fileGeneratorMenu(), which will return to the main menu
 		default: throw new InternalError("missing case statement"); // Should never happen
 		}
 		buildRandomFile("src/chapter10/transactions2.dat", entries);
 	}
 	
+	/**
+	 * Displays the options for reward customers. Allows selection between top customers of transactions1.dat and
+	 * transactions2.dat, then prints the best customer(s)
+	 */
 	private static void rewardCustomersMenu()
 	{
 		Menu menu = new Menu("Reward Customers Menu...", "Use transactions1.dat",  "Use transactions2.dat",  "Quit");
@@ -304,8 +308,8 @@ public class Project3
 		{
 		case 1: filename = "transactions1.dat"; break;
 		case 2: filename = "transactions2.dat"; break;
-		case 3: return;// Change?
-		default: throw new InternalError();
+		case 3: return;// Returns to main menu.
+		default: throw new InternalError("missing case statement"); //Should never happen
 		}
 		filename = path + filename;
 		File f = new File(filename);
@@ -314,9 +318,9 @@ public class Project3
 		{
 			stream = new BufferedInputStream(new FileInputStream(f));	
 		}
-		catch (FileNotFoundException e)
+		catch (FileNotFoundException e) // Shouldn't ever happen, if it does, program has been packaged incorrectly
 		{
-			System.out.println("Error: file not found");
+			System.out.println("Error: file not found"); 
 			throw new InternalError(e);
 		}
 		ArrayList<Sale> sales = buildFromInput(stream);
@@ -360,7 +364,7 @@ public class Project3
 		Collections.shuffle(names, rand);
 		for(int i = 0; i < numEntries; i++)
 		{
-			printer.printf("%.2f %s\n", rand.nextDouble() * 100, names.get(i).toString());
+			printer.println(new Sale(rand.nextDouble() * 100, names.get(i).toString()));
 		}
 		printer.close();
 	}

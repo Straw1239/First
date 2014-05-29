@@ -6,13 +6,22 @@ public class Menu implements AMenu
 {
 	public final String title;
 	private final String[] options;
-	
+	/**
+	 * Menu with the specified title, and possible options.
+	 * @param title of the menu
+	 * @param options the menu has
+	 */
 	public Menu(String title, String... options)
 	{
 		this.title = title;
 		this.options = options;
 	}
 	
+	/**
+	 * Gets an integer from a scanner, ignoring non int inputs and printing instructions when invalid input is present
+	 * @param Scanner to get a valid int from
+	 * @return the next valid int in the scanner
+	 */
 	private static int getValidInt(Scanner s)
 	{
 		while(!s.hasNextInt())
