@@ -1,6 +1,7 @@
 package clicker;
 
 import java.awt.AWTException;
+import java.awt.Point;
 import java.awt.Robot;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -15,6 +16,8 @@ public class Clicker
 	static volatile boolean clicking = false;
 	static JFrame frame = new JFrame();
 	static Robot robot;
+	static Point COOKIE_LOCATION = new Point(2100, 500);
+	static Point BUY_LOCATION = new Point(3000, 950);
 	public static void main(String[] args) throws AWTException, InterruptedException
 	{
 		robot = new Robot();
@@ -23,16 +26,32 @@ public class Clicker
 		frame.setVisible(true);
 		frame.addKeyListener(new KeyTracker());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		robot.setAutoDelay(0);
 		while(true)
 		{
-			Thread.sleep(10);
+			
 			if(clicking)
 			{
-				//System.out.println("Clicking");
-				robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
-				robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+				for(int i = 0; i < 2000; i++)
+				{
+					Thread.sleep(10);
+					robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+					robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);	
+				}
+				buyStuff();
 			}
 		}
+	}
+	
+	private static void buyStuff()
+	{
+		robot.mouseMove(BUY_LOCATION.x, BUY_LOCATION.y);
+		for(int i = 0; i < 5; i++)
+		{
+			robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+			robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+		}
+		robot.mouseMove(COOKIE_LOCATION.x, COOKIE_LOCATION.y);
 	}
 	
 	public static class KeyTracker implements KeyListener
