@@ -31,7 +31,7 @@ public class CritterMain {
        // frame.add(numberOfCritters, Husky_EldraziMkII.class);
         frame.add(numberOfCritters, Husky_Hogeland.class);
         frame.add(numberOfCritters, Husky_Pollock_Rosebush3.class);
-        frame.add(numberOfCritters, Ent.class);
+        //frame.add(numberOfCritters, Ent.class);
         /*
          * N.B. public static final boolean ENABLE_DASHBOARD = true;
          * This should be set to false in order to disable dashboard.

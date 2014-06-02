@@ -1,84 +1,83 @@
 package clicker;
 
-import java.awt.AWTException;
 import java.awt.Point;
 import java.awt.Robot;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
-import javax.swing.JFrame;
+import org.jnativehook.GlobalScreen;
+import org.jnativehook.keyboard.NativeKeyEvent;
+import org.jnativehook.keyboard.NativeKeyListener;
 
 public class Clicker
 {
-	
-
 	static volatile boolean clicking = false;
-	static JFrame frame = new JFrame();
 	static Robot robot;
-	static Point COOKIE_LOCATION = new Point(2100, 500);
-	static Point BUY_LOCATION = new Point(3000, 950);
-	public static void main(String[] args) throws AWTException, InterruptedException
+	static Point cookieLocation = new Point(2100, 500);
+	static Point buyLocation = new Point(3000, 950);
+	public static void main(String[] args) throws Throwable
 	{
 		robot = new Robot();
-		frame.setFocusable(true);
-		frame.setAlwaysOnTop(true);
-		frame.setVisible(true);
-		frame.addKeyListener(new KeyTracker());
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		robot.setAutoDelay(0);
+		GlobalScreen.registerNativeHook();
+		GlobalScreen.getInstance().addNativeKeyListener(new KeyTracker());
+		int counter = 0;
 		while(true)
 		{
-			
 			if(clicking)
 			{
-				for(int i = 0; i < 2000; i++)
-				{
-					Thread.sleep(10);
-					robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
-					robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);	
-				}
-				buyStuff();
+				Thread.sleep(5);
+				click();
+				if(counter == 0) buyStuff();
 			}
+			counter = (counter + 1) % 2000;
 		}
+	}
+	
+	private static void click()
+	{
+		robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+		robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);	
 	}
 	
 	private static void buyStuff()
 	{
-		robot.mouseMove(BUY_LOCATION.x, BUY_LOCATION.y);
+		robot.mouseMove(buyLocation.x, buyLocation.y);
 		for(int i = 0; i < 5; i++)
 		{
 			robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
 			robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
 		}
-		robot.mouseMove(COOKIE_LOCATION.x, COOKIE_LOCATION.y);
+		robot.mouseMove(cookieLocation.x, cookieLocation.y);
 	}
 	
-	public static class KeyTracker implements KeyListener
+	public static class KeyTracker implements  NativeKeyListener
 	{
-
 		@Override
-		public void keyTyped(KeyEvent e){		
-		}
-
-		@Override
-		public void keyPressed(KeyEvent e)
+		public void nativeKeyPressed(NativeKeyEvent e)
 		{
-			if(e.getKeyCode() == KeyEvent.VK_Q)
+			if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
 			{
 				System.exit(0);
 			}
-			if(e.getKeyCode() == KeyEvent.VK_C)
+			if(e.getKeyCode() == KeyEvent.VK_F8)
 			{
 				clicking = !clicking;
 			}
+			
 		}
 
 		@Override
-		public void keyReleased(KeyEvent e)
+		public void nativeKeyReleased(NativeKeyEvent arg0)
 		{
 			// TODO Auto-generated method stub
+			
+		}
 
+		@Override
+		public void nativeKeyTyped(NativeKeyEvent arg0)
+		{
+			// TODO Auto-generated method stub
+			
 		}
 
 	}
