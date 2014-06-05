@@ -15,6 +15,7 @@ public class Clicker
 	static Robot robot;
 	static Point cookieLocation = new Point(2100, 500);
 	static Point buyLocation = new Point(3000, 950);
+	static Point buyLocation2;
 	public static void main(String[] args) throws Throwable
 	{
 		robot = new Robot();
@@ -50,7 +51,7 @@ public class Clicker
 		robot.mouseMove(cookieLocation.x, cookieLocation.y);
 	}
 	
-	public static class KeyTracker implements  NativeKeyListener
+	public static class KeyTracker implements NativeKeyListener
 	{
 		@Override
 		public void nativeKeyPressed(NativeKeyEvent e)
@@ -80,5 +81,14 @@ public class Clicker
 			
 		}
 
+	}
+	static Boolean running = false;
+	public static void launchTask()
+	{
+		synchronized(running)
+		{
+			if(running) return;
+			running = true;
+		}
 	}
 }
