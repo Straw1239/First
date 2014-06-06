@@ -22,7 +22,7 @@ public class Menu implements AMenu
 	 * @param Scanner to get a valid int from
 	 * @return the next valid int in the scanner
 	 */
-	private static int getValidInt(Scanner s)
+	public static int getValidInt(Scanner s)
 	{
 		while(!s.hasNextInt())
 		{

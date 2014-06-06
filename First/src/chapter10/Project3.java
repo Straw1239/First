@@ -184,7 +184,32 @@ public class Project3
 	private static void topCustomersMenu()
 	{
 		
+		Menu topCustomersMenu = new Menu("Top Customers Menu...", "Use transactions1.dat", "Use transactions2.dat", "Quit");
+		int selection = topCustomersMenu.printMenuGetSelection();
+		File f;
+		switch(selection)
+		{
+		case 1: f = new File("transactions1.dat"); break;
+		case 2: f = new File("transactions2.dat"); break;
+		case 3: return;
+		default: throw new InternalError("missing case statement");
+		}
+		InputStream s;
+		try 
+		{
+			 s = new BufferedInputStream(new FileInputStream(f));
+		}
+		catch (FileNotFoundException e) 
+		{
+			throw new InternalError("file not found", e);
+		}
+		ArrayList<Sale> sales = buildFromInput(s);
+		System.out.print("Number of top customers to display? ");
+		int num = Menu.getValidInt(new Scanner(System.in));
+		System.out.println(nameOfBestCustomers(values(sales), names(sales), num));
 	}
+	
+	
 	
 	/**
 	 * Prints a file to System.out, line by line
