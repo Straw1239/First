@@ -88,7 +88,7 @@ public class ForkSolver
 		return ((a) << 12) + ((b) << 8) + ((c) << 4) + (d);
 	}
 	
-	private static byte max(byte a, byte b)
+	public static byte max(byte a, byte b)
 	{
 		return a > b ? a : b;
 	}
