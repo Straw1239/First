@@ -147,9 +147,14 @@ public class Project3
 	 */
 	public static final String alphabet = buildAlphabet();
 	/**
-	 * Represents the path to the data files used by this program
+	 * Represents the path to the data files used by this program, if you change the package or location of files, 
+	 * you may need to change this.
 	 */
 	private static final String path = "src/chapter10/";
+	/**
+	 * Program-wide console for getting user input.
+	 */
+	public static final Scanner console = new Scanner(System.in);
 	
 	/**
 	 * entry point for the program. Creates and opens the main menu, and calls the appropriate functions based on user input.
@@ -176,11 +181,93 @@ public class Project3
 	
 	}
 	
+	/**
+	 * Displays the stats menu, providing different query options.
+	 */
 	private static void statsMenu()
 	{
-		
+		File stats = new File(path + "stats.dat");
+		Scanner input;
+		try 
+		{
+			input = new Scanner(stats);
+		}
+		catch (FileNotFoundException e) 
+		{
+			throw new InternalError("file not found", e); // Something is wrong with program setup...
+		}
+		input.useDelimiter("[\\s,]+");
+		Menu statsMenu = new Menu("Stats Log Menu... ", "Task Subtotals", "Day Subtotals", "Quit");
+		int selection = statsMenu.printMenuGetSelection();
+		switch(selection)
+		{
+		case 1: printTaskTotals(input); break;
+		case 2: printDayTotals(input); break;
+		case 3: input.close(); return;//return to main menu
+		default:  input.close(); throw new InternalError("missing case statement");// shouldn't ever happen
+		}
+		input.close();
 	}
 	
+	/**
+	 * Finds the total time spent on each day from the scanner provided, then prints the results.
+	 * @param scanner to read data from
+	 */
+	private static void printDayTotals(Scanner in)
+	{
+		ArrayList<String> days = new ArrayList<>();
+		ArrayList<Double> times = new ArrayList<>();
+		while(in.hasNext())
+		{
+			String date = in.next();
+			in.next();
+			double time = in.nextDouble();
+			int index = days.indexOf(date);
+			if(index == -1)
+			{
+				days.add(date);
+				times.add(time);
+			}
+			else
+			{
+				times.set(index, times.get(index) + time);
+			}
+		}
+		double total = 0;
+		for(int i = 0; i < days.size(); i++)
+		{
+			System.out.printf("%s: %.1f minutes\n", days.get(i), times.get(i));
+			total += times.get(i);
+		}
+		System.out.printf("Total time: %.1f\n", total);
+	}
+	
+	/**
+	 * Prints time spend on each problem to the console, found from the input scanner.
+	 * @param in
+	 */
+	private static void printTaskTotals(Scanner in)
+	{
+		double[] tasks = new double[7];
+		while(in.hasNext())
+		{
+			in.next();
+			int index = in.nextInt();
+			double time = in.nextDouble();
+			tasks[index - 1] += time;
+		}
+		double total = 0;
+		for(int i = 0; i < tasks.length; i++)
+		{
+			System.out.printf("Task %d: %.1f minutes\n", i + 1, tasks[i]);
+			total += tasks[i];
+		}
+		System.out.printf("Total time: %.1f\n", total);
+	}
+	
+	/**
+	 * Prints the top customers menu, and performs the requested action.
+	 */
 	private static void topCustomersMenu()
 	{
 		
@@ -189,8 +276,8 @@ public class Project3
 		File f;
 		switch(selection)
 		{
-		case 1: f = new File("transactions1.dat"); break;
-		case 2: f = new File("transactions2.dat"); break;
+		case 1: f = new File(path + "transactions1.dat"); break;
+		case 2: f = new File(path + "transactions2.dat"); break;
 		case 3: return;
 		default: throw new InternalError("missing case statement");
 		}
@@ -201,11 +288,11 @@ public class Project3
 		}
 		catch (FileNotFoundException e) 
 		{
-			throw new InternalError("file not found", e);
+			throw new InternalError("file not found", e); // Something is wrong with program configuration if we get here
 		}
 		ArrayList<Sale> sales = buildFromInput(s);
 		System.out.print("Number of top customers to display? ");
-		int num = Menu.getValidInt(new Scanner(System.in));
+		int num = Menu.getValidInt(console);
 		System.out.println(nameOfBestCustomers(values(sales), names(sales), num));
 	}
 	
@@ -469,7 +556,12 @@ public class Project3
 		return nameOfBestCustomers(sales, customers, 1).get(0);
 	}
 	
-	
+	/**
+	 * Finds the names of the best customers, returning all customers tied for best.
+	 * @param sales
+	 * @param names of customers
+	 * @return names of best customers
+	 */
 	public static ArrayList<String> namesOfBestCustomers(ArrayList<Double> sales, ArrayList<String> names)
 	{
 		ArrayList<Sale> combined = combineDuplicates(sales, names);
@@ -485,6 +577,12 @@ public class Project3
 		return results;
 	}
 	
+	/**
+	 * Combines the names and values provided into a list of sales.
+	 * @param names
+	 * @param sales
+	 * @return combined data structure of all sales, each with value and name from parameters
+	 */
 	private static ArrayList<Sale> combine(List<String> names, List<Double> sales)
 	{
 		if(names.size() != sales.size()) throw new IllegalArgumentException();
@@ -496,6 +594,11 @@ public class Project3
 		return results;
 	}
 	
+	/**
+	 * Combines duplicate names in the list of sales, adding their values together.
+	 * @param sales
+	 * @return
+	 */
 	private static ArrayList<Sale> combineDuplicates(ArrayList<Sale> sales)
 	{
 		ArrayList<String> customers = new ArrayList<>();
@@ -516,6 +619,12 @@ public class Project3
 		return combine(customers, totalSales);
 	}
 	
+	/**
+	 * Combines duplicates and combines into one data structure. See combineDuplicates(ArrayList<Sale> sales)
+	 * @param sales
+	 * @param names
+	 * @return
+	 */
 	private static ArrayList<Sale> combineDuplicates(ArrayList<Double> sales, ArrayList<String> names)
 	{
 		return combineDuplicates(combine(names, sales));

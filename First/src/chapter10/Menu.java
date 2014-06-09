@@ -1,10 +1,20 @@
 package chapter10;
 
 import java.util.Scanner;
-
+/**
+ * A text based menu on System.in and System.out
+ * @author Rajan Troll
+ *
+ */
 public class Menu implements AMenu 
 {
+	/**
+	 * Title of the menu
+	 */
 	public final String title;
+	/**
+	 * All of the options for this menu
+	 */
 	private final String[] options;
 	/**
 	 * Menu with the specified title, and possible options.
@@ -37,7 +47,7 @@ public class Menu implements AMenu
 	@Override
 	public int printMenuGetSelection() 
 	{
-		Scanner input = new Scanner(System.in);
+		Scanner input = Project3.console;
 		System.out.println(title);
 		for(int i = 0; i < options.length; i++)
 		{

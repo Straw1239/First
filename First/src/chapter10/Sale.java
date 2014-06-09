@@ -8,15 +8,31 @@ import java.util.Comparator;
  */
 public class Sale implements Comparable<Sale>
 {
+	/**
+	 * Name of customer who bought something
+	 */
 	public final String name;
+	/**
+	 * Value of sale
+	 */
 	public final double value;
 	
+	/**
+	 * New sale with specified name and value.
+	 * @param name
+	 * @param value
+	 */
 	public Sale(String name, double value)
 	{
 		this.name = name;
 		this.value = value;
 	}
 	
+	/**
+	 * New sale with specified name and value. Same as Sale(name, value)
+	 * @param name
+	 * @param value
+	 */
 	public Sale(double value, String name)
 	{
 		this(name, value);
