@@ -16,7 +16,7 @@ public class Utils
 	
 	public static double distance(ObjectDataHolder g1, ObjectDataHolder g2)
 	{
-		return distance(g1.getX(),g1.getY(),g2.getX(),g2.getY());
+		return distance(g1.getX(), g1.getY(), g2.getX(), g2.getY());
 	}
 	
 	public static double distanceSquared(double x1, double y1, double x2, double y2)
@@ -51,6 +51,14 @@ public class Utils
 	public static boolean isInRange(double value, double min, double max)
 	{
 		return (value >= min) && (value <= max);
+	}
+	
+	public static double clamp(double value, double min, double max)
+	{
+		assert min <= max;
+		if(value <= min) return min;
+		if(value >= max) return max;
+		return value;
 	}
 	
 	

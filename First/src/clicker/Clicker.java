@@ -18,10 +18,13 @@ public class Clicker
 	static Point buyLocation2;
 	public static void main(String[] args) throws Throwable
 	{
+		System.out.println("CLICKER V2.0");
 		robot = new Robot();
+		GlobalScreen.unregisterNativeHook();
 		GlobalScreen.registerNativeHook();
 		GlobalScreen.getInstance().addNativeKeyListener(new KeyTracker());
 		int counter = 0;
+		System.out.println("REGISTERED HOOKS");
 		while(true)
 		{
 			if(clicking)
@@ -59,6 +62,7 @@ public class Clicker
 			if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
 			{
 				System.exit(0);
+				GlobalScreen.unregisterNativeHook();
 			}
 			if(e.getKeyCode() == KeyEvent.VK_F8)
 			{
@@ -82,13 +86,5 @@ public class Clicker
 		}
 
 	}
-	static Boolean running = false;
-	public static void launchTask()
-	{
-		synchronized(running)
-		{
-			if(running) return;
-			running = true;
-		}
-	}
+	
 }

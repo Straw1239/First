@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 import objects.BulletDataHolder;
 import objects.EntityDataHolder;
 import objects.events.EventDataHolder;
+import player.Player;
 import engine.State;
 
 public class Renderer 
@@ -28,9 +29,10 @@ public class Renderer
 	public void render(State d)
 	{
 		g.save();
-	//	g.setGlobalAlpha(.5);
+		//g.clearRect(0, 0, width, height);
 		g.setFill(Color.BLACK);
 		g.fillRect(0, 0, width, height);
+		displayHUD(d);
 		scaleGraphics(d);
 		drawEvents(d);
 		drawBullets(d);
@@ -38,6 +40,14 @@ public class Renderer
 		drawEntities(d);
 		d.mouse.draw(g);
 		g.restore();
+	}
+	
+	private void displayHUD(State d)
+	{
+		double healthBar = 150;
+		g.setFill(Player.color);
+		g.fillRect(0, 0, healthBar * d.player.health() /d.player.maxHealth(), 30);
+		g.strokeRect(0, 0, healthBar, 30);
 	}
 	
 	private void drawBullets(State d)
@@ -62,7 +72,10 @@ public class Renderer
 	
 	private void scaleGraphics(State d)
 	{
-		g.scale(width / d.width, height / d.height);
+		double playerX = d.player.getX(), playerY = d.player.getY();
+		g.translate(width / 2, height / 2);
+		//g.scale(width / d.width, height / d.height);
+		g.translate(-playerX , -playerY);
 	}
 	
 	private void drawEntities(State d)

@@ -64,6 +64,7 @@ public final class Engine
 	private Multimap<Faction, Entity> entities = LinkedListMultimap.create();
 	private List<GameEvent> events = new LinkedList<>();
 	private Handler handler = new Handler();
+	private Multimap<Faction, GameObject> others = LinkedListMultimap.create();
 	
 	/**
 	 * Map from Faction to all bullets of that Faction, for optimization.
@@ -72,7 +73,7 @@ public final class Engine
 	 */
 	private Multimap<Faction, Bullet> bullets = LinkedListMultimap.create();
 	
-	private Spawner spawner = new Spawner();
+	private Spawner spawner;
 	
 	/**
 	 * Representation of engine state. Replaced each update, 
@@ -96,7 +97,8 @@ public final class Engine
 		player = new Player(width / 2, height / 2);
 		bounds = Rectangle.of(0, 0, width, height);
 		entities.put(Faction.Player, player);
-		view = new State(player, entities.values(), bullets.values(), events, cursor, width, height, updates);
+		view = new State(player, entities.values(), bullets.values(), events, others.values(), cursor, width, height, updates);
+		spawner = new DefaultSpawner(width, height);
 	}
 	/**
 	 * Creates engine based on data contained in state. State is immutable; all data is copied into the new engine.
@@ -133,10 +135,7 @@ public final class Engine
 	}
 	
 	
-	public void setCursorLocation(double x, double y)
-	{
-		cursor = new Cursor(x, y);
-	}
+	
 	
 	/**
 	 * Advances the game represented by this engine one tick.
@@ -145,6 +144,7 @@ public final class Engine
 	 */
 	public void update()
 	{
+		/*
 		if(updates % 60 == 0) 
 		{
 			if(MainGame.rand.nextBoolean())
@@ -152,6 +152,9 @@ public final class Engine
 			else
 				addRandomMovingEnemy();
 		}
+		*/
+		handler.addAll(spawner.spawn(view));
+		cursor.update(view);
 		updatePlayer();
 		if(!player.isDead())
 		{
@@ -160,7 +163,7 @@ public final class Engine
 		updateEnemies();
 		updateBullets();
 		executeEvents();
-		view = new State(player, entities.values(), bullets.values(), events, cursor, width, height, updates);
+		view = new State(player, entities.values(), bullets.values(), events, others.values(), cursor, width, height, updates);
 		updates++;
 	}
 	
@@ -407,8 +410,9 @@ public final class Engine
 		public void add(GameObject obj) 
 		{
 			if(obj instanceof Bullet) bullets.put(obj.getFaction(), (Bullet)obj);
-			else if(obj instanceof Player) throw new IllegalArgumentException();
+			else if(obj instanceof Player) throw new IllegalArgumentException("cannot add multiple players");
 			else if(obj instanceof Entity) entities.put(obj.getFaction(), (Entity) obj);
+			else others.put(obj.getFaction(), obj);
 		}
 
 		@Override
@@ -420,7 +424,7 @@ public final class Engine
 		@Override
 		public Collection<? extends GameObject> objectsOfFaction(Faction f) 
 		{
-			throw new UnsupportedOperationException();
+			return others.get(f);
 		}
 
 		@Override

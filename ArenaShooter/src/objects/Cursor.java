@@ -2,10 +2,12 @@ package objects;
 
 
 
-import player.Player;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import player.Player;
+import player.PlayerDataHolder;
 import engine.State;
+import fxcore.MainGame;
 
 public class Cursor extends GameObject
 {
@@ -20,7 +22,9 @@ public class Cursor extends GameObject
 	@Override
 	public void update(State d)
 	{
-		
+		PlayerDataHolder player = d.player;
+		x = MainGame.mouseX() + player.getX() - MainGame.getScreenWidth() / 2;
+		y = MainGame.mouseY() + player.getY() - MainGame.getScreenHeight() / 2;
 	}
 
 	@Override

@@ -67,7 +67,14 @@ public abstract class Concatenator<E> implements Collection<E>
 	@Override
 	public boolean containsAll(Collection<?> objects)
 	{
-		throw new UnsupportedOperationException();
+		for(Object obj : objects)
+		{
+			for(Collection<? extends E> c : collections)
+			{
+				if(!c.contains(obj)) return false;
+			}
+		}
+		return true;
 	}
 	
 	@Override

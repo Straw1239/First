@@ -96,10 +96,7 @@ public class Player extends Entity implements PlayerDataHolder
 			this.right = right;
 		}
 
-		public Action()
-		{
-			
-		}
+		public Action(){}
 		
 		public boolean isShooting()
 		{
@@ -151,11 +148,6 @@ public class Player extends Entity implements PlayerDataHolder
 		g.setFill(Player.color);
 		g.fillOval(x - radius, y - radius, 2 * radius, 2 * radius);
 		g.setStroke(Color.WHITE);
-		double healthBar = 150;
-		g.fillRect(0, 0, healthBar * health / maxHealth, 30);
-		g.strokeRect(0, 0, healthBar, 30);
-		
-		
 	}
 
 	@Override

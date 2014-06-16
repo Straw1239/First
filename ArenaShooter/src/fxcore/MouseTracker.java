@@ -3,6 +3,7 @@ package fxcore;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import engine.State;
 
 /**
  * Keeps track of mouse position, and current state of all mouse buttons, 
@@ -16,7 +17,7 @@ public class MouseTracker implements EventHandler<MouseEvent>
 {
 	private volatile boolean[] clicked = new boolean[MouseButton.values().length];
 	private transient volatile long[] timeClicked = new long[MouseButton.values().length];
-	private volatile double x, y, sx = 1, sy = 1;
+	private volatile double x, y;
 	@Override
 	public void handle(MouseEvent event)
 	{
@@ -35,22 +36,22 @@ public class MouseTracker implements EventHandler<MouseEvent>
 	
 	public double x()
 	{
-		return x * sx;
+		return x;
 	}
 	
-	public void setScaleX(double scale)
+	public double gameX(State t)
 	{
-		sx = scale;
+		return x + t.player.getX() - MainGame.getScreenWidth() / 2;
 	}
 	
-	public void setScaleY(double scale)
+	public double gameY(State t)
 	{
-		sy = scale;
+		return y + t.player.getY() - MainGame.getScreenHeight() / 2;
 	}
 	
 	public double y()
 	{
-		return y * sy;
+		return y;
 	}
 	
 	public boolean isPressed(MouseButton button)
@@ -61,6 +62,11 @@ public class MouseTracker implements EventHandler<MouseEvent>
 	public long nanoTimeSincePress(MouseButton button)
 	{
 		return System.nanoTime() - timeClicked[button.ordinal()];
+	}
+	
+	public void addMouseListener(EventHandler<? extends MouseEvent> handler)
+	{
+		throw new UnsupportedOperationException();
 	}
 	
 	

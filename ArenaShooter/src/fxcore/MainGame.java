@@ -5,7 +5,6 @@ import java.awt.GraphicsEnvironment;
 import java.util.Calendar;
 import java.util.Random;
 
-import engine.Engine;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -20,12 +19,24 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import player.Player;
 import utils.XRandom;
+import engine.Engine;
+import engine.State;
 
 public class MainGame extends Application
 {
 	public static final Random rand = new XRandom(((System.nanoTime() + Runtime.getRuntime().hashCode() * 7) + Thread.currentThread().hashCode()) * 31 + Calendar.getInstance().hashCode());
 	
 	private static MainGame app;
+	
+	public static double mouseX()
+	{
+		return app.mouse.x();
+	}
+	
+	public static double mouseY()
+	{
+		return app.mouse.y();
+	}
 	
 	public static void main(String[] args)
 	{
@@ -37,6 +48,16 @@ public class MainGame extends Application
 		return app.engine.getTime();
 	}
 	
+	public static double getScreenHeight()
+	{
+		return app.renderer.height;
+	}
+	
+	public static double getScreenWidth()
+	{
+		return app.renderer.width;
+	}
+	
 	public static double getGameWidth()
 	{
 		return app.engine.width;
@@ -46,6 +67,7 @@ public class MainGame extends Application
 	{
 		return app.engine.height;
 	}
+	
 	
 	public final long UPS = 60, FPS = 60;
 	
@@ -70,6 +92,7 @@ public class MainGame extends Application
 	{
 		app = this;
 		this.stage = s;
+		
 		stage.addEventFilter(KeyEvent.KEY_PRESSED, e -> 
 		{
 			if(e.getCode() == KeyCode.ESCAPE)
@@ -102,10 +125,11 @@ public class MainGame extends Application
 		int width = gd.getDisplayMode().getWidth();
 		int height = gd.getDisplayMode().getHeight();
 		renderer = new Renderer(width, height);
-		engine = new Engine(width , height);
+		engine = new Engine(10000 , 10000);
 		
 		root.getChildren().add(renderer.canvas);
 		scene = new Scene(root);
+		
 		scene.setCursor(Cursor.NONE);
 		stage.setScene(scene);
 		runEngine();
@@ -131,7 +155,6 @@ public class MainGame extends Application
 					{
 						startFrameTime = System.nanoTime();
 						engine.setPlayerAction(getPlayerAction());
-						engine.setCursorLocation(mouse.x(), mouse.y());
 						engine.update();
 						while(System.nanoTime() - startFrameTime < frameNanoTime)
 						{

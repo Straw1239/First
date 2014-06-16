@@ -27,37 +27,26 @@ public class MainApp extends Application
 		primaryStage.setTitle("MEDIA");
 		Media media;
 		MediaPlayer player;
-		try
+		
+		media = new Media(new File("D:\\Videos\\Music\\prelude.mp4").toURI().toString());
+		player = new MediaPlayer(media);
+		player.setAutoPlay(true);
+		player.startTimeProperty().set(Duration.seconds(15));
+		MediaView view = new MediaView(player);
+		primaryStage.addEventFilter(KeyEvent.KEY_PRESSED, (e) ->
 		{
-			media = new Media(new File("D:").toURI().toString());
-			player = new MediaPlayer(media);
-			player.setAutoPlay(true);
-		//	player.startTimeProperty().set(Duration.seconds(15));
-			MediaView view = new MediaView(player);
-			primaryStage.addEventFilter(KeyEvent.KEY_PRESSED, (e) ->
+			if(e.getCode() == KeyCode.R)
 			{
-				if(e.getCode() == KeyCode.R)
-				{
-					player.seek(Duration.ZERO);
-				}
-			});
-		
-			player.rateProperty().set(.9);
-		
-			
-			StackPane p = new StackPane();
-			p.getChildren().add(view);
-			
-			
-			Scene scene = new Scene(p, 500, 500);
-			
-			primaryStage.setScene(scene);
-			primaryStage.show();
-		}
-		catch (Throwable e)
-		{
-			e.printStackTrace();
-		}
+				player.seek(Duration.ZERO);
+			}
+		});
+		player.rateProperty().set(1.0);
+		StackPane p = new StackPane();
+		p.getChildren().add(view);	
+		Scene scene = new Scene(p, 500, 500);			
+		primaryStage.setScene(scene);
+		primaryStage.show();
+	
 		
 		
 		

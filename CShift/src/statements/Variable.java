@@ -1,6 +1,6 @@
 package statements;
 
-public class Variable implements RValue, IValue
+public class Variable
 {
 	
 }
