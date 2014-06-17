@@ -27,7 +27,7 @@ public class DefaultSpawner implements Spawner
 		if(d.time - lastSpawn >= 60)
 		{
 			double x = rand.nextDouble();
-			spawns.add(rand.nextBoolean() ? new BasicEnemy() : new MovingEnemy());
+		`	spawns.add(rand.nextBoolean() ? new BasicEnemy() : new MovingEnemy());
 			lastSpawn = d.time;
 		}
 		return spawns;

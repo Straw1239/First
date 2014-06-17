@@ -16,6 +16,7 @@ public class Clicker
 	static Point cookieLocation = new Point(2100, 500);
 	static Point buyLocation = new Point(3000, 950);
 	static Point buyLocation2;
+	static volatile boolean buying = false;
 	public static void main(String[] args) throws Throwable
 	{
 		System.out.println("CLICKER V2.0");
@@ -31,7 +32,7 @@ public class Clicker
 			{
 				Thread.sleep(5);
 				click();
-				if(counter == 0) buyStuff();
+				if(buying && counter == 0) buyStuff();
 			}
 			counter = (counter + 1) % 2000;
 		}
@@ -64,11 +65,11 @@ public class Clicker
 				System.exit(0);
 				GlobalScreen.unregisterNativeHook();
 			}
+			
 			if(e.getKeyCode() == KeyEvent.VK_F8)
 			{
 				clicking = !clicking;
 			}
-			
 		}
 
 		@Override
@@ -79,10 +80,15 @@ public class Clicker
 		}
 
 		@Override
-		public void nativeKeyTyped(NativeKeyEvent arg0)
+		public void nativeKeyTyped(NativeKeyEvent e)
 		{
-			// TODO Auto-generated method stub
 			
+			
+			if(e.getKeyChar() == 'B')
+			{
+				buying = !buying;
+				System.out.println(buying ? "auto-buy enabled" : "auto-buy disabled");
+			}
 		}
 
 	}

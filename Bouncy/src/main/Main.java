@@ -7,6 +7,9 @@ import static java.lang.Math.sinh;
 import static java.lang.Math.tan;
 import static java.lang.Math.tanh;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -15,8 +18,12 @@ import java.util.function.UnaryOperator;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
@@ -24,7 +31,14 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+
 import utils.Random;
+
+import com.sun.imageio.plugins.gif.GIFImageReader;
+import com.sun.imageio.plugins.gif.GIFImageReaderSpi;
 public class Main extends Application
 {
 	public static List<UnaryOperator<Double>> functions = new ArrayList<>();
@@ -41,14 +55,26 @@ public class Main extends Application
 		launch(args);
 	}
 	
-	private static final Random rand = Random.create();
+	
+	public static final Random rand = Random.create();
 	private Stage stage;
+	private Scene scene;
 	private Renderer renderer;
 	private BallSimulator simulation ;
 	private int mode = 0;
 	private int balls = 4096;
-	
+	private List<Image> snapshots = new ArrayList<>();
 	private double width = 1920, height = 1080;
+	
+	public synchronized WritableImage snapshot()
+	{
+		paused = true;
+		WritableImage result = scene.snapshot(null);
+		paused = false;
+		return result;
+		
+	}
+	
 	@Override
 	public void start(Stage s) throws Exception 
 	{
@@ -88,18 +114,54 @@ public class Main extends Application
 				balls /= 2;
 				restart();
 			}
+			if(e.getCode() == KeyCode.F12)
+			{
+				snapshots.add(snapshot());
+			}
+			if(e.isControlDown() && e.getCode() == KeyCode.S)
+			{
+				saveImage();
+			}
 			
 		});
 		renderer = new Renderer(width, height);
 		BorderPane pane = new BorderPane();
 		pane.setCenter(renderer);
-		stage.setScene(new Scene(pane));
+		scene = new Scene(pane);
+		stage.setScene(scene);
 		restart();
 		stage.show();
 		runEngine();
 		animate();
 	}
 	
+	
+	
+	private synchronized void saveImage()
+	{
+		paused = true;
+		double width = 0, height = snapshots.get(0).getHeight();
+		for(Image i : snapshots) width += i.getWidth();
+		WritableImage output = new WritableImage((int)width, (int)height);
+		PixelWriter writer = output.getPixelWriter();
+		int location = 0;
+		for(Image i : snapshots)
+		{
+			writer.setPixels(location, 0, (int)i.getWidth(), (int) height, i.getPixelReader(), 0, 0);
+			location += i.getWidth();
+		}
+		try
+		{
+			ImageIO.write(SwingFXUtils.fromFXImage(output, null), "png", new File("screenshot.png"));
+		}
+		catch (IOException e)
+		{
+			System.out.println("Failed to write image to file:");
+			e.printStackTrace();
+		}
+		paused = false;
+	}
+
 	private void restart()
 	{
 		renderer.getGraphicsContext2D().clearRect(0, 0, width, height);
@@ -120,7 +182,7 @@ public class Main extends Application
 		}
 		paused = false;
 	}
-	private volatile boolean paused = false;;
+	private volatile boolean paused = false;
 	private void runEngine()
 	{
 		new Thread(() ->

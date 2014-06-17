@@ -129,7 +129,7 @@ public class MainGame extends Application
 		
 		root.getChildren().add(renderer.canvas);
 		scene = new Scene(root);
-		
+	
 		scene.setCursor(Cursor.NONE);
 		stage.setScene(scene);
 		runEngine();
