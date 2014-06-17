@@ -61,10 +61,10 @@ public class Main extends Application
 	private Scene scene;
 	private Renderer renderer;
 	private BallSimulator simulation ;
-	private int mode = 0;
+	private int mode = 1;
 	private int balls = 4096;
 	private List<Image> snapshots = new ArrayList<>();
-	private double width = 1920, height = 1080;
+	private double width = 500, height = 800;
 	
 	public synchronized WritableImage snapshot()
 	{
@@ -78,11 +78,11 @@ public class Main extends Application
 	@Override
 	public void start(Stage s) throws Exception 
 	{
-		Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
-		width = bounds.getWidth();
-		height = bounds.getHeight();
+		//Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
+		//width = bounds.getWidth();
+		//height = bounds.getHeight();
 		stage = s;
-		stage.setFullScreen(true);
+		//stage.setFullScreen(true);
 		stage.setFullScreenExitHint("");
 		stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
 		stage.addEventFilter(KeyEvent.KEY_PRESSED, (e) ->
@@ -120,7 +120,8 @@ public class Main extends Application
 			}
 			if(e.isControlDown() && e.getCode() == KeyCode.S)
 			{
-				saveImage();
+				//saveImage();
+				saveImageGroups();
 			}
 			
 		});
@@ -159,6 +160,13 @@ public class Main extends Application
 			System.out.println("Failed to write image to file:");
 			e.printStackTrace();
 		}
+		paused = false;
+	}
+	
+	private synchronized void saveImageGroups()
+	{
+		paused = true;
+		FXImages.writeInGroups(snapshots, 4);
 		paused = false;
 	}
 
@@ -222,7 +230,11 @@ public class Main extends Application
 			@Override
 			public void handle(long t) 
 			{
-				renderer.render(simulation.getState(), simulation.dimensions);	
+				renderer.render(simulation.getState(), simulation.dimensions);
+				if(frames % 120 == 0 && snapshots.size() < 16)
+				{
+					snapshots.add(snapshot());
+				}
 				frames++;
 				//System.out.println((frames) / ((t - time) / 1_000_000_000.0));
 			}

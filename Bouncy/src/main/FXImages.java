@@ -30,6 +30,7 @@ public class FXImages
 		{
 			if(i % 3 == 0) filtered.add(image.get(i));
 		}
+		//filtered = filtered.stream().map(e -> new WritableImage()).collect(Collectors.toCollection(ArrayList::new));
 		writeInGroups(filtered, 4);
 		WritableImage result = concatenate(filtered);
 		try
@@ -57,6 +58,14 @@ public class FXImages
 				if(!it.hasNext()) break;
 				group.add(it.next());
 			}
+			double width = 0;
+			double height = 0;
+			for(Image i : group)
+			{
+				height = i.getHeight();
+				width += i.getWidth();
+			}
+			group.add(new WritableImage((int)(width * .15), (int)height));
 			Image result = concatenate(group);
 			String name = Integer.toString(count);
 			try
