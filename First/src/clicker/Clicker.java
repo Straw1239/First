@@ -75,12 +75,15 @@ public class Clicker
 		@Override
 		public void nativeKeyReleased(NativeKeyEvent arg0)
 		{
-		
+			// TODO Auto-generated method stub
+			
 		}
 
 		@Override
 		public void nativeKeyTyped(NativeKeyEvent e)
 		{
+			
+			
 			if(e.getKeyChar() == 'B')
 			{
 				buying = !buying;
