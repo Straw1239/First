@@ -18,9 +18,9 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import player.Player;
+import utils.Utils;
 import utils.XRandom;
 import engine.Engine;
-import engine.State;
 
 public class MainGame extends Application
 {
@@ -36,6 +36,16 @@ public class MainGame extends Application
 	public static double mouseY()
 	{
 		return app.mouse.y();
+	}
+	
+	public static double mouseGameX()
+	{
+		return app.mouse.gameX(app.engine.getState());
+	}
+	
+	public static double mouseGameY()
+	{
+		return app.mouse.gameY(app.engine.getState());
 	}
 	
 	public static void main(String[] args)
@@ -68,7 +78,6 @@ public class MainGame extends Application
 		return app.engine.height;
 	}
 	
-	
 	public final long UPS = 60, FPS = 60;
 	
 	private Engine engine;
@@ -85,14 +94,13 @@ public class MainGame extends Application
 	public void init()
 	{
 		Platform.setImplicitExit(true);
+		app = this;
 	}
 
 	@Override
 	public void start(Stage s) throws Exception
 	{
-		app = this;
 		this.stage = s;
-		
 		stage.addEventFilter(KeyEvent.KEY_PRESSED, e -> 
 		{
 			if(e.getCode() == KeyCode.ESCAPE)
@@ -125,7 +133,7 @@ public class MainGame extends Application
 		int width = gd.getDisplayMode().getWidth();
 		int height = gd.getDisplayMode().getHeight();
 		renderer = new Renderer(width, height);
-		engine = new Engine(10000 , 10000);
+		engine = new Engine(3000, 3000);
 		
 		root.getChildren().add(renderer.canvas);
 		scene = new Scene(root);
@@ -145,26 +153,19 @@ public class MainGame extends Application
 			long startFrameTime;
 			while(true)
 			{
-				try
+				if(paused)
 				{
-					if(paused)
-					{
-						Thread.sleep(10);
-					}
-					else
-					{
-						startFrameTime = System.nanoTime();
-						engine.setPlayerAction(getPlayerAction());
-						engine.update();
-						while(System.nanoTime() - startFrameTime < frameNanoTime)
-						{
-							Thread.sleep(1);	
-						}
-					}
+					Utils.sleep(10);
 				}
-				catch (InterruptedException e)
+				else
 				{
-					throw new RuntimeException(e);
+					startFrameTime = System.nanoTime();
+					engine.setPlayerAction(getPlayerAction());
+					engine.update();
+					while(System.nanoTime() - startFrameTime < frameNanoTime)
+					{
+						Utils.sleep(1);	
+					}
 				}
 			}
 		}).start();
@@ -172,14 +173,13 @@ public class MainGame extends Application
 	
 	private Player.Action getPlayerAction()
 	{
-		
 		boolean up = keyTracker.isKeyPressed(KeyCode.W);
 		boolean down = keyTracker.isKeyPressed(KeyCode.S);
 		boolean right = keyTracker.isKeyPressed(KeyCode.D);
 		boolean left = keyTracker.isKeyPressed(KeyCode.A);
 		if(mouse.isPressed(MouseButton.PRIMARY))
 		{
-			return new Player.Action(up, down, left, right, mouse.x(), mouse.y());
+			return new Player.Action(up, down, left, right, mouse.gameX(engine.getState()), mouse.gameY(engine.getState()));
 		}
 		return new Player.Action(up, down, left, right);
 	}

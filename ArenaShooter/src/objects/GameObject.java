@@ -1,5 +1,10 @@
 package objects;
 
+import java.util.Collection;
+import java.util.Collections;
+
+import bounds.Bounds;
+import javafx.scene.canvas.GraphicsContext;
 import objects.events.GameEvent;
 import utils.Utils;
 import engine.State;
@@ -12,7 +17,7 @@ import engine.State;
  */
 public abstract class GameObject implements ObjectDataHolder
 {
-	protected double x,y;
+	protected double x, y;
 	protected Faction faction;
 	
 	protected GameObject(double x, double y)
@@ -33,19 +38,19 @@ public abstract class GameObject implements ObjectDataHolder
 	
 	public abstract Bounds bounds();
 	
-	public GameEvent event(State d)
+	public Collection<? extends GameEvent> events(State d)
 	{
-		return null;
+		return Collections.emptyList();
 	}
 	
-	public GameEvent onDeath(State d)
+	public Collection<? extends GameEvent> onDeath(State d)
 	{
 		return onDeath();
 	}
 	
-	public GameEvent onDeath()
+	public Collection<? extends GameEvent> onDeath()
 	{
-		return null;
+		return Collections.emptyList();
 	}
 	
 	@Override
@@ -128,6 +133,31 @@ public abstract class GameObject implements ObjectDataHolder
 	public double angleTo(ObjectDataHolder o)
 	{
 		return Utils.angle(this, o);
+	}
+	
+	public static GameObject dataOf(double x, double y, Faction f)
+	{
+		return new GameObject(x, y, f)
+		{
+			@Override
+			public void draw(GraphicsContext g){}
+
+			@Override
+			public void update(State d){}
+
+			@Override
+			public boolean collidesWith(GameObject entity)
+			{
+				return false;
+			}
+
+			@Override
+			public Bounds bounds()
+			{
+				return Bounds.NONE;
+			}
+			
+		};
 	}
 	
 	

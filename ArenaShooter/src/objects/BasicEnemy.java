@@ -1,6 +1,11 @@
 package objects;
 
 
+import java.util.Collection;
+import java.util.Collections;
+
+import bounds.Bounds;
+import bounds.Circle;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import objects.events.GameEvent;
@@ -17,7 +22,7 @@ public class BasicEnemy extends Enemy
 	public static final long fireTime = 35;
 	
 	private long shotTime = MainGame.getTime();
-	private Bounds bounds = new Circle(radius)
+	private Bounds bounds = new Circle()
 	{
 		@Override
 		public double centerX()
@@ -29,6 +34,12 @@ public class BasicEnemy extends Enemy
 		public double centerY()
 		{
 			return y;
+		}
+		
+		@Override
+		public double radius()
+		{
+			return radius;
 		}
 	};
 	
@@ -68,33 +79,12 @@ public class BasicEnemy extends Enemy
 	
 	
 	@Override
-	public GameEvent event(State d)
+	public Collection<GameEvent> events(State d)
 	{
-		if(MainGame.getTime() < shotTime + fireTime) return null;
-		if(d.player.isDead()) return null;
+		if(MainGame.getTime() < shotTime + fireTime) return Collections.emptyList();
+		if(d.player.isDead()) return Collections.emptyList();
 		shotTime = MainGame.getTime();
-		return new GameEvent(this)
-		{
-			boolean hasExpired = false;
-			@Override
-			
-			public void draw(GraphicsContext g){}
-			
-			@Override
-			public boolean hasExpired()
-			{
-				return hasExpired;
-			}
-
-			@Override
-			public void effects(EventHandler handler) {
-				handler.add( new Bullet(this, d.player, 5, 5, Color.GREEN));
-				hasExpired = true;
-				
-			}
-
-			
-		};
+		return Collections.singleton(GameEvent.spawner(new Bullet(this, d.player, 5, 5, Color.GREEN)));
 		
 	}
 

@@ -15,11 +15,11 @@ import objects.Entity;
 import objects.Faction;
 import objects.GameObject;
 import objects.MovingEnemy;
-import objects.Rectangle;
 import objects.events.GameEvent;
 import player.Player;
 import utils.Concatenator;
 import utils.Utils;
+import bounds.Rectangle;
 
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Multimap;
@@ -80,7 +80,7 @@ public final class Engine
 	 * is immutable and can be passed around safely.
 	 * Passed to the Renderer each frame. 
 	 */
-	private State view;
+	private State state;
 	
 	/**
 	 * Creates a new engine with the specified dimensions.
@@ -97,7 +97,7 @@ public final class Engine
 		player = new Player(width / 2, height / 2);
 		bounds = Rectangle.of(0, 0, width, height);
 		entities.put(Faction.Player, player);
-		view = new State(player, entities.values(), bullets.values(), events, others.values(), cursor, width, height, updates);
+		state = new State(player, entities.values(), bullets.values(), events, others.values(), cursor, width, height, updates);
 		spawner = new DefaultSpawner(width, height);
 	}
 	/**
@@ -122,7 +122,7 @@ public final class Engine
 	
 	public State getState() 
 	{
-		return view;
+		return state;
 	}
 	
 	/**
@@ -131,7 +131,7 @@ public final class Engine
 	 */
 	public void setPlayerAction(Player.Action action)
 	{
-		playerAction = action;
+		player.setAction(action);
 	}
 	
 	
@@ -153,17 +153,13 @@ public final class Engine
 				addRandomMovingEnemy();
 		}
 		*/
-		handler.addAll(spawner.spawn(view));
-		cursor.update(view);
+		handler.addAll(spawner.spawn(state));
+		cursor.update(state);
 		updatePlayer();
-		if(!player.isDead())
-		{
-			executePlayerAction();
-		}
 		updateEnemies();
 		updateBullets();
 		executeEvents();
-		view = new State(player, entities.values(), bullets.values(), events, others.values(), cursor, width, height, updates);
+		state = new State(player, entities.values(), bullets.values(), events, others.values(), cursor, width, height, updates);
 		updates++;
 	}
 	
@@ -190,13 +186,7 @@ public final class Engine
 		events.add(e);
 	}
 	
-	private void addNotNull(GameEvent e)
-	{
-		if(e != null)
-		{
-			addEvent(e);
-		}
-	}
+	
 	
 	private void executeEvents()
 	{
@@ -219,7 +209,8 @@ public final class Engine
 	
 	private void updatePlayer()
 	{
-		player.update(view);
+		player.update(state);
+		events.addAll(player.events(state));
 	}
 	
 	private void updateBullets()
@@ -231,11 +222,11 @@ public final class Engine
 			while(it.hasNext())
 			{
 				Bullet b = it.next();
-				b.update(view);
-				if(!b.bounds().intersects(bounds))
+				b.update(state);
+				if(!bounds.contains(b.bounds()))
 				{
 					it.remove();
-					addNotNull(b.onDeath(view));
+					events.addAll(b.onDeath(state));
 				}
 				else
 				{
@@ -249,7 +240,7 @@ public final class Engine
 							player.hitByBullet(b);
 							if(b.isDead()) 
 							{
-								addNotNull(b.onDeath());
+								events.addAll(b.events(state));
 								it.remove();
 							}	
 						}
@@ -267,7 +258,7 @@ public final class Engine
 								if(b.isDead()) 
 								{
 									it.remove();
-									addNotNull(e.onDeath(view));
+									events.addAll(b.events(state));
 								}
 								break;
 							}
@@ -285,11 +276,11 @@ public final class Engine
 		while(it.hasNext())
 		{
 			Entity e = it.next();
-			e.update(view);
+			e.update(state);
 			if(e.isDead()) 
 			{
 				it.remove();
-				addNotNull(e.onDeath(view));
+				events.addAll(e.events(state));
 			}
 			else
 			{
@@ -297,82 +288,15 @@ public final class Engine
 				 {
 					 e.collideWith(player);
 				 }
-				 GameEvent ev = e.event(view);
-				 addNotNull(ev);
+				 events.addAll(e.events(state));
 			}
 		}
 	}
 	
-	private void addRandomBasicEnemy()
-	{
-		double x = MainGame.rand.nextDouble() * width;
-		double y = MainGame.rand.nextDouble() * height;
-		entities.put(Faction.Enemy, new BasicEnemy(x,y));
-	}
 	
-	private void addRandomMovingEnemy()
-	{
-		double x = MainGame.rand.nextDouble() * width;
-		double y = MainGame.rand.nextDouble() * height;
-		entities.put(Faction.Enemy,(new MovingEnemy(x, y)));
-	}
 	
-	/**
-	 * Needs improvement or replacement.
-	 * Executes the player's action for the tick,
-	 * including movement and shooting
-	 */
 	
-	private void executePlayerAction()
-	{
-		if(playerAction == null) return;
-		double moveSpeed = 5;
-		double dx = 0, dy = 0;
-		
-		if(playerAction.isDown()) dy++;
-		if(playerAction.isUp()) dy--;
-		if(playerAction.isRight()) dx++;
-		if(playerAction.isLeft()) dx--;
-		
-		if(dx != 0 && dy != 0)
-		{
-			double sqrt2 = Math.sqrt(2);
-			dx /= sqrt2;
-			dy /= sqrt2;
-		}
-		player.move(dx * moveSpeed, dy * moveSpeed);
-		if(playerAction.isShooting())
-		{
-			double x = playerAction.targetX(), y = playerAction.targetY();
-			double distance = Utils.distance(player.getX(), player.getY(), x, y);
-			double speed = 10;
-			double ratio = speed / distance;
-			
-			bullets.put(Faction.Player, new Bullet(player, cursor,10, 5,Player.color)
-			{
-				/*
-				public GameEvent onDeath()
-				{
-					return new Explosion(this, getRadius() * 4, damage);
-				}
-				*/
-			});
-			/*
-			double angle = Utils.angle(player, cursor);
-			double spread = Math.PI * 50 / distance;
-			double density = 30;
-			double offset = spread / density;
-			for(int i = 0; i < density; i++)
-			{
-				bullets.put(Faction.Player, new Bullet(player, angle + (i - density / 2) * offset, speed, 5, Player.color));
-					
-				
-			}
-			*/
-			
-		}
-		
-	}
+	
 	
 	
 	private class Handler implements EventHandler

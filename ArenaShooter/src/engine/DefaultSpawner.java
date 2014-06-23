@@ -8,7 +8,7 @@ import objects.BasicEnemy;
 import objects.GameObject;
 import objects.MovingEnemy;
 import fxcore.MainGame;
-import static fxcore.MainGame.rand;
+import static fxcore.MainGame.*;
 
 public class DefaultSpawner implements Spawner
 {
@@ -19,15 +19,15 @@ public class DefaultSpawner implements Spawner
 	}
 	
 
-	private long lastSpawn = MainGame.getTime();
+	private long lastSpawn = 0;
 	@Override
 	public Collection<? extends GameObject> spawn(State d)
 	{
 		List<GameObject> spawns = new ArrayList<>();
 		if(d.time - lastSpawn >= 60)
 		{
-			double x = rand.nextDouble();
-		`	spawns.add(rand.nextBoolean() ? new BasicEnemy() : new MovingEnemy());
+			double x = rand.nextDouble() * getGameWidth(), y = rand.nextDouble() * getGameHeight();
+			spawns.add(rand.nextBoolean() ? new BasicEnemy(x, y) : new MovingEnemy(x, y));
 			lastSpawn = d.time;
 		}
 		return spawns;

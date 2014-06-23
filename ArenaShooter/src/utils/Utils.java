@@ -30,6 +30,25 @@ public class Utils
 	}
 	
 	/**
+	 * Sleeps for the specified time with Thread.sleep.
+	 * If interrupted, returns true, else false.
+	 * @param millis
+	 * @return
+	 */
+	public static boolean sleep(long millis)
+	{
+		try
+		{
+			Thread.sleep(millis);
+		}
+		catch(InterruptedException e)
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	/**
 	 * Checks if two circular objects collide at the given radius
 	 * @param g1
 	 * @param g2

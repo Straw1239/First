@@ -4,9 +4,9 @@ package objects.events;
 
 import java.util.Collection;
 
+import bounds.Circle;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import objects.Circle;
 import objects.Entity;
 import objects.Faction;
 import objects.ObjectDataHolder;
@@ -25,7 +25,7 @@ public class Explosion extends GameEvent implements ObjectDataHolder
 	
 	private double radius, damage;
 	private Color color = Color.RED;
-	private Circle bounds = new Circle(radius)
+	private Circle bounds = new Circle()
 	{
 
 		@Override
@@ -38,6 +38,11 @@ public class Explosion extends GameEvent implements ObjectDataHolder
 		public double centerY() 
 		{
 			return y;
+		}
+		
+		public double radius()
+		{
+			return radius;
 		}
 		
 	};

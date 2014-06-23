@@ -3,6 +3,8 @@ package objects;
 
 
 
+import bounds.Bounds;
+import bounds.Circle;
 import player.PlayerDataHolder;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -15,7 +17,7 @@ public class MovingEnemy extends Enemy
 	public static final double maxHealth = 30;
 	public static final double contactDamage = .1;
 	public static final Color color = Color.RED;
-	private Circle bounds = new Circle(radius)
+	private Circle bounds = new Circle()
 	{
 		@Override
 		public double centerX()
@@ -27,6 +29,12 @@ public class MovingEnemy extends Enemy
 		public double centerY()
 		{
 			return y;
+		}
+		
+		@Override
+		public double radius()
+		{
+			return radius;
 		}
 	};
 	

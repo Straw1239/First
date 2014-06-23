@@ -1,10 +1,22 @@
-package objects;
+package bounds;
 
 import utils.Vector;
 
 public interface Bounds
 {
+	public boolean isContainedBy(Bounds b);
+	
+	public boolean isContainedByCircle(Circle c);
+	
+	public boolean isContainedByRectangle(Rectangle r);
+	
 	public boolean contains(double x, double y);
+	
+	public boolean contains(Bounds b);
+	
+	public boolean containsCircle(Circle c);
+	
+	public boolean containsRectangle(Rectangle r);
 	
 	public default boolean contains(Vector v)
 	{
@@ -68,6 +80,42 @@ public interface Bounds
 
 		@Override
 		public boolean intersectsRectangle(Rectangle r)
+		{
+			return false;
+		}
+
+		@Override
+		public boolean contains(Bounds b)
+		{
+			return false;
+		}
+
+		@Override
+		public boolean containsCircle(Circle c)
+		{
+			return false;
+		}
+
+		@Override
+		public boolean containsRectangle(Rectangle r)
+		{
+			return false;
+		}
+
+		@Override
+		public boolean isContainedBy(Bounds b)
+		{
+			return false;
+		}
+
+		@Override
+		public boolean isContainedByCircle(Circle c)
+		{
+			return false;
+		}
+
+		@Override
+		public boolean isContainedByRectangle(Rectangle r)
 		{
 			return false;
 		}

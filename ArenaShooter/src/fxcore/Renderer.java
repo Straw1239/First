@@ -30,16 +30,19 @@ public class Renderer
 	{
 		g.save();
 		//g.clearRect(0, 0, width, height);
-		g.setFill(Color.BLACK);
+		g.setFill(Color.ORANGE);
 		g.fillRect(0, 0, width, height);
-		displayHUD(d);
 		scaleGraphics(d);
+		g.setFill(Color.BLACK);
+		g.fillRect(0, 0, d.width, d.height);
 		drawEvents(d);
 		drawBullets(d);
 		drawPlayer(d);
 		drawEntities(d);
 		d.mouse.draw(g);
 		g.restore();
+		displayHUD(d);
+		
 	}
 	
 	private void displayHUD(State d)
@@ -47,6 +50,7 @@ public class Renderer
 		double healthBar = 150;
 		g.setFill(Player.color);
 		g.fillRect(0, 0, healthBar * d.player.health() /d.player.maxHealth(), 30);
+		g.setStroke(Color.WHITE);
 		g.strokeRect(0, 0, healthBar, 30);
 	}
 	

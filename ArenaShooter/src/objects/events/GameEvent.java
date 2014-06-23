@@ -1,7 +1,10 @@
 package objects.events;
 
+import javafx.scene.canvas.GraphicsContext;
 import objects.Faction;
+import objects.GameObject;
 import objects.ObjectDataHolder;
+import engine.EventHandler;
 import fxcore.MainGame;
 /**
  * Basic abstract base class for all events. See EventDataHolder. 
@@ -64,5 +67,32 @@ public abstract class GameEvent implements EventDataHolder
 		{
 			throw new InternalError(e);
 		}
+	}
+	
+	public static final GameEvent spawner(GameObject obj)
+	{
+		return new GameEvent(obj)
+		{
+			boolean hasExpired = false;
+			@Override
+			public void effects(EventHandler handler)
+			{
+				if(!hasExpired) handler.add(obj);
+				hasExpired = true;
+			}
+
+			@Override
+			public void draw(GraphicsContext g)
+			{
+				
+			}
+
+			@Override
+			public boolean hasExpired()
+			{
+				return hasExpired;
+			}
+			
+		};
 	}
 }

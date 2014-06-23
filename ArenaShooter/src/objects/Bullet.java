@@ -2,12 +2,14 @@ package objects;
 
 
 
+import bounds.Bounds;
+import bounds.Circle;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import utils.Utils;
 import engine.State;
 import fxcore.MainGame;
-
+import static fxcore.MainGame.rand;
 /**
  * Represents a bullet in the game. Provides many contructors for easy building.
  * Automatically moves itself by dx and dy each time update(Display) is called.
@@ -23,25 +25,29 @@ public class Bullet extends GameObject implements BulletDataHolder
 	private double dx,dy;
 	private long startTime;
 	private boolean isDead = false;
-	private Circle bounds;
-	
-	private void setRadius(double radius)
+	private double radius;
+	private Circle bounds = new Circle()
 	{
-		bounds = new Circle(radius)
+		@Override
+		public double centerX()
 		{
-			@Override
-			public double centerX()
-			{
-				return x;
-			}
+			return x;
+		}
 
-			@Override
-			public double centerY()
-			{
-				return y;
-			}
-		};
-	}
+		@Override
+		public double centerY()
+		{
+			return y;
+		}
+
+		@Override
+		public double radius()
+		{
+			return radius;
+		}
+	};
+	
+	
 	
 	private Bullet(double x, double y)
 	{
@@ -60,7 +66,7 @@ public class Bullet extends GameObject implements BulletDataHolder
 		this(x,y);
 		this.dx = dx;
 		this.dy = dy;
-		setRadius(radius);
+		this.radius = radius;
 		this.color = color;
 	}
 	
@@ -85,7 +91,7 @@ public class Bullet extends GameObject implements BulletDataHolder
 		double distance = Utils.distance(source,target);
 		dx = speed * (target.getX() - x) / distance;
 		dy = speed * (target.getY() - y) / distance;
-		setRadius(radius);
+		this.radius = radius;
 		this.color = color;
 	}
 	
@@ -94,7 +100,7 @@ public class Bullet extends GameObject implements BulletDataHolder
 		this(source);
 		dx = Math.cos(angle) * speed;
 		dy = Math.sin(angle) * speed;
-		setRadius(radius);
+		this.radius = radius;
 		this.color = color;
 	}
 	
@@ -208,6 +214,15 @@ public class Bullet extends GameObject implements BulletDataHolder
 	public Bounds bounds()
 	{
 		return bounds ;
+	}
+
+	public void spread(double maxAngle)
+	{
+		double angle = Math.atan2(dy, dx);
+		double speed = Math.hypot(dx, dy);
+		angle += maxAngle * (rand.nextDouble() * 2 - 1);
+		dx = Math.cos(angle) * speed;
+		dy = Math.sin(angle) * speed;
 	}
 	
 	
