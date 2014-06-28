@@ -8,23 +8,20 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import objects.BasicEnemy;
 import objects.Bullet;
 import objects.Cursor;
-import objects.Entity;
 import objects.Faction;
 import objects.GameObject;
-import objects.MovingEnemy;
+import objects.entities.Entity;
 import objects.events.GameEvent;
 import player.Player;
 import utils.Concatenator;
 import utils.Utils;
+import bounds.Bounds;
 import bounds.Rectangle;
 
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Multimap;
-
-import fxcore.MainGame;
 
 
 /**
@@ -39,6 +36,9 @@ import fxcore.MainGame;
 
 public final class Engine 
 {
+	/**
+	 * 0 For all dev builds
+	 */
 	public static final long serialVersionUID = 0L;
 	
 	/**
@@ -50,7 +50,7 @@ public final class Engine
 	/**
 	 * Bounds of the game world
 	 */
-	public final Rectangle bounds; 
+	public Bounds bounds; 
 	
 	/**
 	 * Number of ticks this Engine has executed
@@ -58,13 +58,30 @@ public final class Engine
 	
 	private long updates = 0;
 	
+	/**
+	 * Represents the player of the game
+	 */
 	private volatile Player player;
+	/**
+	 * The mouse cursor for the game
+	 */
 	private Cursor cursor = new Cursor(500,500);
-	private volatile Player.Action playerAction;
+	/**
+	 * Map from faction to entities of that faction
+	 */
 	private Multimap<Faction, Entity> entities = LinkedListMultimap.create();
+	/**
+	 * List of all events currently happening
+	 */
 	private List<GameEvent> events = new LinkedList<>();
+	/**
+	 * Event handler for this engine
+	 */
 	private Handler handler = new Handler();
-	private Multimap<Faction, GameObject> others = LinkedListMultimap.create();
+	/**
+	 * Map from faction to objects in that faction not in entities or bullets (should change to all objects?)
+	 */
+	private Multimap<Faction, GameObject> objects = LinkedListMultimap.create();
 	
 	/**
 	 * Map from Faction to all bullets of that Faction, for optimization.
@@ -73,6 +90,9 @@ public final class Engine
 	 */
 	private Multimap<Faction, Bullet> bullets = LinkedListMultimap.create();
 	
+	/**
+	 * Spawner for this engine, creates enemies and probably other stuff.
+	 */
 	private Spawner spawner;
 	
 	/**
@@ -95,10 +115,17 @@ public final class Engine
 		this.width = width;
 		this.height = height;
 		player = new Player(width / 2, height / 2);
-		bounds = Rectangle.of(0, 0, width, height);
+		handler.addAllEvents(player.onEntry(state));
+		handler.addAllEvents(cursor.onEntry(state));
+		bounds = Rectangle.of(0, 0, this.width, this.height);
 		entities.put(Faction.Player, player);
-		state = new State(player, entities.values(), bullets.values(), events, others.values(), cursor, width, height, updates);
+		state = generateState();
 		spawner = new DefaultSpawner(width, height);
+	}
+	
+	private State generateState()
+	{
+		return new State(player, entities.values(), bullets.values(), events, objects.values(), cursor, width, height, bounds, updates);
 	}
 	/**
 	 * Creates engine based on data contained in state. State is immutable; all data is copied into the new engine.
@@ -156,13 +183,33 @@ public final class Engine
 		handler.addAll(spawner.spawn(state));
 		cursor.update(state);
 		updatePlayer();
+		updateObjects();
 		updateEnemies();
 		updateBullets();
 		executeEvents();
-		state = new State(player, entities.values(), bullets.values(), events, others.values(), cursor, width, height, updates);
+		state = generateState();
 		updates++;
+		if(sleepTime > 0) 
+		{
+			Utils.sleep(sleepTime);
+			sleepTime = 0;
+		}
 	}
 	
+	private void updateObjects()
+	{
+		for(Faction f : Faction.values())
+		{
+			Collection<GameObject> objectsOfFaction = objects.get(f);
+			for(GameObject obj : objectsOfFaction)
+			{
+				obj.update(state);//Add way to remove GameObjects which aren't any other class?
+				
+			}
+		}
+		
+	}
+
 	/**
 	 * Returns number of engine updates that have occured
 	 * @return Time in ticks
@@ -223,7 +270,7 @@ public final class Engine
 			{
 				Bullet b = it.next();
 				b.update(state);
-				if(!bounds.contains(b.bounds()))
+				if(b.isDead())
 				{
 					it.remove();
 					events.addAll(b.onDeath(state));
@@ -287,6 +334,7 @@ public final class Engine
 				 if(e.collidesWith(player))
 				 {
 					 e.collideWith(player);
+					 player.collideWith(e);
 				 }
 				 events.addAll(e.events(state));
 			}
@@ -311,14 +359,17 @@ public final class Engine
 				@Override
 				public boolean add(GameObject arg0) 
 				{
-					add(arg0);
+					Handler.this.add(arg0);
 					return true;
 				}
 
 				@Override
-				public boolean addAll(Collection<? extends GameObject> arg0) 
+				public boolean addAll(Collection<? extends GameObject> objs) 
 				{
-					addAll(arg0);
+					for(GameObject obj : objs)
+					{
+						add(obj);
+					}
 					return true;
 				}
 			};
@@ -333,10 +384,14 @@ public final class Engine
 		@Override
 		public void add(GameObject obj) 
 		{
+			for(GameEvent e : obj.onEntry(getState()))
+			{
+				addEvent(e);
+			}
 			if(obj instanceof Bullet) bullets.put(obj.getFaction(), (Bullet)obj);
 			else if(obj instanceof Player) throw new IllegalArgumentException("cannot add multiple players");
 			else if(obj instanceof Entity) entities.put(obj.getFaction(), (Entity) obj);
-			else others.put(obj.getFaction(), obj);
+			else objects.put(obj.getFaction(), obj);
 		}
 
 		@Override
@@ -348,7 +403,7 @@ public final class Engine
 		@Override
 		public Collection<? extends GameObject> objectsOfFaction(Faction f) 
 		{
-			return others.get(f);
+			return objects.get(f);
 		}
 
 		@Override
@@ -386,5 +441,20 @@ public final class Engine
 		{	
 			return bullets.get(f);
 		}
+	}
+
+
+
+
+
+	/**
+	 * Pauses the engine for the specified time, first finishing execution of the current tick
+	 * @param milliseconds to sleep for
+	 */
+	private volatile long sleepTime = 0;
+	
+	public synchronized void sleep(long time)
+	{
+		sleepTime += time;	
 	}	
 }

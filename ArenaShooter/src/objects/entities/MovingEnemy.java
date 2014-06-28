@@ -1,14 +1,15 @@
-package objects;
+package objects.entities;
 
 
 
 
-import bounds.Bounds;
-import bounds.Circle;
-import player.PlayerDataHolder;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import objects.Bullet;
+import player.PlayerDataHolder;
 import utils.Utils;
+import bounds.Bounds;
+import bounds.Circle;
 import engine.State;
 
 public class MovingEnemy extends Enemy 
@@ -64,8 +65,8 @@ public class MovingEnemy extends Enemy
 	public void hitByBullet(Bullet b) 
 	{
 		double mass = 2;
-		x += b.getDX() / mass;
-		y += b.getDY() / mass;
+		x += b.damage * b.getDX() / mass;
+		y += b.damage * b.getDY() / mass;
 	}
 
 	@Override
@@ -74,15 +75,9 @@ public class MovingEnemy extends Enemy
 		double speed = 3;
 		PlayerDataHolder p = d.player;
 		double distance = Utils.distance(this, p);
-		x += speed * (p.getX() - x) / distance;
-		y += speed * (p.getY() - y) / distance;
-	}
-
-	@Override
-	public boolean collidesWith(GameObject entity) 
-	{
-		assert(entity != null);
-		return bounds.intersects(entity.bounds());
+		dx = speed * (p.getX() - x) / distance;
+		dy = speed * (p.getY() - y) / distance;
+		super.update(d);
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package objects;
+package objects.entities;
 
 import javafx.scene.canvas.GraphicsContext;
 

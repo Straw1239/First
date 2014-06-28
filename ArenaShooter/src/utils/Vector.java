@@ -1,6 +1,9 @@
 package utils;
 
-public class Vector {
+import objects.Locatable;
+
+public final class Vector implements Locatable
+{
 	public final double x, y;
 	
 	public Vector(double x, double y)
@@ -31,7 +34,7 @@ public class Vector {
 	
 	public Vector normalized()
 	{
-		return scale(1 / getLength());
+		return normalized(1);
 	}
 	
 	public Vector add(Vector v)
@@ -59,6 +62,11 @@ public class Vector {
 		return normal.scale(dotProduct(this, normal) / normal.lengthSquared() * 2).sub(this);
 	}
 	
+	public Vector inverse()
+	{
+		return new Vector(-x, -y);
+	}
+	
 	@Override
 	public String toString()
 	{
@@ -68,6 +76,11 @@ public class Vector {
 	public static double dotProduct(Vector vec1, Vector vec2)
 	{
 		return vec1.x * vec2.x + vec1.y * vec2.y;
+	}
+
+	public Vector normalized(double d)
+	{
+		return scale(d / getLength());
 	}
 
 }

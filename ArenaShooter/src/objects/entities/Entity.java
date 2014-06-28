@@ -1,6 +1,10 @@
-package objects;
+package objects.entities;
 
-public abstract class Entity extends GameObject implements EntityDataHolder
+import objects.Bullet;
+import objects.Faction;
+import objects.MovingObject;
+
+public abstract class Entity extends MovingObject implements EntityDataHolder
 {
 	protected Entity(double x, double y) 
 	{
@@ -49,7 +53,7 @@ public abstract class Entity extends GameObject implements EntityDataHolder
 		correctHealth();
 	}
 	
-	private void correctHealth()
+	protected void correctHealth()
 	{
 		health = Math.max(0, Math.min(health, maxHealth));
 	}

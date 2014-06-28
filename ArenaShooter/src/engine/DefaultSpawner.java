@@ -1,14 +1,18 @@
 package engine;
 
+import static fxcore.MainGame.getGameHeight;
+import static fxcore.MainGame.getGameWidth;
+import static fxcore.MainGame.rand;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import objects.BasicEnemy;
 import objects.GameObject;
-import objects.MovingEnemy;
-import fxcore.MainGame;
-import static fxcore.MainGame.*;
+import objects.entities.BasicEnemy;
+import objects.entities.Charger;
+import objects.entities.FirstBoss;
+import objects.entities.MovingEnemy;
 
 public class DefaultSpawner implements Spawner
 {
@@ -20,15 +24,27 @@ public class DefaultSpawner implements Spawner
 	
 
 	private long lastSpawn = 0;
+	private long lastBoss = -6000;// Spawn immediately for testing
+	private long boss = -10000; // Spawn immediately for testing
 	@Override
 	public Collection<? extends GameObject> spawn(State d)
 	{
 		List<GameObject> spawns = new ArrayList<>();
+		double x = rand.nextDouble() * getGameWidth(), y = rand.nextDouble() * getGameHeight();
 		if(d.time - lastSpawn >= 60)
 		{
-			double x = rand.nextDouble() * getGameWidth(), y = rand.nextDouble() * getGameHeight();
 			spawns.add(rand.nextBoolean() ? new BasicEnemy(x, y) : new MovingEnemy(x, y));
 			lastSpawn = d.time;
+		}
+		if(d.time - lastBoss >= 2000)
+		{
+			spawns.add(new Charger(x, y));
+			lastBoss = d.time;
+		}
+		if(d.time - boss >= 10000)
+		{
+			spawns.add(new FirstBoss(x, y));
+			boss = d.time;
 		}
 		return spawns;
 	}

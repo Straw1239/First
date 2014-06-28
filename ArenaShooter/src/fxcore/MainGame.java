@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 import player.Player;
 import utils.Utils;
 import utils.XRandom;
+import bounds.Circle;
 import engine.Engine;
 
 public class MainGame extends Application
@@ -116,7 +117,7 @@ public class MainGame extends Application
 			
 			if(e.getCode() == KeyCode.R)
 			{
-				engine = new Engine(renderer.width, renderer.height);
+				engine = new Engine(3000, 3000);
 			}
 		});
 		stage.addEventFilter(KeyEvent.ANY, keyTracker);
@@ -134,6 +135,7 @@ public class MainGame extends Application
 		int height = gd.getDisplayMode().getHeight();
 		renderer = new Renderer(width, height);
 		engine = new Engine(3000, 3000);
+		//engine.bounds = Circle.of(0, 0, 2500);
 		
 		root.getChildren().add(renderer.canvas);
 		scene = new Scene(root);
@@ -207,6 +209,11 @@ public class MainGame extends Application
 			this.width = width;
 			this.height = height;
 		}
+	}
+
+	public static void sleep(long time)
+	{
+		app.engine.sleep(time);
 	}
 	
 	

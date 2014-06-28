@@ -24,7 +24,7 @@ public class XRandom extends Random
 	 }
 
 	 @Override
-	protected int next(int nbits) 
+	 protected int next(int nbits) 
 	 {
 		 long x = seed;
 		 x ^= (x << 21);

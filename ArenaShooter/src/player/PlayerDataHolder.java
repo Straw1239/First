@@ -1,6 +1,6 @@
 package player;
 
-import objects.EntityDataHolder;
+import objects.entities.EntityDataHolder;
 
 public interface PlayerDataHolder extends EntityDataHolder
 {

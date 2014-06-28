@@ -34,7 +34,10 @@ public abstract class GameObject implements ObjectDataHolder
 	
 	public abstract void update(State d);
 	
-	public abstract boolean collidesWith(GameObject entity);
+	public boolean collidesWith(GameObject entity)
+	{
+		return bounds().intersects(entity.bounds());
+	}
 	
 	public abstract Bounds bounds();
 	
@@ -46,6 +49,11 @@ public abstract class GameObject implements ObjectDataHolder
 	public Collection<? extends GameEvent> onDeath(State d)
 	{
 		return onDeath();
+	}
+	
+	public Collection<? extends GameEvent> onEntry(State s)
+	{
+		return Collections.emptyList();
 	}
 	
 	public Collection<? extends GameEvent> onDeath()

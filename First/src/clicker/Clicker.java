@@ -17,6 +17,7 @@ public class Clicker
 	static Point buyLocation = new Point(3000, 950);
 	static Point buyLocation2;
 	static volatile boolean buying = false;
+	
 	public static void main(String[] args) throws Throwable
 	{
 		System.out.println("CLICKER V2.0");
@@ -62,8 +63,8 @@ public class Clicker
 		{
 			if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
 			{
-				System.exit(0);
 				GlobalScreen.unregisterNativeHook();
+				System.exit(0); 
 			}
 			
 			if(e.getKeyCode() == KeyEvent.VK_F8)

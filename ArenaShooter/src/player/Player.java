@@ -5,17 +5,17 @@ package player;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import bounds.Bounds;
-import bounds.Circle;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import objects.Bullet;
-import objects.Entity;
 import objects.Faction;
 import objects.GameObject;
+import objects.entities.Entity;
 import objects.events.GameEvent;
-import static utils.Utils.*;
+import bounds.Bounds;
+import bounds.Circle;
 import engine.State;
+import fxcore.MainGame;
 
 
 /**
@@ -62,14 +62,6 @@ public class Player extends Entity implements PlayerDataHolder
 	{
 		action = a;
 	}
-	
-	private void move(double dx, double dy, State state)
-	{
-		x += dx;
-		x = clamp(x, radius, state.width - radius);
-		y += dy;
-		y = clamp(y, radius, state.height - radius);
-	}
 
 	@Override
 	public void update(State d) 
@@ -78,36 +70,54 @@ public class Player extends Entity implements PlayerDataHolder
 		if(!isDead()) 
 		{
 			heal(.03);
+			//heal(Double.POSITIVE_INFINITY);
 			executeAction(d);
 		}
-		
+		super.update(d);
+		dx *= .97;
+		dy *= .97;
 	}
 	
 	private void executeAction(State state)
 	{
 		double moveSpeed = 5;
-		double dx = 0, dy = 0;
 		
+		if(action.isDown() || action.isLeft() || action.isRight() || action.isUp())
+		{
+			dx = 0;
+			dy = 0;
+		}
 		if(action.isDown()) dy++;
 		if(action.isUp()) dy--;
 		if(action.isRight()) dx++;
 		if(action.isLeft()) dx--;
-		move(dx * moveSpeed, dy * moveSpeed, state);
-		if(dx != 0 && dy != 0)
+		if(action.isDown() || action.isLeft() || action.isRight() || action.isUp())
 		{
-			double sqrt2 = Math.sqrt(2);
-			dx /= sqrt2;
-			dy /= sqrt2;
+			double hypot = Math.hypot(dx, dy);
+			if(hypot > 0)
+			{
+				dx /= hypot;
+				dy /= hypot;
+				dx *= moveSpeed;
+				dy *= moveSpeed;
+			}
 		}
+		
+		if(state.time - fireTime >= 3)
 		if(action.isShooting())
 		{
 			double x = action.targetX(), y = action.targetY();
-			double distance = distance(this.x, this.y, x, y);
-			double speed = 10;
-			double ratio = speed / distance;
-			Bullet bullet = new Bullet(this, GameObject.dataOf(x, y, faction), 10, 5, color);
-			bullet.spread(Math.toRadians(5.0));
-			nextEvents.add(GameEvent.spawner(bullet));
+			//double distance = distance(this.x, this.y, x, y);
+			//double speed = 10;
+			//double ratio = speed / distance;
+			for(int i = 0; i < 3; i++)
+			{
+				Bullet bullet = new Bullet(this, GameObject.dataOf(x, y, faction), 10, 10, color);
+				bullet.damage = 2;
+				bullet.spread(Math.toRadians(5));
+				nextEvents.add(GameEvent.spawner(bullet));
+			}
+			fireTime = state.time;
 		}
 	}
 	
@@ -115,12 +125,6 @@ public class Player extends Entity implements PlayerDataHolder
 	public Collection<GameEvent> events(State d)
 	{
 		return nextEvents;
-	}
-	
-	@Override
-	public boolean collidesWith(GameObject entity) 
-	{
-		return bounds.intersects(entity.bounds());
 	}
 	
 	@Override
@@ -202,7 +206,7 @@ public class Player extends Entity implements PlayerDataHolder
 	{
 		g.setFill(Player.color);
 		g.fillOval(x - radius, y - radius, 2 * radius, 2 * radius);
-		g.setStroke(Color.WHITE);
+		
 	}
 
 	@Override
@@ -210,10 +214,17 @@ public class Player extends Entity implements PlayerDataHolder
 	{
 		return bounds;
 	}
+	
+	public void damage(double damage)
+	{
+		super.damage(damage);
+		if(!isDead()) MainGame.sleep((long)(damage * 40));
+	}
 
 	@Override
 	public void collideWith(Entity e) 
 	{
 		//Do nothing for now, damage will be handled by enemy's collide function
+		if(!isDead()) MainGame.sleep(5L);
 	}	
 }

@@ -29,12 +29,6 @@ public class Cursor extends GameObject
 	}
 
 	@Override
-	public boolean collidesWith(GameObject entity)
-	{
-		return false;
-	}
-
-	@Override
 	public void draw(GraphicsContext g)
 	{
 		g.setStroke(color);

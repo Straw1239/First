@@ -2,6 +2,7 @@ package objects;
 
 
 
+import objects.entities.Entity;
 import bounds.Bounds;
 import bounds.Circle;
 import javafx.scene.canvas.GraphicsContext;
@@ -17,16 +18,15 @@ import static fxcore.MainGame.rand;
  * @author Rajan
  *
  */
-public class Bullet extends GameObject implements BulletDataHolder
+public class Bullet extends MovingObject implements BulletDataHolder
 {
 	public Color color;
 	public double damage = 1;
 	
-	private double dx,dy;
-	private long startTime;
-	private boolean isDead = false;
-	private double radius;
-	private Circle bounds = new Circle()
+	protected long startTime;
+	protected boolean isDead = false;
+	protected double radius;
+	protected Circle bounds = new Circle()
 	{
 		@Override
 		public double centerX()
@@ -55,7 +55,7 @@ public class Bullet extends GameObject implements BulletDataHolder
 		startTime = MainGame.getTime();
 	}
 	
-	private Bullet(ObjectDataHolder entity)
+	protected Bullet(ObjectDataHolder entity)
 	{
 		this(entity.getX(), entity.getY());
 		faction = entity.getFaction();
@@ -85,7 +85,7 @@ public class Bullet extends GameObject implements BulletDataHolder
 		this(x,y,dx,dy,radius,Color.RED);
 	}
 		
-	public Bullet(ObjectDataHolder source, ObjectDataHolder target, double speed, double radius, Color color)
+	public Bullet(ObjectDataHolder source, Locatable target, double speed, double radius, Color color)
 	{
 		this(source);
 		double distance = Utils.distance(source,target);
@@ -105,18 +105,9 @@ public class Bullet extends GameObject implements BulletDataHolder
 	}
 	
 	
-	
-	@Override
-	public void update(State d) 
+	protected void onWallHit(State s)
 	{
-		x += dx;
-		y += dy;
-	}
-
-	@Override
-	public boolean collidesWith(GameObject entity) 
-	{
-		return bounds.intersects(entity.bounds());
+		isDead = true;
 	}
 
 	@Override
@@ -213,7 +204,7 @@ public class Bullet extends GameObject implements BulletDataHolder
 	@Override
 	public Bounds bounds()
 	{
-		return bounds ;
+		return bounds;
 	}
 
 	public void spread(double maxAngle)
@@ -223,6 +214,32 @@ public class Bullet extends GameObject implements BulletDataHolder
 		angle += maxAngle * (rand.nextDouble() * 2 - 1);
 		dx = Math.cos(angle) * speed;
 		dy = Math.sin(angle) * speed;
+	}
+	
+	public static class Builder
+	{
+		protected Locatable start;
+		protected Faction faction;
+		protected double dy, dx;
+		protected Locatable target = null;
+		protected Color color;
+		protected double radius;
+		protected boolean piercing;
+		
+		public Bullet build()
+		{
+			if(target == null)
+			{
+				Bullet b = new Bullet(start.getX(), start.getY(), dx, dy, radius, color);
+				b.color = color;
+				b.faction = faction;
+				return b;
+			}
+			else
+			{
+				return new Bullet(GameObject.dataOf(start.getX(), start.getY(), faction), target, dx, dx, color);
+			}
+		}
 	}
 	
 	

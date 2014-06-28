@@ -1,6 +1,8 @@
 package utils;
 
+import objects.Locatable;
 import objects.ObjectDataHolder;
+import fxcore.MainGame;
 
 /**
  * Provides various utility functions used in multiple places
@@ -14,7 +16,7 @@ public class Utils
 		return Math.sqrt(distanceSquared(x1,y1,x2,y2));
 	}
 	
-	public static double distance(ObjectDataHolder g1, ObjectDataHolder g2)
+	public static double distance(Locatable g1, Locatable g2)
 	{
 		return distance(g1.getX(), g1.getY(), g2.getX(), g2.getY());
 	}
@@ -27,6 +29,22 @@ public class Utils
 	public static double distanceSquared(ObjectDataHolder g1, ObjectDataHolder g2)
 	{
 		return distanceSquared(g1.getX(),g1.getY(),g2.getX(),g2.getY());
+	}
+	
+	public static double hypotSquared(double d1, double d2)
+	{
+		return Math.pow(d1, 2) + Math.pow(d2, 2);
+	}
+	
+	public static Vector circleRandom(double radius)
+	{
+		double angle = MainGame.rand.nextDouble() * 2 * Math.PI;
+		return new Vector(Math.cos(angle) * radius, Math.sin(angle) * radius);
+	}
+	
+	public static double interpolate(double first, double second, double ratio)
+	{
+		return ((1 - ratio) * first + ratio * second) / 2;
 	}
 	
 	/**

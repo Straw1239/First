@@ -3,9 +3,9 @@ package engine;
 import java.util.Collection;
 
 import objects.Bullet;
-import objects.Entity;
 import objects.Faction;
 import objects.GameObject;
+import objects.entities.Entity;
 import objects.events.GameEvent;
 import player.Player;
 

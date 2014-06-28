@@ -64,7 +64,7 @@ public class Main extends Application
 	private int mode = 1;
 	private int balls = 4096;
 	private List<Image> snapshots = new ArrayList<>();
-	private double width = 500, height = 800;
+	private double width = 1920, height = 1080;
 	
 	public synchronized WritableImage snapshot()
 	{
@@ -82,7 +82,7 @@ public class Main extends Application
 		//width = bounds.getWidth();
 		//height = bounds.getHeight();
 		stage = s;
-		//stage.setFullScreen(true);
+		stage.setFullScreen(true);
 		stage.setFullScreenExitHint("");
 		stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
 		stage.addEventFilter(KeyEvent.KEY_PRESSED, (e) ->

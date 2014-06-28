@@ -7,9 +7,9 @@ import java.util.Collection;
 import bounds.Circle;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import objects.Entity;
 import objects.Faction;
 import objects.ObjectDataHolder;
+import objects.entities.Entity;
 import engine.EventHandler;
 import fxcore.MainGame;
 

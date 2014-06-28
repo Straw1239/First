@@ -1,4 +1,6 @@
-package objects;
+package objects.entities;
+
+import objects.Faction;
 
 
 public abstract class Enemy extends Entity implements EnemyDataHolder
