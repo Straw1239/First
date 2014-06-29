@@ -1,5 +1,6 @@
 package bounds;
 
+import javafx.scene.canvas.GraphicsContext;
 import utils.Vector;
 
 public interface Bounds
@@ -119,7 +120,25 @@ public interface Bounds
 		{
 			return false;
 		}
+
+		@Override
+		public void fill(GraphicsContext g)
+		{
+			// Nothing
+			
+		}
+
+		@Override
+		public void stroke(GraphicsContext g)
+		{
+			// Nothing
+			
+		}
 	};
+	
+	public void fill(GraphicsContext g);
+	
+	public void stroke(GraphicsContext g);
 	
 	
 	

@@ -24,13 +24,13 @@ public class DefaultSpawner implements Spawner
 	
 
 	private long lastSpawn = 0;
-	private long lastBoss = -6000;// Spawn immediately for testing
+	private long lastBoss = -10000;// Spawn immediately for testing
 	private long boss = -10000; // Spawn immediately for testing
 	@Override
 	public Collection<? extends GameObject> spawn(State d)
 	{
 		List<GameObject> spawns = new ArrayList<>();
-		double x = rand.nextDouble() * getGameWidth(), y = rand.nextDouble() * getGameHeight();
+		double x = rand.nextDouble() * (getGameWidth() - 200) + 100, y = rand.nextDouble() * (getGameHeight() - 200) + 100;
 		if(d.time - lastSpawn >= 60)
 		{
 			spawns.add(rand.nextBoolean() ? new BasicEnemy(x, y) : new MovingEnemy(x, y));
@@ -40,6 +40,8 @@ public class DefaultSpawner implements Spawner
 		{
 			spawns.add(new Charger(x, y));
 			lastBoss = d.time;
+			x = rand.nextDouble() * (getGameWidth() - 200) + 100; 
+			y = rand.nextDouble() * (getGameHeight() - 200) + 100;
 		}
 		if(d.time - boss >= 10000)
 		{

@@ -41,7 +41,8 @@ public class Renderer
 		//g.setFill(Color.BLACK);
 		//g.setFill(new LinearGradient(0, 0, .1, .2, true, CycleMethod.REFLECT, new Stop(0, Color.BLACK), new Stop(.5, Color.SEAGREEN.darker()), new Stop(1, Color.DARKBLUE)));
 		g.setFill(new RadialGradient(0, 0, .5, .5, .05, true, CycleMethod.REFLECT, new Stop(0, Color.BLACK), new Stop(1, Color.DARKMAGENTA)));
-		g.fillRect(0, 0, d.width, d.height);
+		//g.fillRect(0, 0, d.width, d.height);
+		d.gameBounds.fill(g);
 		drawEvents(d);
 		drawBullets(d);
 		drawPlayer(d);

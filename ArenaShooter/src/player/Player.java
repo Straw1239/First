@@ -4,6 +4,7 @@ package player;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -14,6 +15,7 @@ import objects.entities.Entity;
 import objects.events.GameEvent;
 import bounds.Bounds;
 import bounds.Circle;
+import engine.EventHandler;
 import engine.State;
 import fxcore.MainGame;
 
@@ -63,6 +65,39 @@ public class Player extends Entity implements PlayerDataHolder
 		action = a;
 	}
 
+	public Collection<? extends GameEvent> onDeath()
+	{
+		return Collections.singleton(new GameEvent(this)
+		{
+			long time = 5;
+			@Override
+			public void effects(EventHandler handler)
+			{
+				time--;
+				
+			}
+
+			@Override
+			public void draw(GraphicsContext g)
+			{
+				Color c = Color.WHITE;
+				g.setFill(Color.color(c.getRed(), c.getGreen(), c.getBlue(), .15));
+				g.fillRect(0, 0, MainGame.getGameWidth(), MainGame.getGameHeight());
+				
+				
+				
+			}
+			
+			
+			@Override
+			public boolean hasExpired()
+			{
+				return time == 0;
+			}
+			
+		});
+	}
+	
 	@Override
 	public void update(State d) 
 	{

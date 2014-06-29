@@ -22,12 +22,12 @@ public class FirstBoss extends Enemy
 {
 	private double radius = 100;
 	private int numMinions = 0;
-	private static Color color = Color.DARKTURQUOISE.darker().saturate();
+	private static Color color = Color.BLUE.interpolate(Color.GREEN, .7);
 	
 	public FirstBoss(double x, double y)
 	{
 		super(x, y);
-		maxHealth = 3000;
+		maxHealth = 2000;
 		health = maxHealth;
 	}
 
@@ -210,7 +210,7 @@ public class FirstBoss extends Enemy
 		{
 			super.update(d);
 			double distance = Utils.distance(this, FirstBoss.this);
-			distance = Utils.clamp(distance, 30, Double.POSITIVE_INFINITY);
+			distance = Utils.clamp(distance, 50, Double.POSITIVE_INFINITY);
 			double distanceSqrd = distance * distance;
 			double force = 10000 / distanceSqrd;
 			dx -= force * (x - FirstBoss.this.x) / distance;

@@ -135,7 +135,7 @@ public class MainGame extends Application
 		int height = gd.getDisplayMode().getHeight();
 		renderer = new Renderer(width, height);
 		engine = new Engine(3000, 3000);
-		//engine.bounds = Circle.of(0, 0, 2500);
+		//engine.bounds = Circle.of(0, 0, 300);
 		
 		root.getChildren().add(renderer.canvas);
 		scene = new Scene(root);

@@ -1,5 +1,6 @@
 package bounds;
 
+import javafx.scene.canvas.GraphicsContext;
 import utils.Utils;
 
 public interface Circle extends Bounds
@@ -86,6 +87,16 @@ public interface Circle extends Bounds
 	public default boolean intersectsRectangle(Rectangle other)
 	{
 		return other.intersectsCircle(this);
+	}
+	
+	public default void fill(GraphicsContext g)
+	{
+		g.fillOval(centerX() - radius(), centerY() - radius(), 2 * radius(), 2 * radius());
+	}
+	
+	public default void stroke(GraphicsContext g)
+	{
+		g.strokeOval(centerX() - radius(), centerY() - radius(), 2 * radius(), 2 * radius());
 	}
 	
 	public double radius();

@@ -114,10 +114,10 @@ public final class Engine
 	{
 		this.width = width;
 		this.height = height;
-		player = new Player(width / 2, height / 2);
+		bounds = Rectangle.of(0, 0, this.width, this.height);
+		player = new Player(bounds.centerX(), bounds.centerY());//new Player(width / 2, height / 2);
 		handler.addAllEvents(player.onEntry(state));
 		handler.addAllEvents(cursor.onEntry(state));
-		bounds = Rectangle.of(0, 0, this.width, this.height);
 		entities.put(Faction.Player, player);
 		state = generateState();
 		spawner = new DefaultSpawner(width, height);
@@ -253,11 +253,19 @@ public final class Engine
 		events.addAll(handler.newEvents);
 		handler.newEvents.clear();
 	}
-	
+	private boolean gameOver = false;
 	private void updatePlayer()
 	{
+		
 		player.update(state);
 		events.addAll(player.events(state));
+		if(player.isDead())
+		{
+			if(!gameOver)
+			events.addAll(player.onDeath(state));
+			gameOver = true;
+		}
+
 	}
 	
 	private void updateBullets()
@@ -277,6 +285,7 @@ public final class Engine
 				}
 				else
 				{
+					events.addAll(b.events(state));
 					switch (f)
 					{
 					case Neutral:
@@ -287,7 +296,7 @@ public final class Engine
 							player.hitByBullet(b);
 							if(b.isDead()) 
 							{
-								events.addAll(b.events(state));
+								events.addAll(b.onDeath(state));
 								it.remove();
 							}	
 						}
@@ -305,7 +314,7 @@ public final class Engine
 								if(b.isDead()) 
 								{
 									it.remove();
-									events.addAll(b.events(state));
+									events.addAll(b.onDeath(state));
 								}
 								break;
 							}
@@ -327,7 +336,7 @@ public final class Engine
 			if(e.isDead()) 
 			{
 				it.remove();
-				events.addAll(e.events(state));
+				events.addAll(e.onDeath(state));
 			}
 			else
 			{
