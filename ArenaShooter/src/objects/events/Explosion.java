@@ -2,14 +2,11 @@ package objects.events;
 
 
 
-import java.util.Collection;
-
-import bounds.Circle;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import objects.Faction;
 import objects.ObjectDataHolder;
-import objects.entities.Entity;
+import bounds.Circle;
 import engine.EventHandler;
 import fxcore.MainGame;
 
@@ -87,7 +84,7 @@ public class Explosion extends GameEvent implements ObjectDataHolder
 	@Override
 	public void effects(EventHandler handler) 
 	{
-		Collection<? extends Entity> entities = handler.entities();
+		/*Collection<? extends Entity> entities = handler.entities();
 		for(Entity e : entities)
 		{
 			if(e.getFaction() != faction)
@@ -97,7 +94,7 @@ public class Explosion extends GameEvent implements ObjectDataHolder
 					e.damage(damage);
 				}
 			}
-		}
+		}*/
 	}
 
 	

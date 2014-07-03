@@ -1,5 +1,7 @@
 package objects.entities;
 
+import static fxcore.MainGame.rand;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -14,9 +16,7 @@ import utils.Utils;
 import utils.Vector;
 import bounds.Bounds;
 import bounds.Circle;
-import engine.EventHandler;
 import engine.State;
-import static fxcore.MainGame.*;
 
 public class FirstBoss extends Enemy
 {
@@ -52,42 +52,6 @@ public class FirstBoss extends Enemy
 			e.damage(.3);
 		}
 	}
-	
-	public Collection<? extends GameEvent> onEntry(State s)
-	{
-		return Collections.singleton(new RepulsionField());
-	}
-	
-	private class RepulsionField extends GameEvent
-	{
-		public RepulsionField()
-		{
-			super(FirstBoss.this);
-		}
-
-		@Override
-		public void effects(EventHandler handler)
-		{
-			Collection<? extends Entity> enemies = handler.entitiesOfFaction(faction);
-			for(Entity e : enemies)
-			{
-				//Push them away
-			}
-		}
-
-		@Override
-		public void draw(GraphicsContext g)
-		{
-			//No visual
-		}
-
-		@Override
-		public boolean hasExpired()
-		{
-			return isDead();
-		}
-	}
-
 	
 	
 	@Override

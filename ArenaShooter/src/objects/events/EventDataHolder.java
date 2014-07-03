@@ -19,6 +19,11 @@ public interface EventDataHolder extends ObjectDataHolder
 	
 	public boolean hasExpired();
 	
+	public default boolean isDead()
+	{
+		return hasExpired();
+	}
+	
 	public long startTime();
 		
 }

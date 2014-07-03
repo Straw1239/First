@@ -2,15 +2,15 @@ package objects;
 
 
 
-import objects.entities.Entity;
-import bounds.Bounds;
-import bounds.Circle;
+import static fxcore.MainGame.rand;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import objects.entities.Entity;
 import utils.Utils;
+import bounds.Bounds;
+import bounds.Circle;
 import engine.State;
 import fxcore.MainGame;
-import static fxcore.MainGame.rand;
 /**
  * Represents a bullet in the game. Provides many contructors for easy building.
  * Automatically moves itself by dx and dy each time update(Display) is called.

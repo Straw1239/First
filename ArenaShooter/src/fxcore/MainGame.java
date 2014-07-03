@@ -2,6 +2,7 @@ package fxcore;
 
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Random;
 
@@ -20,8 +21,8 @@ import javafx.stage.Stage;
 import player.Player;
 import utils.Utils;
 import utils.XRandom;
-import bounds.Circle;
 import engine.Engine;
+import engine.State;
 
 public class MainGame extends Application
 {
@@ -213,7 +214,7 @@ public class MainGame extends Application
 
 	public static void sleep(long time)
 	{
-		app.engine.sleep(time);
+		//app.engine.sleep(time); Currently sleep is disabled
 	}
 	
 	

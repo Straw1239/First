@@ -1,12 +1,13 @@
 package objects;
 
-import javafx.scene.canvas.GraphicsContext;
-import utils.Cloner;
+import java.io.Externalizable;
 
-public interface ObjectDataHolder extends Cloner, Locatable
+import utils.Cloner;
+import fxcore.Drawable;
+
+public interface ObjectDataHolder extends Cloner, Locatable, Drawable, Externalizable
 {
 	public Faction getFaction();
 	
-	public void draw(GraphicsContext g);
-
+	public boolean isDead();
 }

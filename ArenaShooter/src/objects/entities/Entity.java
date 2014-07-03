@@ -1,5 +1,9 @@
 package objects.entities;
 
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
 import objects.Bullet;
 import objects.Faction;
 import objects.MovingObject;
@@ -56,6 +60,20 @@ public abstract class Entity extends MovingObject implements EntityDataHolder
 	protected void correctHealth()
 	{
 		health = Math.max(0, Math.min(health, maxHealth));
+	}
+	
+	public void writeExternal(ObjectOutput out) throws IOException
+	{
+		super.writeExternal(out);
+		out.writeDouble(health);
+		out.writeDouble(maxHealth);
+	}
+	
+	public void readExternal(ObjectInput in) throws ClassNotFoundException, IOException
+	{
+		super.readExternal(in);
+		health = in.readDouble();
+		maxHealth = in.readDouble();
 	}
 	
 	

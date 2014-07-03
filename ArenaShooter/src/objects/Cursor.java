@@ -2,11 +2,11 @@ package objects;
 
 
 
-import bounds.Bounds;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import player.Player;
 import player.PlayerDataHolder;
+import bounds.Bounds;
 import engine.State;
 import fxcore.MainGame;
 
@@ -18,6 +18,11 @@ public class Cursor extends GameObject
 	public Cursor(double x, double y)
 	{
 		super(x, y, Faction.Neutral);
+	}
+	
+	public Cursor()
+	{
+		this(0, 0);
 	}
 
 	@Override
@@ -43,6 +48,12 @@ public class Cursor extends GameObject
 	public Bounds bounds()
 	{
 		return Bounds.NONE;
+	}
+
+	@Override
+	public boolean isDead()
+	{
+		return false;
 	}
 	
 

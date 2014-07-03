@@ -60,6 +60,11 @@ public class Player extends Entity implements PlayerDataHolder
 		health = maxHealth;
 	}
 	
+	public Player()
+	{
+		this(0, 0);
+	}
+	
 	public void setAction(Action a)
 	{
 		action = a;
@@ -83,9 +88,6 @@ public class Player extends Entity implements PlayerDataHolder
 				Color c = Color.WHITE;
 				g.setFill(Color.color(c.getRed(), c.getGreen(), c.getBlue(), .15));
 				g.fillRect(0, 0, MainGame.getGameWidth(), MainGame.getGameHeight());
-				
-				
-				
 			}
 			
 			
@@ -116,7 +118,6 @@ public class Player extends Entity implements PlayerDataHolder
 	private void executeAction(State state)
 	{
 		double moveSpeed = 5;
-		
 		if(action.isDown() || action.isLeft() || action.isRight() || action.isUp())
 		{
 			dx = 0;

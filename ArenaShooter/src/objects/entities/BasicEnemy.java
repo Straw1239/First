@@ -4,14 +4,12 @@ package objects.entities;
 import java.util.Collection;
 import java.util.Collections;
 
-import bounds.Bounds;
-import bounds.Circle;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import objects.Bullet;
-import objects.GameObject;
 import objects.events.GameEvent;
-import engine.EventHandler;
+import bounds.Bounds;
+import bounds.Circle;
 import engine.State;
 import fxcore.MainGame;
 

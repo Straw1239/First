@@ -13,7 +13,6 @@ import utils.Utils;
 import bounds.Bounds;
 import bounds.Circle;
 import engine.State;
-import fxcore.MainGame;
 
 public class Charger extends Enemy
 {

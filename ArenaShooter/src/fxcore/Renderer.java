@@ -6,11 +6,9 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
-import objects.BulletDataHolder;
-import objects.entities.EntityDataHolder;
+import objects.ObjectDataHolder;
 import objects.events.EventDataHolder;
 import player.Player;
 import engine.State;
@@ -43,16 +41,22 @@ public class Renderer
 		g.setFill(new RadialGradient(0, 0, .5, .5, .05, true, CycleMethod.REFLECT, new Stop(0, Color.BLACK), new Stop(1, Color.DARKMAGENTA)));
 		//g.fillRect(0, 0, d.width, d.height);
 		d.gameBounds.fill(g);
+		drawObjects(d);
 		drawEvents(d);
-		drawBullets(d);
 		drawPlayer(d);
-		drawEntities(d);
-		d.mouse.draw(g);
 		g.restore();
 		displayHUD(d);
 		
 	}
 	
+	private void drawObjects(State d)
+	{
+		for(ObjectDataHolder obj : d.objects)
+		{
+			obj.draw(g);
+		}
+	}
+
 	private void displayHUD(State d)
 	{
 		double healthBar = 300;
@@ -62,20 +66,7 @@ public class Renderer
 		g.strokeRect(0, 0, healthBar, 50);
 	}
 	
-	private void drawBullets(State d)
-	{
-		g.save();
-		Iterator<? extends BulletDataHolder> it = d.bullets.iterator();
-		//BoxBlur effect = new BoxBlur(5, 5, 3);
-		//effect.setInput(new Bloom(0));
-		//g.setEffect(effect);
-		while(it.hasNext())
-		{
-			it.next().draw(g);
-		}
-		g.restore();
-		
-	}
+	
 
 	private void drawPlayer(State d)
 	{
@@ -90,14 +81,6 @@ public class Renderer
 		g.translate(-playerX , -playerY);
 	}
 	
-	private void drawEntities(State d)
-	{
-		Iterator<? extends EntityDataHolder> it = d.entities.iterator();
-		while(it.hasNext())
-		{
-			it.next().draw(g);
-		}
-	}
 	
 	private void drawEvents(State d)
 	{

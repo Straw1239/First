@@ -1,5 +1,8 @@
 package utils;
 
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
 import objects.Locatable;
 import objects.ObjectDataHolder;
 import fxcore.MainGame;
@@ -45,6 +48,14 @@ public class Utils
 	public static double interpolate(double first, double second, double ratio)
 	{
 		return ((1 - ratio) * first + ratio * second) / 2;
+	}
+	
+	public static <T> Stream<T> stream(Iterable<T> in) {
+	    return StreamSupport.stream(in.spliterator(), false);
+	}
+
+	public static <T> Stream<T> parallelStream(Iterable<T> in) {
+	    return StreamSupport.stream(in.spliterator(), true);
 	}
 	
 	/**

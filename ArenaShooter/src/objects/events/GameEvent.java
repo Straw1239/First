@@ -1,5 +1,9 @@
 package objects.events;
 
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
 import javafx.scene.canvas.GraphicsContext;
 import objects.Faction;
 import objects.GameObject;
@@ -67,6 +71,23 @@ public abstract class GameEvent implements EventDataHolder
 		{
 			throw new InternalError(e);
 		}
+	}
+	
+	@Override
+	public void writeExternal(ObjectOutput out) throws IOException
+	{
+		out.writeDouble(x);
+		out.writeDouble(y);
+		out.writeInt(faction.ordinal());
+	}
+
+	@Override
+	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException
+	{
+		x = in.readDouble();
+		y = in.readDouble();
+		faction = Faction.values()[in.readInt()];
+		
 	}
 	
 	public static final GameEvent spawner(GameObject obj)

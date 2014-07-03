@@ -1,12 +1,15 @@
 package objects;
 
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.util.Collection;
 import java.util.Collections;
 
-import bounds.Bounds;
 import javafx.scene.canvas.GraphicsContext;
 import objects.events.GameEvent;
 import utils.Utils;
+import bounds.Bounds;
 import engine.State;
 /**
  * Base object of the object hierarchy.
@@ -164,10 +167,50 @@ public abstract class GameObject implements ObjectDataHolder
 			{
 				return Bounds.NONE;
 			}
+
+			@Override
+			public boolean isDead()
+			{
+				return false;
+			}
 			
 		};
 	}
 	
+	public static long collisions = 0; // TESTING ONLY
+	/**
+	 * Collides the two specified game objects. 
+	 * @param obj
+	 * @param other
+	 */
+	public static void collide(GameObject obj, GameObject other)
+	{
+		//DO THE COLLISION
+		//Determine run-time type of objs? obtain actions from objects? How give both a say in what happens to each of them?
+	}
+	
+	public String toString()
+	{
+		return String.format("GameObject of faction %s at:(%f, %f)", faction.toString(), x, y);
+	}
+	
+	
+	@Override
+	public void writeExternal(ObjectOutput out) throws IOException
+	{
+		out.writeDouble(x);
+		out.writeDouble(y);
+		out.writeInt(faction.ordinal());
+	}
+
+	@Override
+	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException
+	{
+		x = in.readDouble();
+		y = in.readDouble();
+		faction = Faction.values()[in.readInt()];
+		
+	}
 	
 	
 	

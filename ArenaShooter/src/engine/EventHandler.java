@@ -2,10 +2,8 @@ package engine;
 
 import java.util.Collection;
 
-import objects.Bullet;
 import objects.Faction;
 import objects.GameObject;
-import objects.entities.Entity;
 import objects.events.GameEvent;
 import player.Player;
 
@@ -20,13 +18,6 @@ public interface EventHandler
 	
 	public Player getPlayer();
 	
-	public Collection<? extends Entity> entitiesOfFaction(Faction f);
-	
-	public Collection<? extends Entity> entities();
-	
-	public Collection<? extends Bullet> bullets();
-	
-	public Collection<? extends Bullet> bulletsOfFaction(Faction f);
 	
 	public Collection<? extends GameEvent> getAllEvents();
 	

@@ -1,9 +1,11 @@
 package bounds;
 
+import java.io.Serializable;
+
 import javafx.scene.canvas.GraphicsContext;
 import utils.Vector;
 
-public interface Bounds
+public interface Bounds extends Serializable
 {
 	public boolean isContainedBy(Bounds b);
 	

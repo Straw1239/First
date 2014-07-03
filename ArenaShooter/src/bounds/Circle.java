@@ -62,7 +62,7 @@ public interface Circle extends Bounds
 	@Override
 	public default boolean contains(double x, double y)
 	{
-		return Utils.distance(x, y, centerX(), centerY()) <= radius();
+		return Utils.distanceSquared(x, y, centerX(), centerY()) <= Math.pow(radius(), 2);
 	}
 
 	@Override
@@ -80,7 +80,7 @@ public interface Circle extends Bounds
 	@Override
 	public default boolean intersectsCircle(Circle other)
 	{
-		return Utils.distance(centerX(), centerY(), other.centerX(), other.centerY()) < (radius() + other.radius());
+		return Utils.distanceSquared(centerX(), centerY(), other.centerX(), other.centerY()) < Math.pow((radius() + other.radius()), 2);
 	}
 	
 	@Override
