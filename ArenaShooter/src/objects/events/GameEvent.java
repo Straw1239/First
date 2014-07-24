@@ -31,6 +31,11 @@ public abstract class GameEvent implements EventDataHolder
 		startTime = MainGame.getTime();
 	}
 	
+	public boolean supportsOperation(int code)
+	{
+		return false;
+	}
+	
 	protected GameEvent(ObjectDataHolder source)
 	{
 		this(source.getX(), source.getY(), source.getFaction());
@@ -90,7 +95,7 @@ public abstract class GameEvent implements EventDataHolder
 		
 	}
 	
-	public static final GameEvent spawner(GameObject obj)
+	public static final GameEvent spawnerOf(GameObject obj)
 	{
 		return new GameEvent(obj)
 		{
@@ -112,6 +117,12 @@ public abstract class GameEvent implements EventDataHolder
 			public boolean hasExpired()
 			{
 				return hasExpired;
+			}
+
+			@Override
+			public boolean isDead()
+			{
+				return hasExpired();
 			}
 			
 		};

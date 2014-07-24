@@ -9,8 +9,7 @@ import java.util.List;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import objects.Bullet;
-import objects.Faction;
+import objects.GameObject;
 import objects.events.GameEvent;
 import utils.Utils;
 import utils.Vector;
@@ -37,21 +36,13 @@ public class FirstBoss extends Enemy
 		g.setFill(color);
 		g.fillOval(x - radius, y - radius, radius * 2, radius * 2);
 	}
-
-	@Override
-	public void hitByBullet(Bullet b)
+	
+	public Impact collideWith(GameObject other)
 	{
-		
+		return new Impact(this, new Change(DAMAGE, .3));
 	}
 
-	@Override
-	public void collideWith(Entity e)
-	{
-		if(e.getFaction() == Faction.Player)
-		{
-			e.damage(.3);
-		}
-	}
+	
 	
 	
 	@Override
@@ -81,7 +72,7 @@ public class FirstBoss extends Enemy
 	{
 		if(s.time - lastMinionSpawn >= 30)
 		{
-			nextEvents.add(GameEvent.spawner(new Minion()));
+			nextEvents.add(GameEvent.spawnerOf(new Minion()));
 			lastMinionSpawn = s.time;
 		}
 		return nextEvents;
@@ -132,6 +123,11 @@ public class FirstBoss extends Enemy
 			
 		}
 		
+		public Impact collideWith(GameObject other)
+		{
+			return new Impact(this, new Change(DAMAGE, .1));
+		}
+		
 		public boolean isDead()
 		{
 			return super.isDead() || FirstBoss.this.isDead();
@@ -154,20 +150,6 @@ public class FirstBoss extends Enemy
 			g.fillOval(x - radius, y - radius, radius * 2, radius * 2);
 		}
 
-		@Override
-		public void hitByBullet(Bullet b)
-		{
-			
-		}
-
-		@Override
-		public void collideWith(Entity e)
-		{
-			if(e.getFaction() == Faction.Player)
-			{
-				e.damage(.1);
-			}
-		}
 
 		@Override
 		public void update(State d)

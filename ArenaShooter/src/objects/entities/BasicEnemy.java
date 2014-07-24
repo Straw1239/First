@@ -56,11 +56,7 @@ public class BasicEnemy extends Enemy
 		
 	}
 
-	@Override
-	public void hitByBullet(Bullet b) 
-	{
-		//damage(b.damage);
-	}
+	
 	
 	@Override
 	public void draw(GraphicsContext g) 
@@ -77,7 +73,7 @@ public class BasicEnemy extends Enemy
 		if(MainGame.getTime() < shotTime + fireTime) return Collections.emptyList();
 		if(d.player.isDead()) return Collections.emptyList();
 		shotTime = MainGame.getTime();
-		return Collections.singleton(GameEvent.spawner(new Bullet(this, d.player, 5, 10, Color.GREEN)));
+		return Collections.singleton(GameEvent.spawnerOf(new Bullet(this, d.player, 5, 10, Color.GREEN)));
 		
 	}
 
@@ -87,11 +83,6 @@ public class BasicEnemy extends Enemy
 		return bounds;
 	}
 
-	@Override
-	public void collideWith(Entity e) 
-	{
-		damage(contactDamage * 2);
-		e.damage(contactDamage);
-	}
+	
 
 }

@@ -44,6 +44,7 @@ public class Main extends Application
 	public static List<UnaryOperator<Double>> functions = new ArrayList<>();
 	public static void main(String[] args) 
 	{
+		
 		functions.add((d) -> 250.0);
 		functions.add((d) -> 200 / sin(d * 2));
 		functions.add((d) -> 100 * tan(d));
@@ -61,10 +62,10 @@ public class Main extends Application
 	private Scene scene;
 	private Renderer renderer;
 	private BallSimulator simulation ;
-	private int mode = 1;
+	private int mode = 0;
 	private int balls = 4096;
 	private List<Image> snapshots = new ArrayList<>();
-	private double width = 1920, height = 1080;
+	private double width = 1280, height = 1024;
 	
 	public synchronized WritableImage snapshot()
 	{

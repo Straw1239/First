@@ -151,7 +151,7 @@ public class Player extends Entity implements PlayerDataHolder
 				Bullet bullet = new Bullet(this, GameObject.dataOf(x, y, faction), 10, 10, color);
 				bullet.damage = 2;
 				bullet.spread(Math.toRadians(5));
-				nextEvents.add(GameEvent.spawner(bullet));
+				nextEvents.add(GameEvent.spawnerOf(bullet));
 			}
 			fireTime = state.time;
 		}
@@ -163,11 +163,7 @@ public class Player extends Entity implements PlayerDataHolder
 		return nextEvents;
 	}
 	
-	@Override
-	public void hitByBullet(Bullet b) 
-	{
-		//damage(b.damage);
-	}
+
 	
 	public static class Action
 	{
@@ -257,10 +253,5 @@ public class Player extends Entity implements PlayerDataHolder
 		if(!isDead()) MainGame.sleep((long)(damage * 40));
 	}
 
-	@Override
-	public void collideWith(Entity e) 
-	{
-		//Do nothing for now, damage will be handled by enemy's collide function
-		if(!isDead()) MainGame.sleep(5L);
-	}	
+
 }

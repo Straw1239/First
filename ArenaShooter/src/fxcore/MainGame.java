@@ -5,6 +5,7 @@ import java.awt.GraphicsEnvironment;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -23,6 +24,7 @@ import utils.Utils;
 import utils.XRandom;
 import engine.Engine;
 import engine.State;
+import static utils.Utils.*;
 
 public class MainGame extends Application
 {
@@ -150,28 +152,15 @@ public class MainGame extends Application
 	
 	private void runEngine()
 	{
-		new Thread(() ->
+		
+		long frameNanoTime = (1_000_000_000L / UPS);
+		compute.scheduleAtFixedRate(() -> 
 		{
-			long frameNanoTime = (1_000_000_000L / UPS);
-			long startFrameTime;
-			while(true)
-			{
-				if(paused)
-				{
-					Utils.sleep(10);
+			if(!paused)
+			{ 
+				engine.setPlayerAction(getPlayerAction()); engine.update();
 				}
-				else
-				{
-					startFrameTime = System.nanoTime();
-					engine.setPlayerAction(getPlayerAction());
-					engine.update();
-					while(System.nanoTime() - startFrameTime < frameNanoTime)
-					{
-						Utils.sleep(1);	
-					}
-				}
-			}
-		}).start();
+		}, 0, frameNanoTime, TimeUnit.NANOSECONDS);
 	}
 	
 	private Player.Action getPlayerAction()

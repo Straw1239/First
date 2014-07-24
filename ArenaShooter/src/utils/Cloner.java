@@ -1,5 +1,7 @@
 package utils;
 
+import static utils.Utils.*;
+
 /**
  * Interface for objects with public, non throwing clone.
  * Provides a convenience non throwing cloning method which automatically casts to the base class.
@@ -21,7 +23,7 @@ public interface Cloner extends Cloneable
 	{
 		try
 		{
-			return (T)object.clone();
+			return cast(object.clone());
 		}
 		catch (CloneNotSupportedException e)
 		{

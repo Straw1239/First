@@ -121,6 +121,20 @@ public class Bullet extends MovingObject implements BulletDataHolder
 	{
 		return color;
 	}
+	
+	public Impact collideWith(GameObject other)
+	{
+		
+		{
+			if(other.supportsOperation(Entity.DAMAGE))
+			{
+				isDead = true;
+				return new Impact(this, new Change(Entity.DAMAGE, damage));
+			}
+			
+		}
+		return null;
+	}
 
 	
 

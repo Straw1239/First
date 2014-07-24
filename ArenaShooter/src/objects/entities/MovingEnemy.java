@@ -5,7 +5,9 @@ package objects.entities;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import objects.Bullet;
+import objects.GameObject;
+import objects.GameObject.Change;
+import objects.GameObject.Impact;
 import player.PlayerDataHolder;
 import utils.Utils;
 import bounds.Bounds;
@@ -15,7 +17,7 @@ import engine.State;
 public class MovingEnemy extends Enemy 
 {
 	public static final double radius = 20;
-	public static final double maxHealth = 30;
+	public static final double maxHealth = 20;
 	public static final double contactDamage = .1;
 	public static final Color color = Color.RED;
 	private Circle bounds = new Circle()
@@ -45,12 +47,15 @@ public class MovingEnemy extends Enemy
 		health = maxHealth;
 		super.maxHealth = maxHealth;
 	}
-
-	@Override
-	public void collideWith(Entity p) 
+	
+	public Impact collideWith(GameObject other)
 	{
-		p.damage(contactDamage);
+		return new Impact(this, new Change(DAMAGE, contactDamage));
 	}
+	
+	
+
+	
 
 	@Override
 	public void draw(GraphicsContext g) 
@@ -59,15 +64,6 @@ public class MovingEnemy extends Enemy
 		g.fillOval(x - radius, y - radius, 2 * radius, 2 * radius);
 	}
 
-	
-
-	@Override
-	public void hitByBullet(Bullet b) 
-	{
-		double mass = 2;
-		x += b.damage * b.getDX() / mass;
-		y += b.damage * b.getDY() / mass;
-	}
 
 	@Override
 	public void update(State d) 

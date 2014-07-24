@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
+import utils.Vector;
 import engine.State;
 
 public abstract class MovingObject extends GameObject implements MoverDataHolder
@@ -73,5 +74,39 @@ public abstract class MovingObject extends GameObject implements MoverDataHolder
 	public double getDY()
 	{
 		return dy;
+	}
+	
+	public static final int ACCELERATE = 3;
+	public static final int SETVELOCITY = 4;
+	
+	public boolean supportsOperation(int code)
+	{
+		if(super.supportsOperation(code)) return true;
+		switch(code)
+		{
+		case ACCELERATE:
+		case SETVELOCITY:
+			return true;
+		}
+		return false;
+	}
+	
+	protected void handleChange(Change change, GameObject source)
+	{
+		switch(change.code)
+		{
+		case ACCELERATE:
+			Vector v = (Vector) change.data;
+			dx += v.x;
+			dy += v.y;
+			break;
+		case SETVELOCITY:
+			Vector vec = (Vector) change.data;
+			dx = vec.x;
+			dy = vec.y;
+			break;
+		default:
+			super.handleChange(change, source);
+		}
 	}
 }

@@ -3,12 +3,15 @@ package objects;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
 import javafx.scene.canvas.GraphicsContext;
 import objects.events.GameEvent;
 import utils.Utils;
+import utils.Vector;
 import bounds.Bounds;
 import engine.State;
 /**
@@ -141,6 +144,8 @@ public abstract class GameObject implements ObjectDataHolder
 		}
 	}
 	
+	
+	
 	public double angleTo(ObjectDataHolder o)
 	{
 		return Utils.angle(this, o);
@@ -178,16 +183,6 @@ public abstract class GameObject implements ObjectDataHolder
 	}
 	
 	public static long collisions = 0; // TESTING ONLY
-	/**
-	 * Collides the two specified game objects. 
-	 * @param obj
-	 * @param other
-	 */
-	public static void collide(GameObject obj, GameObject other)
-	{
-		//DO THE COLLISION
-		//Determine run-time type of objs? obtain actions from objects? How give both a say in what happens to each of them?
-	}
 	
 	public String toString()
 	{
@@ -211,6 +206,121 @@ public abstract class GameObject implements ObjectDataHolder
 		faction = Faction.values()[in.readInt()];
 		
 	}
+	
+	public void hitBy(Impact impact)
+	{
+		for(Change c : impact.changes)
+		{
+			handleChange(c, impact.source);
+		}
+	}
+	
+	
+	public static final int SETPOSITION = 0;
+	public static final int SETFACTION = 1;
+	public static final int MOVE = 7;
+	
+	public boolean supportsOperation(int code)
+	{
+		switch(code)
+		{
+		case SETPOSITION:
+		case SETFACTION:
+		case MOVE:
+			return true;
+		}
+		return false;
+	}
+	
+	protected void handleChange(Change change, GameObject source)
+	{
+		switch(change.code)
+		{
+		case SETPOSITION:
+			Locatable location = (Locatable) change.data;
+			x = location.getX();
+			y = location.getY();
+			break;
+		case SETFACTION:
+			faction = (Faction) change.data;
+			break;
+		case MOVE:
+			Vector v = (Vector) change.data;
+			x += v.x;
+			y += v.y;
+		default: //throw new IllegalArgumentException();
+				
+		}
+	}
+	
+	public Impact collideWith(GameObject other)
+	{
+		return null;
+	}
+	
+	public static final class Change
+	{
+		public final int code;
+		public final Object data;
+		
+		public Change(int code, Object obj)
+		{
+			this.code = code;
+			data = obj;
+		}
+	}
+	
+	public static final class Impact
+	{
+		public GameObject source;
+		public Collection<Change> changes;
+		
+		
+		
+		public Impact(GameObject origin, Collection<Change> effects)
+		{
+			source = origin;
+			changes = effects;
+		}
+		
+		public Impact(GameObject origin)
+		{
+			this(origin, new ArrayList<>());
+		}
+		
+		public Impact(GameObject origin, Change... changes)
+		{
+			this(origin, new ArrayList<>(Arrays.asList(changes)));
+		}
+		
+		
+	}
+	
+	
+	/**
+	 * Collides the two specified game objects. 
+	 * @param obj
+	 * @param other
+	 */
+	public static void collide(GameObject obj, GameObject other)
+	{
+		Impact i1 = obj.collideWith(other);
+		Impact i2 = other.collideWith(obj);
+		if(i1 != null)
+		{
+			other.hitBy(i1);
+		}
+		if(i2 != null)
+		{
+			obj.hitBy(i2);
+		}
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 	

@@ -7,7 +7,7 @@ import java.util.List;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import objects.Bullet;
-import objects.Faction;
+import objects.GameObject;
 import objects.events.GameEvent;
 import utils.Utils;
 import bounds.Bounds;
@@ -58,21 +58,25 @@ public class Charger extends Enemy
 		g.fillOval(x - radius, y - radius, radius * 2, radius * 2);
 	}
 
-	@Override
-	public void hitByBullet(Bullet b)
+	public Impact collideWith(GameObject other)
 	{
-		hits += b.damage;
-	}
-
-	@Override
-	public void collideWith(Entity e)
-	{
-		if(e.getFaction() == Faction.Player)
+		if(other.getFaction() != faction)
 		{
-			e.damage(.1);
+			return new Impact(this, new Change(DAMAGE, .1));
+		}
+		return null;
+	}
+	
+	public void handleChange(Change c, GameObject source)
+	{
+		super.handleChange(c, source);
+		if(c.code == DAMAGE)
+		{
+			hits += (Double) c.data;
 		}
 	}
 
+	
 	private void lunge(State s)
 	{
 		double speed = 20;
@@ -103,7 +107,7 @@ public class Charger extends Enemy
 			Bullet b = new Bullet(this, d.player, bulletSpeed, 5, Color.BLUE);
 			b.damage = .5;
 			b.spread(Math.toRadians(20));
-			nextEvents.add(GameEvent.spawner(b));
+			nextEvents.add(GameEvent.spawnerOf(b));
 		}
 		if(!isDead()) heal(.1);
 	}

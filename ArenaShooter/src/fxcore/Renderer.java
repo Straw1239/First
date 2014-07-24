@@ -64,6 +64,7 @@ public class Renderer
 		g.fillRect(0, 0, healthBar * d.player.health() /d.player.maxHealth(), 50);
 		g.setStroke(Color.WHITE);
 		g.strokeRect(0, 0, healthBar, 50);
+		
 	}
 	
 	

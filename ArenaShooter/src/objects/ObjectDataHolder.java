@@ -10,4 +10,6 @@ public interface ObjectDataHolder extends Cloner, Locatable, Drawable, Externali
 	public Faction getFaction();
 	
 	public boolean isDead();
+	
+	public boolean supportsOperation(int code);
 }

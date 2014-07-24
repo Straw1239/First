@@ -91,6 +91,7 @@ public final class Engine
 		objects.put(Faction.Player, new Cursor(0, 0));
 		generateState();
 		spawner = new DefaultSpawner(width, height);
+		//spawner = new HankSpawner();
 	}
 	
 	private void generateState()
@@ -138,21 +139,12 @@ public final class Engine
 	 */
 	public void update()
 	{
-		/*
-		if(updates % 60 == 0) 
-		{
-			if(MainGame.rand.nextBoolean())
-				addRandomBasicEnemy();
-			else
-				addRandomMovingEnemy();
-		}
-		*/
 		handler.addAll(spawner.spawn(state));
-		//updatePlayer();
 		updateObjects();
 		executeEvents();
-		generateState();
 		updates++;
+		generateState();
+		
 		if(sleepTime > 0) 
 		{
 			Utils.sleep(sleepTime);
@@ -162,7 +154,6 @@ public final class Engine
 	
 	private void updateObjects()
 	{
-		GameObject.collisions = 0;
 		//Update all objects
 		Iterator<GameObject> all = objects.values().iterator();
 		while(all.hasNext())
@@ -186,7 +177,6 @@ public final class Engine
 				{
 					for(GameObject other : objects.get(factions[j]))
 					{
-						GameObject.collisions++;
 						if(obj.collidesWith(other))
 						{
 							GameObject.collide(obj, other);

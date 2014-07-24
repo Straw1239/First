@@ -6,6 +6,7 @@ import java.io.ObjectOutput;
 
 import objects.Bullet;
 import objects.Faction;
+import objects.GameObject;
 import objects.MovingObject;
 
 public abstract class Entity extends MovingObject implements EntityDataHolder
@@ -19,10 +20,6 @@ public abstract class Entity extends MovingObject implements EntityDataHolder
 	{
 		super(x,y,faction);
 	}
-	
-	public abstract void hitByBullet(Bullet b);
-	
-	public abstract void collideWith(Entity e);
 	
 	protected double health;
 	protected double maxHealth;
@@ -75,6 +72,36 @@ public abstract class Entity extends MovingObject implements EntityDataHolder
 		health = in.readDouble();
 		maxHealth = in.readDouble();
 	}
+	
+	public static final int DAMAGE = 5;
+	public static final int SETHEALTH = 6;
+	
+	public boolean supportsOperation(int code)
+	{
+		switch(code)
+		{
+		case DAMAGE:
+		case SETHEALTH:
+			return true;
+		}
+		return super.supportsOperation(code);
+	}
+	
+	protected void handleChange(Change change, GameObject source)
+	{
+		switch(change.code)
+		{
+		case DAMAGE:
+			health -= (Double) change.data;
+			break;
+		case SETHEALTH:
+			health = (Double) change.data;
+			break;
+		default:
+			super.handleChange(change, source);
+		}
+	}
+	
 	
 	
 	
