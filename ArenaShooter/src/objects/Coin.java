@@ -1,12 +1,17 @@
 package objects;
 
 
-import player.PlayerDataHolder;
+import java.util.Collection;
+import java.util.Collections;
+
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import objects.events.GameEvent;
+import player.PlayerDataHolder;
 import bounds.Bounds;
+import engine.EventHandler;
 import engine.State;
 import fxcore.MainGame;
-import javafx.scene.paint.Color;
 /**
  * a class representing the basic currency
  * @author Hank
@@ -58,6 +63,31 @@ public class Coin extends GameObject{
 		}
 		return null;
 	}
+	//eventually add an effect for when the coin is collected
+//	public Collection<? extends GameEvent> onDeath(){
+//		return Collections.singleton(new GameEvent(this){
+//
+//			@Override
+//			public void effects(EventHandler handler) {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//
+//			@Override
+//			public void draw(GraphicsContext g) {
+//				
+//			}
+//
+//			@Override
+//			public boolean hasExpired() {
+//				if(super.startTime() + 0.5 * MainGame.UPS < MainGame.getTime()){
+//					return true;
+//				}
+//				return false;
+//			}
+//			
+//		});
+//	}
 
 }
 

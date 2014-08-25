@@ -192,8 +192,6 @@ public class MainGame extends Application
 	{
 		Thread.setDefaultUncaughtExceptionHandler((t, e) -> e.printStackTrace(System.err));
 		long frameNanoTime = (1_000_000_000L / UPS);
-		
-		long frameNanoTime = (1_000_000_000L / UPS);
 		compute.scheduleAtFixedRate(() -> 
 		{
 			engine.update();
