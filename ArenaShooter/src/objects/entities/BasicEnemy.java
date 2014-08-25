@@ -7,6 +7,7 @@ import java.util.Collections;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import objects.Bullet;
+import objects.Coin;
 import objects.events.GameEvent;
 import bounds.Bounds;
 import bounds.Circle;
@@ -83,6 +84,10 @@ public class BasicEnemy extends Enemy
 		return bounds;
 	}
 
+	public Collection<? extends GameEvent> onDeath(){
+		Coin coin = new Coin(x + MainGame.rand.nextInt((int)radius), y + MainGame.rand.nextInt((int)radius));
+		return Collections.singleton(GameEvent.spawnerOf(coin));
+	}
 	
 
 }

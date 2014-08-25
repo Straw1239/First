@@ -108,7 +108,9 @@ public class MainGame extends Application
 	/**
 	 * 
 	 */
-	public final long UPS = 60, FPS = 60;
+	public final static long UPS = 60;
+
+	public final long FPS = 60;
 	
 	private Engine engine;
 	private volatile boolean paused = false;
@@ -178,7 +180,7 @@ public class MainGame extends Application
 
 	private void runMenu()
 	{
-		// TODO Auto-generated method stub
+		runGame();
 		
 	}
 
