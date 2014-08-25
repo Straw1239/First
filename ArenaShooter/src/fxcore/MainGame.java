@@ -108,9 +108,7 @@ public class MainGame extends Application
 	/**
 	 * 
 	 */
-	public final static long UPS = 60;
-
-	public final long FPS = 60;
+	public static final long UPS = 60, FPS = 60;
 	
 	private Engine engine;
 	private volatile boolean paused = false;
@@ -192,12 +190,15 @@ public class MainGame extends Application
 	
 	private void runEngine()
 	{
+		Thread.setDefaultUncaughtExceptionHandler((t, e) -> e.printStackTrace(System.err));
+		long frameNanoTime = (1_000_000_000L / UPS);
 		
 		long frameNanoTime = (1_000_000_000L / UPS);
 		compute.scheduleAtFixedRate(() -> 
 		{
 			engine.update();
 		}, 0, frameNanoTime, TimeUnit.NANOSECONDS);
+		
 	}
 	
 	

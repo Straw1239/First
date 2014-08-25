@@ -109,6 +109,7 @@ public class Player extends Entity implements PlayerDataHolder
 		{
 			heal(.03);
 			//heal(Double.POSITIVE_INFINITY);
+			action = new Action();
 			executeAction(d);
 		}
 		super.update(d);
