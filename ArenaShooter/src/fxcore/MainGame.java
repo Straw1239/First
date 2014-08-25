@@ -1,8 +1,9 @@
 package fxcore;
 
+import static utils.Utils.compute;
+
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -16,15 +17,10 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import player.Player;
-import utils.Utils;
 import utils.XRandom;
 import engine.Engine;
-import engine.State;
-import static utils.Utils.*;
 
 public class MainGame extends Application
 {
@@ -69,6 +65,11 @@ public class MainGame extends Application
 	public static double mouseGameY()
 	{
 		return app.mouse.gameY(app.engine.getState());
+	}
+	
+	public static KeyTracker getKeyTracker()
+	{
+		return app.keyTracker;
 	}
 	
 	public static void main(String[] args)
@@ -169,14 +170,16 @@ public class MainGame extends Application
 		root.getChildren().add(renderer.canvas);
 		scene = new Scene(root);
 	
-		scene.setCursor(Cursor.NONE);
+		
 		stage.setScene(scene);
+		createMenu();
+		scene.setCursor(Cursor.NONE);
 		stage.show();
-		runMenu();
+		
 		
 	}
 
-	private void runMenu()
+	private void createMenu()
 	{
 		runGame();
 		
@@ -191,8 +194,6 @@ public class MainGame extends Application
 	private void runEngine()
 	{
 		Thread.setDefaultUncaughtExceptionHandler((t, e) -> e.printStackTrace(System.err));
-		long frameNanoTime = (1_000_000_000L / UPS);
-		
 		long frameNanoTime = (1_000_000_000L / UPS);
 		compute.scheduleAtFixedRate(() -> 
 		{
@@ -231,6 +232,11 @@ public class MainGame extends Application
 	public static void sleep(long time)
 	{
 		//app.engine.sleep(time); Currently sleep is disabled
+	}
+
+	public static MouseTracker getMouseTracker()
+	{
+		return app.mouse;
 	}
 	
 	

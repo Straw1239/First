@@ -7,6 +7,8 @@ import java.util.Collection;
 import java.util.Collections;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import objects.Bullet;
 import objects.Faction;
@@ -17,7 +19,9 @@ import bounds.Bounds;
 import bounds.Circle;
 import engine.EventHandler;
 import engine.State;
+import fxcore.KeyTracker;
 import fxcore.MainGame;
+import fxcore.MouseTracker;
 
 
 /**
@@ -109,7 +113,20 @@ public class Player extends Entity implements PlayerDataHolder
 		{
 			heal(.03);
 			//heal(Double.POSITIVE_INFINITY);
-			action = new Action();
+			KeyTracker k = MainGame.getKeyTracker();
+			MouseTracker m = MainGame.getMouseTracker();
+			
+			if(m.isPressed(MouseButton.PRIMARY))
+			{
+				action = new Action(k.isKeyPressed(KeyCode.W), k.isKeyPressed(KeyCode.S), 
+						k.isKeyPressed(KeyCode.A), k.isKeyPressed(KeyCode.D), m.gameX(d), m.gameY(d));
+			}
+			else
+			{
+				action = new Action(k.isKeyPressed(KeyCode.W), k.isKeyPressed(KeyCode.S), 
+						k.isKeyPressed(KeyCode.A), k.isKeyPressed(KeyCode.D));
+			}
+			
 			executeAction(d);
 		}
 		super.update(d);

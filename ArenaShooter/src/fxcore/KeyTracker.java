@@ -1,5 +1,7 @@
 package fxcore;
 
+import java.util.BitSet;
+
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -13,11 +15,11 @@ import javafx.scene.input.KeyEvent;
  */
 public class KeyTracker implements EventHandler<KeyEvent>
 {
-	private boolean[] keys = new boolean[256];
+	private BitSet keys = new BitSet(256);
 	
 	public boolean isKeyPressed(KeyCode code)
 	{
-		return keys[code.ordinal()];
+		return keys.get(code.ordinal());
 	}
 
 	@Override
@@ -25,12 +27,12 @@ public class KeyTracker implements EventHandler<KeyEvent>
 	{
 		if(event.getEventType() == KeyEvent.KEY_PRESSED)
 		{
-			keys[event.getCode().ordinal()] = true;
+			keys.set(event.getCode().ordinal());
 		}
 		
 		if(event.getEventType() == KeyEvent.KEY_RELEASED)
 		{
-			keys[event.getCode().ordinal()] = false;
+			keys.set(event.getCode().ordinal(), false);
 		}
 		
 	}
