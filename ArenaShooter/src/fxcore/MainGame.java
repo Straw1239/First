@@ -178,7 +178,7 @@ public class MainGame extends Application
 
 	private void runMenu()
 	{
-		// TODO Auto-generated method stub
+		
 		
 	}
 
@@ -190,12 +190,14 @@ public class MainGame extends Application
 	
 	private void runEngine()
 	{
-		
+		Thread.setDefaultUncaughtExceptionHandler((t, e) -> e.printStackTrace(System.err));
 		long frameNanoTime = (1_000_000_000L / UPS);
+		
 		compute.scheduleAtFixedRate(() -> 
 		{
 			engine.update();
 		}, 0, frameNanoTime, TimeUnit.NANOSECONDS);
+		
 	}
 	
 	
