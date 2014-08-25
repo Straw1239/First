@@ -3,8 +3,11 @@ package objects.events;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.util.Collection;
+import java.util.Collections;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.Effect;
 import objects.Faction;
 import objects.GameObject;
 import objects.ObjectDataHolder;
@@ -13,12 +16,26 @@ import fxcore.MainGame;
 /**
  * Basic abstract base class for all events. See EventDataHolder. 
  * Stores x, y, faction, and starting time of events. Provides
- * useful methods such as clone, and effects() combining all of the effects into one method. 
+ * useful methods such as clone.
  * @author Rajan
  *
  */
 public abstract class GameEvent implements EventDataHolder
 {
+	@Override
+	public Collection<Effect> specialEffects()
+	{
+		return Collections.emptyList();
+	}
+
+	@Override
+	public void renderHUD(GraphicsContext g)
+	{
+		
+		
+	}
+
+
 	protected double x, y;
 	protected Faction faction;
 	private long startTime;

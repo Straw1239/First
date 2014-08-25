@@ -103,6 +103,7 @@ public class Player extends Entity implements PlayerDataHolder
 	@Override
 	public void update(State d) 
 	{
+		
 		nextEvents.clear();
 		if(!isDead()) 
 		{
@@ -150,7 +151,7 @@ public class Player extends Entity implements PlayerDataHolder
 			{
 				Bullet bullet = new Bullet(this, GameObject.dataOf(x, y, faction), 10, 10, color);
 				bullet.damage = 2;
-				bullet.spread(Math.toRadians(5));
+				bullet.spread(Math.toRadians(5)) ;
 				nextEvents.add(GameEvent.spawnerOf(bullet));
 			}
 			fireTime = state.time;

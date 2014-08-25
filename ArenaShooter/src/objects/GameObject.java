@@ -7,8 +7,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.EnumSet;
+import java.util.Set;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.Effect;
 import objects.events.GameEvent;
 import utils.Utils;
 import utils.Vector;
@@ -84,6 +87,13 @@ public abstract class GameObject implements ObjectDataHolder
 	{
 		return faction;
 	}
+	
+	public Set<Faction> collidableFactions()
+	{
+		EnumSet<Faction> set = EnumSet.allOf(Faction.class);
+		set.remove(faction);
+		return set;
+	}
 
 	@Override
 	public int hashCode() 
@@ -149,6 +159,16 @@ public abstract class GameObject implements ObjectDataHolder
 	public double angleTo(ObjectDataHolder o)
 	{
 		return Utils.angle(this, o);
+	}
+	
+	public Collection<Effect> specialEffects()
+	{
+		return Collections.emptyList();
+	}
+	
+	public void renderHUD(GraphicsContext g)
+	{
+		
 	}
 	
 	public static GameObject dataOf(double x, double y, Faction f)
@@ -304,15 +324,15 @@ public abstract class GameObject implements ObjectDataHolder
 	 */
 	public static void collide(GameObject obj, GameObject other)
 	{
-		Impact i1 = obj.collideWith(other);
-		Impact i2 = other.collideWith(obj);
-		if(i1 != null)
+		Impact forOther = obj.collideWith(other);
+		Impact forObj = other.collideWith(obj);
+		if(forOther != null)
 		{
-			other.hitBy(i1);
+			other.hitBy(forOther);
 		}
-		if(i2 != null)
+		if(forObj != null)
 		{
-			obj.hitBy(i2);
+			obj.hitBy(forObj);
 		}
 	}
 	

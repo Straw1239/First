@@ -123,14 +123,8 @@ public final class Engine
 		return state;
 	}
 	
-	/**
-	 * Sets the player's action for the next engine update
-	 * @param action
-	 */
-	public void setPlayerAction(Player.Action action)
-	{
-		player.setAction(action);
-	}
+	
+	
 	
 	/**
 	 * Advances the game represented by this engine one tick.
@@ -310,5 +304,25 @@ public final class Engine
 	public synchronized void sleep(long time)
 	{
 		sleepTime += time;	
+	}
+
+	public synchronized void reset()
+	{
+		synchronized(objects) 
+		{
+			synchronized(events)
+			{
+				updates = 0;
+				sleepTime = 0;
+				events.clear();
+				objects.clear();
+				handler = new Handler();
+				spawner = new DefaultSpawner(width, height);
+				player = new Player(width / 2, height / 2);
+				objects.put(Faction.Player, player);
+				objects.put(Faction.Player, new Cursor(0, 0));
+				generateState();
+			}
+		}
 	}	
 }

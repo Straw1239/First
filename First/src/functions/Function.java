@@ -11,7 +11,7 @@ public abstract class Function
 			return -1;
 		}
 	};
-	private static final Function xToTheMinus1 = new Function()
+	private static final Function oneOverX = new Function()
 	{
 		@Override
 		public double f(double x)
@@ -29,7 +29,7 @@ public abstract class Function
 	}	
 	public static final Function oneOverf(Function f)
 	{
-		return new Fogger(xToTheMinus1,f);
+		return new Fogger(oneOverX,f);
 	}
 	public static final Function add(Function f, Function g)
 	{

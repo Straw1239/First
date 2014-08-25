@@ -28,25 +28,44 @@ import static utils.Utils.*;
 
 public class MainGame extends Application
 {
+	/**
+	 * Main random number generator for the game. Use instead of creating separate Random instances.
+	 */
 	public static final Random rand = new XRandom(((System.nanoTime() + Runtime.getRuntime().hashCode() * 7) + Thread.currentThread().hashCode()) * 31 + Calendar.getInstance().hashCode());
 	
 	private static MainGame app;
 	
+	/**
+	 * Absolute x coordinate of the mouse
+	 * @return
+	 */
 	public static double mouseX()
 	{
 		return app.mouse.x();
 	}
 	
+	/**
+	 * Absolute y coordinate of the mouse
+	 * @return
+	 */
 	public static double mouseY()
 	{
 		return app.mouse.y();
 	}
 	
+	/**
+	 * In-game virtual x coordinate of the mouse
+	 * @return
+	 */
 	public static double mouseGameX()
 	{
 		return app.mouse.gameX(app.engine.getState());
 	}
 	
+	/**
+	 * In-game virtual y coordinate of the mouse
+	 * @return
+	 */
 	public static double mouseGameY()
 	{
 		return app.mouse.gameY(app.engine.getState());
@@ -57,6 +76,10 @@ public class MainGame extends Application
 		launch(args);
 	}
 	
+	/**
+	 * Number of engine cycles so far, the current time of the game.
+	 * @return
+	 */
 	public static long getTime()
 	{
 		return app.engine.getTime();
@@ -82,6 +105,9 @@ public class MainGame extends Application
 		return app.engine.height;
 	}
 	
+	/**
+	 * 
+	 */
 	public final long UPS = 60, FPS = 60;
 	
 	private Engine engine;
@@ -120,7 +146,7 @@ public class MainGame extends Application
 			
 			if(e.getCode() == KeyCode.R)
 			{
-				engine = new Engine(3000, 3000);
+				engine.reset();
 			}
 		});
 		stage.addEventFilter(KeyEvent.ANY, keyTracker);
@@ -145,9 +171,21 @@ public class MainGame extends Application
 	
 		scene.setCursor(Cursor.NONE);
 		stage.setScene(scene);
+		stage.show();
+		runMenu();
+		
+	}
+
+	private void runMenu()
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void runGame()
+	{
 		runEngine();
 		runGraphics();
-		stage.show();
 	}
 	
 	private void runEngine()
@@ -156,25 +194,11 @@ public class MainGame extends Application
 		long frameNanoTime = (1_000_000_000L / UPS);
 		compute.scheduleAtFixedRate(() -> 
 		{
-			if(!paused)
-			{ 
-				engine.setPlayerAction(getPlayerAction()); engine.update();
-				}
+			engine.update();
 		}, 0, frameNanoTime, TimeUnit.NANOSECONDS);
 	}
 	
-	private Player.Action getPlayerAction()
-	{
-		boolean up = keyTracker.isKeyPressed(KeyCode.W);
-		boolean down = keyTracker.isKeyPressed(KeyCode.S);
-		boolean right = keyTracker.isKeyPressed(KeyCode.D);
-		boolean left = keyTracker.isKeyPressed(KeyCode.A);
-		if(mouse.isPressed(MouseButton.PRIMARY))
-		{
-			return new Player.Action(up, down, left, right, mouse.gameX(engine.getState()), mouse.gameY(engine.getState()));
-		}
-		return new Player.Action(up, down, left, right);
-	}
+	
 	
 	private void runGraphics()
 	{

@@ -3,9 +3,9 @@ package objects;
 import java.io.Externalizable;
 
 import utils.Cloner;
-import fxcore.Drawable;
+import fxcore.Renderable;
 
-public interface ObjectDataHolder extends Cloner, Locatable, Drawable, Externalizable
+public interface ObjectDataHolder extends Cloner, Locatable, Renderable, Externalizable
 {
 	public Faction getFaction();
 	
