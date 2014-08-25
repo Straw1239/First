@@ -1,15 +1,10 @@
 package objects;
 
 
-import java.util.Collection;
-import java.util.Collections;
-
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import objects.events.GameEvent;
 import player.PlayerDataHolder;
 import bounds.Bounds;
-import engine.EventHandler;
 import engine.State;
 import fxcore.MainGame;
 /**

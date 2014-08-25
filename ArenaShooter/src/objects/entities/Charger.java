@@ -2,17 +2,20 @@ package objects.entities;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import objects.Bullet;
+import objects.Coin;
 import objects.GameObject;
 import objects.events.GameEvent;
 import utils.Utils;
 import bounds.Bounds;
 import bounds.Circle;
 import engine.State;
+import fxcore.MainGame;
 
 public class Charger extends Enemy
 {
@@ -121,6 +124,14 @@ public class Charger extends Enemy
 	public Bounds bounds()
 	{
 		 return bounds;
+	}
+	
+	public Collection<? extends GameEvent> onDeath(){
+		ArrayList<GameEvent> coins = new ArrayList<GameEvent>();
+		for(int i = 0; i < 5; i++){
+			coins.add(GameEvent.spawnerOf((new Coin(x + MainGame.rand.nextInt((int)radius), y + MainGame.rand.nextInt((int)radius)))));
+		}
+		return coins;
 	}
 
 }
