@@ -12,6 +12,8 @@ import objects.ObjectDataHolder;
 import objects.events.EventDataHolder;
 import player.Player;
 import engine.State;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
 public class Renderer 
 {
@@ -64,7 +66,10 @@ public class Renderer
 		g.fillRect(0, 0, healthBar * d.player.health() /d.player.maxHealth(), 50);
 		g.setStroke(Color.WHITE);
 		g.strokeRect(0, 0, healthBar, 50);
-		
+		g.setFill(Color.YELLOW);
+		g.setFont(Font.font("Verdana", 75));
+		g.setFill(Color.YELLOW);
+		g.fillText(Player.getCoinsCollected() + "", MainGame.getScreenWidth() - 150, 75);
 	}
 	
 	

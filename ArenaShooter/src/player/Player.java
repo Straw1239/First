@@ -36,7 +36,7 @@ public class Player extends Entity implements PlayerDataHolder
 	private long fireTime;
 	private Action action;
 	private Collection<GameEvent> nextEvents = new ArrayList<>();
-	private int coinsCollected;
+	private static int coinsCollected;
 	private Circle bounds = new Circle()
 	{
 		@Override
@@ -271,6 +271,10 @@ public class Player extends Entity implements PlayerDataHolder
 	{
 		super.damage(damage);
 		if(!isDead()) MainGame.sleep((long)(damage * 40));
+	}
+	
+	public static int getCoinsCollected(){
+		return coinsCollected;
 	}
 
 
