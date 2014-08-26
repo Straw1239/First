@@ -36,6 +36,7 @@ public class Player extends Entity implements PlayerDataHolder
 	private long fireTime;
 	private Action action;
 	private Collection<GameEvent> nextEvents = new ArrayList<>();
+	private int coinsCollected;
 	private Circle bounds = new Circle()
 	{
 		@Override

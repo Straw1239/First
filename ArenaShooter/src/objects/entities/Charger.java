@@ -129,7 +129,7 @@ public class Charger extends Enemy
 	public Collection<? extends GameEvent> onDeath(){
 		ArrayList<GameEvent> coins = new ArrayList<GameEvent>();
 		for(int i = 0; i < 5; i++){
-			coins.add(GameEvent.spawnerOf((new Coin(x + MainGame.rand.nextInt((int)radius), y + MainGame.rand.nextInt((int)radius)))));
+			coins.add(GameEvent.spawnerOf((new Coin(x + MainGame.rand.nextInt((int)(2 * radius)) - radius, y + MainGame.rand.nextInt((int)(2 * radius)) - radius))));
 		}
 		return coins;
 	}
