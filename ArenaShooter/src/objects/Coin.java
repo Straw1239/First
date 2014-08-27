@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
 import player.Player;
 import player.PlayerDataHolder;
 import bounds.Bounds;
+import bounds.Circle;
 import engine.State;
 import fxcore.MainGame;
 /**
@@ -48,14 +49,17 @@ public class Coin extends GameObject{
 		player = d.player;
 	}
 	@Override
-	public Bounds bounds() {
-		return Bounds.NONE;
+	public Bounds bounds() 
+	{
+		return Circle.of(x, y, RADIUS);
 	}
 	
 	public Impact collideWith(GameObject other){
-		
+		if(other instanceof Player)
+		{
 			isDead = true;
-			System.out.println("**************HIT PLAYER***********");
+		}
+			
 		
 		return null;
 	}
