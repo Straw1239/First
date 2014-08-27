@@ -6,8 +6,7 @@ package objects.entities;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import objects.GameObject;
-import objects.GameObject.Change;
-import objects.GameObject.Impact;
+import objects.MoverDataHolder;
 import player.PlayerDataHolder;
 import utils.Utils;
 import bounds.Bounds;
@@ -46,11 +45,25 @@ public class MovingEnemy extends Enemy
 		super(x, y);
 		health = maxHealth;
 		super.maxHealth = maxHealth;
+		mass = 2;
 	}
 	
 	public Impact collideWith(GameObject other)
 	{
 		return new Impact(this, new Change(DAMAGE, contactDamage));
+	}
+	
+	public void hitBy(Impact imp)
+	{
+		super.hitBy(imp);
+		GameObject source = imp.source;
+		if(source instanceof MoverDataHolder)
+		{
+			MoverDataHolder data = (MoverDataHolder) source;
+			double ratio = data.mass() / mass();
+			dx += data.getDX() * ratio;
+			dy += data.getDY() * ratio;
+		}
 	}
 	
 	
@@ -68,11 +81,12 @@ public class MovingEnemy extends Enemy
 	@Override
 	public void update(State d) 
 	{
-		double speed = 3;
+		double speed = 4;
 		PlayerDataHolder p = d.player;
 		double distance = Utils.distance(this, p);
-		dx = speed * (p.getX() - x) / distance;
-		dy = speed * (p.getY() - y) / distance;
+		double conservationRatio = 3;
+		dx = (dx * conservationRatio + (speed * (p.getX() - x) / distance)) / (1 + conservationRatio);
+		dy = (dy * conservationRatio + (speed * (p.getY() - y) / distance)) / (1 + conservationRatio);
 		super.update(d);
 	}
 

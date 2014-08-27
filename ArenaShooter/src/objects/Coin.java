@@ -3,6 +3,7 @@ package objects;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import player.Player;
 import player.PlayerDataHolder;
 import bounds.Bounds;
 import engine.State;
@@ -51,11 +52,11 @@ public class Coin extends GameObject{
 		return Bounds.NONE;
 	}
 	
-	public Impact onColide(GameObject other){
-		if(other == player){
+	public Impact collideWith(GameObject other){
+		
 			isDead = true;
 			System.out.println("**************HIT PLAYER***********");
-		}
+		
 		return null;
 	}
 	//eventually add an effect for when the coin is collected

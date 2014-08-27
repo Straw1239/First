@@ -13,7 +13,7 @@ import engine.State;
 import fxcore.MainGame;
 /**
  * Represents a bullet in the game. Provides many contructors for easy building.
- * Automatically moves itself by dx and dy each time update(Display) is called.
+ * Automatically moves itself by dx and dy each time update() is called.
  * Subclasses may want to override various methods for different behavior.
  * @author Rajan
  *

@@ -22,7 +22,7 @@ import fxcore.MainGame;
  */
 public class Utils 
 {
-	public static final int NEXT_CHANGE_CODE = 8;
+	public static final int NEXT_CHANGE_CODE = 9;
 	
 	/**
 	 * Main parallel executor for the program. Maintains one thread for each available processor for maximal parallelism.

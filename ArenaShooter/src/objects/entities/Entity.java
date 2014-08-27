@@ -92,10 +92,11 @@ public abstract class Entity extends MovingObject implements EntityDataHolder
 		switch(change.code)
 		{
 		case DAMAGE:
-			health -= (Double) change.data;
+			damage((Double) change.data);
 			break;
 		case SETHEALTH:
 			health = (Double) change.data;
+			correctHealth();
 			break;
 		default:
 			super.handleChange(change, source);

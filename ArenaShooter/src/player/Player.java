@@ -166,7 +166,7 @@ public class Player extends Entity implements PlayerDataHolder
 			}
 		}
 		
-		if(state.time - fireTime >= 3)
+		if(state.time - fireTime >= 5)
 		if(action.isShooting())
 		{
 			double x = action.targetX(), y = action.targetY();
