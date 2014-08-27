@@ -1,5 +1,6 @@
 package fxcore;
 
+import java.text.DecimalFormat;
 import java.util.Iterator;
 
 import javafx.scene.canvas.Canvas;
@@ -8,12 +9,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
+import javafx.scene.text.Font;
 import objects.ObjectDataHolder;
 import objects.events.EventDataHolder;
 import player.Player;
 import engine.State;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 
 public class Renderer 
 {
@@ -69,7 +69,10 @@ public class Renderer
 		g.setFill(Color.YELLOW);
 		g.setFont(Font.font("Verdana", 75));
 		g.setFill(Color.YELLOW);
-		g.fillText(Player.getCoinsCollected() + "", MainGame.getScreenWidth() - 150, 75);
+		g.fillText(Player.getCoinsCollected() + "", MainGame.getScreenWidth() - 150, 75); //Eventually autosize spacing to the width of the number
+		g.setFont(Font.font("Verdana", 50));
+		g.setFill(Color.WHITE);
+		g.fillText("Score: "  + (int)(Player.getRawScore() * 100) + "", 0, 100);
 	}
 	
 	

@@ -10,15 +10,19 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
+
 import objects.Bullet;
 import objects.Faction;
 import objects.GameObject;
 import objects.entities.Entity;
 import objects.events.GameEvent;
+
 import bounds.Bounds;
 import bounds.Circle;
+
 import engine.EventHandler;
 import engine.State;
+
 import fxcore.KeyTracker;
 import fxcore.MainGame;
 import fxcore.MouseTracker;
@@ -37,6 +41,7 @@ public class Player extends Entity implements PlayerDataHolder
 	private Action action;
 	private Collection<GameEvent> nextEvents = new ArrayList<>();
 	private static int coinsCollected;
+	private static double score;
 	private Circle bounds = new Circle()
 	{
 		@Override
@@ -63,6 +68,7 @@ public class Player extends Entity implements PlayerDataHolder
 		faction = Faction.Player;
 		maxHealth = 10;
 		health = maxHealth;
+		score = 0;
 	}
 	
 	public Player()
@@ -113,6 +119,7 @@ public class Player extends Entity implements PlayerDataHolder
 		if(!isDead()) 
 		{
 			heal(.03);
+			score += 1/60.0;
 			//heal(Double.POSITIVE_INFINITY);
 			KeyTracker k = MainGame.getKeyTracker();
 			MouseTracker m = MainGame.getMouseTracker();
@@ -275,6 +282,10 @@ public class Player extends Entity implements PlayerDataHolder
 	
 	public static int getCoinsCollected(){
 		return coinsCollected;
+	}
+	
+	public static double getRawScore(){
+		return score;
 	}
 
 
