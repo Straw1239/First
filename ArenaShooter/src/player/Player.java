@@ -66,8 +66,8 @@ public class Player extends Entity implements PlayerDataHolder
 	{
 		super(x, y);
 		faction = Faction.Player;
-		//maxHealth = 10;
-		maxHealth = Double.POSITIVE_INFINITY;
+		maxHealth = 10;
+		//maxHealth = Double.POSITIVE_INFINITY;
 		health = maxHealth;
 		score = 0;
 	}
