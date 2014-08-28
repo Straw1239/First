@@ -24,7 +24,7 @@ public class Coin extends GameObject{
 	
 	/**
 	 * constructor is passed an x and y from the enemy where it last was when it died, which is
-	 * passed to the coin object to make a new coin object at this location
+	 * passed to the coin object to make a new coin object close to this location
 	*/
 	public Coin(double x, double y) {
 		super(x, y, FACTION);
@@ -58,6 +58,7 @@ public class Coin extends GameObject{
 		if(other instanceof Player)
 		{
 			isDead = true;
+			Player.incrementCoins();
 		}
 			
 		

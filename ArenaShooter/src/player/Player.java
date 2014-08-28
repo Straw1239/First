@@ -288,6 +288,10 @@ public class Player extends Entity implements PlayerDataHolder
 	public static double getRawScore(){
 		return score;
 	}
+	
+	public static void incrementCoins(){
+		coinsCollected++;
+	}
 
 
 }
