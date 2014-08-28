@@ -4,6 +4,7 @@ import objects.Locatable;
 
 public final class Vector implements Locatable
 {
+	public static final Vector ZERO = new Vector(0, 0);
 	public final double x, y;
 	
 	public Vector(double x, double y)
