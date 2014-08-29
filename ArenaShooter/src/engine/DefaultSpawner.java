@@ -12,6 +12,7 @@ import objects.GameObject;
 import objects.entities.BasicEnemy;
 import objects.entities.MannyEnemy;
 import objects.entities.MovingEnemy;
+import objects.entities.Runner;
 
 public class DefaultSpawner implements Spawner
 {

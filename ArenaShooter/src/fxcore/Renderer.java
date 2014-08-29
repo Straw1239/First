@@ -72,7 +72,7 @@ public class Renderer
 		g.fillText(Player.getCoinsCollected() + "", MainGame.getScreenWidth() - 150, 75); //Eventually autosize spacing to the width of the number
 		g.setFont(Font.font("Verdana", 50));
 		g.setFill(Color.WHITE);
-		g.fillText("Score: "  + (int)(Player.getRawScore() * 100) + "", 0, 100);
+		g.fillText("Score: "  + MainGame.getTime() + "", 0, 100);
 	}
 	
 	

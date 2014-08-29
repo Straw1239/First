@@ -64,13 +64,13 @@ public class Coin extends GameObject{
 		
 		return null;
 	}
-	//eventually add an effect for when the coin is collected
+	//TODO: eventually add an effect for when the coin is collected
 //	public Collection<? extends GameEvent> onDeath(){
 //		return Collections.singleton(new GameEvent(this){
 //
 //			@Override
 //			public void effects(EventHandler handler) {
-//				// TODO Auto-generated method stub
+//
 //				
 //			}
 //

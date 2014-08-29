@@ -12,6 +12,7 @@ import utils.Utils;
 import bounds.Bounds;
 import bounds.Circle;
 import engine.State;
+import fxcore.MainGame;
 
 public class MovingEnemy extends Enemy 
 {
@@ -19,6 +20,7 @@ public class MovingEnemy extends Enemy
 	public static final double maxHealth = 20;
 	public static final double contactDamage = .1;
 	public static final Color color = Color.RED;
+	private int level;
 	private Circle bounds = new Circle()
 	{
 		@Override
@@ -81,7 +83,9 @@ public class MovingEnemy extends Enemy
 	@Override
 	public void update(State d) 
 	{
-		double speed = 4;
+		if(MainGame.getTime() % 1000 == 0)
+			level++;
+		double speed = 4 + level;
 		PlayerDataHolder p = d.player;
 		double distance = Utils.distance(this, p);
 		double conservationRatio = 3;

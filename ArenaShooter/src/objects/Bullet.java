@@ -104,6 +104,16 @@ public class Bullet extends MovingObject implements BulletDataHolder
 		this.color = color;
 	}
 	
+	public Bullet(ObjectDataHolder source, Locatable target, double speed, double radius, Color color, double damage)
+	{
+		this(source);
+		double distance = Utils.distance(source,target);
+		dx = speed * (target.getX() - x) / distance;
+		dy = speed * (target.getY() - y) / distance;
+		this.radius = radius;
+		this.color = color;
+		this.damage = damage;
+	}
 	
 	protected void onWallHit(State s)
 	{

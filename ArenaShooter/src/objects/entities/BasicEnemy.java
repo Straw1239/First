@@ -23,6 +23,7 @@ public class BasicEnemy extends Enemy
 	public static final long fireTime = 45;
 	
 	private long shotTime = MainGame.getTime();
+	private int level;
 	private Bounds bounds = new Circle()
 	{
 		@Override
@@ -54,7 +55,8 @@ public class BasicEnemy extends Enemy
 	@Override
 	public void update(State d) 
 	{	
-		
+		if(MainGame.getTime() % 1000 == 0)
+			level++;
 	}
 
 	
@@ -74,7 +76,7 @@ public class BasicEnemy extends Enemy
 		if(MainGame.getTime() < shotTime + fireTime) return Collections.emptyList();
 		if(d.player.isDead()) return Collections.emptyList();
 		shotTime = MainGame.getTime();
-		return Collections.singleton(GameEvent.spawnerOf(new Bullet(this, d.player, 5, 10, Color.GREEN)));
+		return Collections.singleton(GameEvent.spawnerOf(new Bullet(this, d.player, 5, 10, Color.GREEN, 1 + (0.5 * level))));
 		
 	}
 

@@ -87,6 +87,11 @@ public class MannyEnemy extends Enemy
 		}
 		return spawns;
 	}
+	//TODO add a coin drop based on number alive, if there are lots they will be harder to kill, so more should drop
+//	public Collection<? extends GameEvent> onDeath(){
+//		ArrayList<GameEvent> coins = new ArrayList<GameEvent>();
+//		
+//	}
 	
 	
 
