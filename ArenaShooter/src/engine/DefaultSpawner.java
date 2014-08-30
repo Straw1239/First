@@ -10,9 +10,8 @@ import java.util.List;
 
 import objects.GameObject;
 import objects.entities.BasicEnemy;
-import objects.entities.MannyEnemy;
 import objects.entities.MovingEnemy;
-import objects.entities.Runner;
+import objects.entities.SpawningEnemy;
 
 public class DefaultSpawner implements Spawner
 {
@@ -39,7 +38,8 @@ public class DefaultSpawner implements Spawner
 		if(d.time - lastBoss >= 2000)
 		{
 			//spawns.add(new Charger(x, y));
-			spawns.add(new MannyEnemy(x, y));
+			//spawns.add(new MannyEnemy(x, y));
+			spawns.add(new SpawningEnemy(x, y));
 			lastBoss = d.time;
 			x = rand.nextDouble() * (getGameWidth() - 200) + 100; 
 			y = rand.nextDouble() * (getGameHeight() - 200) + 100;

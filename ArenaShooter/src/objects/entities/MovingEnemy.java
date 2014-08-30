@@ -20,7 +20,9 @@ public class MovingEnemy extends Enemy
 	public static final double maxHealth = 20;
 	public static final double contactDamage = .1;
 	public static final Color color = Color.RED;
+	private double speed;
 	private int level;
+	public boolean isDead = false;
 	private Circle bounds = new Circle()
 	{
 		@Override
@@ -48,6 +50,16 @@ public class MovingEnemy extends Enemy
 		health = maxHealth;
 		super.maxHealth = maxHealth;
 		mass = 2;
+		speed = 4;
+	}
+	
+	public MovingEnemy(double x, double y, double speed, double mass) 
+	{
+		super(x, y);
+		health = maxHealth;
+		super.maxHealth = maxHealth;
+		this.mass = mass;
+		this.speed = speed;
 	}
 	
 	public Impact collideWith(GameObject other)
@@ -83,9 +95,10 @@ public class MovingEnemy extends Enemy
 	@Override
 	public void update(State d) 
 	{
-		if(MainGame.getTime() % 1000 == 0)
+		if(MainGame.getTime() % 1000 == 0){
 			level++;
-		double speed = 4 + level;
+			speed++;
+		}
 		PlayerDataHolder p = d.player;
 		double distance = Utils.distance(this, p);
 		double conservationRatio = 3;
