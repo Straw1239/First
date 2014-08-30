@@ -10,19 +10,15 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
-
-import objects.Bullet;
 import objects.Faction;
-import objects.GameObject;
+import objects.PiercingBullet;
 import objects.entities.Entity;
 import objects.events.GameEvent;
-
+import utils.Vector;
 import bounds.Bounds;
 import bounds.Circle;
-
 import engine.EventHandler;
 import engine.State;
-
 import fxcore.KeyTracker;
 import fxcore.MainGame;
 import fxcore.MouseTracker;
@@ -176,9 +172,17 @@ public class Player extends Entity implements PlayerDataHolder
 			//double ratio = speed / distance;
 			for(int i = 0; i < 3; i++)
 			{
+				/* normal old bullets
 				Bullet bullet = new Bullet(this, GameObject.dataOf(x, y, faction), 10, 10, color);
 				bullet.damage = 2;
 				bullet.spread(Math.toRadians(5)) ;
+				nextEvents.add(GameEvent.spawnerOf(bullet));
+				*/
+				PiercingBullet bullet = new PiercingBullet(this, 0, 0, 2);
+				bullet.setTarget(new Vector(x, y), 20);
+				bullet.color = color;
+				bullet.radius = 10;
+				bullet.spread(Math.toRadians(5));
 				nextEvents.add(GameEvent.spawnerOf(bullet));
 			}
 			fireTime = state.time;

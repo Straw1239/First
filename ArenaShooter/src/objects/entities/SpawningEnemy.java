@@ -16,13 +16,11 @@ public class SpawningEnemy extends Enemy {
 
 	public static final double radius = 50;
 	public static final double maxHealth = 200;
-	private double speed;
 	
 	public SpawningEnemy(double x, double y) {
 		super(x, y);
 		health = maxHealth;
 		super.maxHealth = maxHealth;
-		speed = 0;
 		mass = 100;
 		
 	}
@@ -42,7 +40,7 @@ public class SpawningEnemy extends Enemy {
 	public Collection<? extends GameEvent> events(State s){
 		Collection<GameEvent> spawns = Collections.emptyList();
 		spawns = new ArrayList<>(5);
-		if(MainGame.getTime() % 400 == 0){
+		if(s.time % 400 == 0){
 			for(int i = 0; i < 10; i++){
 				spawns.add(GameEvent.spawnerOf(new RunningMinion(x + MainGame.rand.nextInt((int)(2 * radius)) - radius, y + MainGame.rand.nextInt((int)(2 * radius)) - radius)));
 			}

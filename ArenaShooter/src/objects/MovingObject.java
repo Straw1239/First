@@ -32,6 +32,13 @@ public abstract class MovingObject extends GameObject implements MoverDataHolder
 		this.faction = faction;
 	}
 
+	public MovingObject(double x, double y, double dx, double dy,
+			Faction faction, double mass)
+	{
+		this(x, y, dx, dy, faction);
+		this.mass = mass;
+	}
+
 	@Override
 	public void update(State d)
 	{

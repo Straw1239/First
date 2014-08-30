@@ -10,6 +10,9 @@ import java.util.List;
 
 import objects.GameObject;
 import objects.entities.BasicEnemy;
+import objects.entities.Charger;
+import objects.entities.FirstBoss;
+import objects.entities.MannyEnemy;
 import objects.entities.MovingEnemy;
 import objects.entities.SpawningEnemy;
 
@@ -32,14 +35,14 @@ public class DefaultSpawner implements Spawner
 		double x = rand.nextDouble() * (getGameWidth() - 200) + 100, y = rand.nextDouble() * (getGameHeight() - 200) + 100;
 		if(d.time - lastSpawn >= 60)
 		{
-			spawns.add(rand.nextBoolean() ? new BasicEnemy(x, y) : new MovingEnemy(x, y));
+			//spawns.add(rand.nextBoolean() ? new BasicEnemy(x, y) : new MovingEnemy(x, y));
 			lastSpawn = d.time;
 		}
 		if(d.time - lastBoss >= 2000)
 		{
 			//spawns.add(new Charger(x, y));
-			//spawns.add(new MannyEnemy(x, y));
-			spawns.add(new SpawningEnemy(x, y));
+			spawns.add(new MannyEnemy(x, y));
+			//spawns.add(new SpawningEnemy(x, y));
 			lastBoss = d.time;
 			x = rand.nextDouble() * (getGameWidth() - 200) + 100; 
 			y = rand.nextDouble() * (getGameHeight() - 200) + 100;

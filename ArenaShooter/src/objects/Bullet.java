@@ -7,6 +7,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import objects.entities.Entity;
 import utils.Utils;
+import utils.Vector;
 import bounds.Bounds;
 import bounds.Circle;
 import engine.State;
@@ -134,16 +135,18 @@ public class Bullet extends MovingObject implements BulletDataHolder
 	
 	public Impact collideWith(GameObject other)
 	{
-		
+		Impact impact = new Impact(this);
 		{
 			if(other.supportsOperation(Entity.DAMAGE))
 			{
 				isDead = true;
-				return new Impact(this, new Change(Entity.DAMAGE, damage));
+				impact.changes.add(new Change(Entity.DAMAGE, damage));
+				impact.changes.add(new Change(MovingObject.FORCE, new Vector(dx * mass, dy * mass)));
 			}
 			
+			
 		}
-		return null;
+		return impact;
 	}
 
 	

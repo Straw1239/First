@@ -21,7 +21,6 @@ public class MovingEnemy extends Enemy
 	public static final double contactDamage = .1;
 	public static final Color color = Color.RED;
 	private double speed;
-	private int level;
 	public boolean isDead = false;
 	private Circle bounds = new Circle()
 	{
@@ -70,14 +69,8 @@ public class MovingEnemy extends Enemy
 	public void hitBy(Impact imp)
 	{
 		super.hitBy(imp);
-		GameObject source = imp.source;
-		if(source instanceof MoverDataHolder)
-		{
-			MoverDataHolder data = (MoverDataHolder) source;
-			double ratio = data.mass() / mass();
-			dx += data.getDX() * ratio;
-			dy += data.getDY() * ratio;
-		}
+		//Special behavior when hit by bullets?
+	
 	}
 	
 	
@@ -95,10 +88,7 @@ public class MovingEnemy extends Enemy
 	@Override
 	public void update(State d) 
 	{
-		if(MainGame.getTime() % 1000 == 0){
-			level++;
-			speed++;
-		}
+		speed += 1 / 1000.0;
 		PlayerDataHolder p = d.player;
 		double distance = Utils.distance(this, p);
 		double conservationRatio = 3;
