@@ -58,13 +58,13 @@ public class PiercingBullet extends MovingObject // Should this extend Bullet?
 	{
 		if(other.supportsOperation(Entity.DAMAGE))
 		{
-			double momentumTransfer = .05;
+			double momentumTransfer = .1;
 			double dx = this.dx;
 			double dy = this.dy;
 			//this.dx *= 1 - momentumTransfer;
 			//this.dy *= 1 - momentumTransfer;
 			return new Impact(this, 
-					new Change(Entity.DAMAGE, damage * Math.hypot(dx, dy) / 50), // Do more damage the faster we are moving
+					new Change(Entity.DAMAGE, damage), 
 					new Change(MovingObject.FORCE, new Vector(dx * mass * momentumTransfer, dy * mass * momentumTransfer)));
 		}
 		return null;

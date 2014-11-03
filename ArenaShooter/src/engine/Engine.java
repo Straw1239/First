@@ -7,6 +7,7 @@ import java.util.EnumMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import objects.Cursor;
@@ -57,6 +58,8 @@ public final class Engine
 	 */
 	
 	private ListMultimap<Faction, GameObject> objects = Multimaps.newListMultimap(new EnumMap<>(Faction.class), LinkedList::new);
+	//private ListMultimap<Faction, ListMultimap<Set<Faction> ,GameObject>> objects = Multimaps.newListMultimap(new EnumMap<>(Faction.class), LinkedList::new);
+	
 	
 	private Handler handler = new Handler();
 	
@@ -160,6 +163,7 @@ public final class Engine
 				handler.addAllEvents(next.onDeath(state));
 			}
 		}
+	
 		//Currently we only check for collision between objects of different factions
 		Faction[] factions = Faction.values();
 		for(int i = 0; i < factions.length; i++)
@@ -181,6 +185,8 @@ public final class Engine
 		}
 		//System.out.println("Collision Checks: " + GameObject.collisions);
 		//System.out.println(objects.size());
+		 
+		 
 		for(GameObject obj : objects.values()) handler.addAllEvents((obj.events(state)));
 		
 	}

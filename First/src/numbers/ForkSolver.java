@@ -41,7 +41,7 @@ public class ForkSolver
 			int moves = 0;
 			long time = 0;
 			int depth = 3;
-			double target = .2;
+			double target = .01;
 			long targetTime = (long)(target * 10000000000.0);
 			while(true)
 			{

@@ -23,12 +23,12 @@ public class MainApp extends Application
 	@Override
 	public void start(Stage primaryStage) throws Exception
 	{
-		
 		primaryStage.setTitle("MEDIA");
 		Media media;
 		MediaPlayer player;
 		
-		media = new Media(new File("D:\\Videos\\Music\\prelude.mp4").toURI().toString());
+		media = new Media(new File("D:\\Music\\prelude.mp4").toURI().toString());
+		//media = new Media(new File("D:\\Music\\station.mp4").toURI().toString());
 		player = new MediaPlayer(media);
 		player.setAutoPlay(true);
 		player.startTimeProperty().set(Duration.seconds(15));
@@ -40,7 +40,7 @@ public class MainApp extends Application
 				player.seek(Duration.ZERO);
 			}
 		});
-		player.rateProperty().set(1.0);
+		player.rateProperty().set(2);
 		StackPane p = new StackPane();
 		p.getChildren().add(view);	
 		Scene scene = new Scene(p, 500, 500);			

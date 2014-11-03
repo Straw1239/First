@@ -2,10 +2,8 @@ package main;
 
 
 
-import static java.lang.Math.sin;
-import static java.lang.Math.sinh;
-import static java.lang.Math.tan;
-import static java.lang.Math.tanh;
+import static java.lang.Math.*;
+
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -44,12 +42,12 @@ public class Main extends Application
 	public static List<UnaryOperator<Double>> functions = new ArrayList<>();
 	public static void main(String[] args) 
 	{
-		
 		functions.add((d) -> 250.0);
 		functions.add((d) -> 200 / sin(d * 2));
 		functions.add((d) -> 100 * tan(d));
 		functions.add((d) -> 300 * sin(d));
 		functions.add((d) -> 300 / sin(d));
+		functions.add((d) -> log(d) * 200);
 		functions.add((d) -> 100 / tanh(d));
 		functions.add((d) -> 100 / sinh(d));
 		functions.add((d) -> 2 * sinh(d) + 40);
@@ -65,7 +63,8 @@ public class Main extends Application
 	private int mode = 0;
 	private int balls = 4096;
 	private List<Image> snapshots = new ArrayList<>();
-	private double width = 1280, height = 1024;
+	private Rectangle2D bounds = Screen.getPrimary().getBounds();
+	private double width = bounds.getWidth(), height = bounds.getHeight();
 	
 	public synchronized WritableImage snapshot()
 	{
@@ -183,8 +182,6 @@ public class Main extends Application
 		for(int i = 0; i < balls; i++)
 		{
 			double angle = i * 2 * Math.PI / balls;
-			double sin = Math.sin(angle);
-			double cos = Math.cos(angle);
 			Vector v = Vector.fromPolar(functions.get(mode).apply(angle), angle);
 			Color c = colors.get(i % colors.size());//new Color(rand.nextDouble(), rand.nextDouble(), rand.nextDouble(), rand.nextDouble());
 			simulation.addBall(new Ball(simulation.dimensions.scale(.5), v, 20, c));
@@ -232,9 +229,9 @@ public class Main extends Application
 			public void handle(long t) 
 			{
 				renderer.render(simulation.getState(), simulation.dimensions);
-				if(frames % 120 == 0 && snapshots.size() < 16)
+				//if(frames % 120 == 0 && snapshots.size() < 16)
 				{
-					snapshots.add(snapshot());
+					//snapshots.add(snapshot());
 				}
 				frames++;
 				//System.out.println((frames) / ((t - time) / 1_000_000_000.0));

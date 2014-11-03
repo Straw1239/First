@@ -1,6 +1,9 @@
 package objects;
 
 
+import java.util.EnumSet;
+import java.util.Set;
+
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import player.Player;
@@ -34,6 +37,11 @@ public class Coin extends GameObject{
 	@Override
 	public boolean isDead() {
 		return isDead;
+	}
+	
+	public Set<Faction> collidableFactions()
+	{
+		return EnumSet.of(Faction.Player);
 	}
 	@Override
 	public void draw(GraphicsContext g) {

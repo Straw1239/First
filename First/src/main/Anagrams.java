@@ -33,6 +33,10 @@ public class Anagrams
 		{
 			findAnagrams(input.next().toLowerCase());
 		}
+		while(console.hasNext())
+		{
+			findAnagrams(console.next().toLowerCase());
+		}
 		long time2 = System.nanoTime();
 		System.out.println((time2-time1)/(double)1000000000);
 		
