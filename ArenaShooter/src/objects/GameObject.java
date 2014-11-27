@@ -94,52 +94,6 @@ public abstract class GameObject implements ObjectDataHolder
 		set.remove(faction);
 		return set;
 	}
-
-	@Override
-	public int hashCode() 
-	{
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((faction == null) ? 0 : faction.hashCode());
-		long temp;
-		temp = Double.doubleToLongBits(x);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(y);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) 
-	{
-		if (this == obj) 
-		{
-			return true;
-		}
-		if (obj == null) 
-		{
-			return false;
-		}
-		if (!(obj instanceof GameObject)) 
-		{
-			return false;
-		}
-		
-		GameObject other = (GameObject) obj;
-		if (faction != other.faction) 
-		{
-			return false;
-		}
-		if (Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x)) 
-		{
-			return false;
-		}
-		if (Double.doubleToLongBits(y) != Double.doubleToLongBits(other.y)) 
-		{
-			return false;
-		}
-		return true;
-	}
 	
 	@Override
 	public Object clone()

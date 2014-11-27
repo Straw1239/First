@@ -54,6 +54,7 @@ public class Bullet extends MovingObject implements BulletDataHolder
 	{
 		super(x,y);
 		startTime = MainGame.getTime();
+		mass = .03;
 	}
 	
 	protected Bullet(ObjectDataHolder entity)
@@ -147,55 +148,6 @@ public class Bullet extends MovingObject implements BulletDataHolder
 			
 		}
 		return impact;
-	}
-
-	
-
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((bounds == null) ? 0 : bounds.hashCode());
-		result = prime * result + ((color == null) ? 0 : color.hashCode());
-		long temp;
-		temp = Double.doubleToLongBits(damage);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(dx);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(dy);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result + (isDead ? 1231 : 1237);
-		result = prime * result + (int) (startTime ^ (startTime >>> 32));
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (this == obj) return true;
-		if (!super.equals(obj)) return false;
-		if (getClass() != obj.getClass()) return false;
-		Bullet other = (Bullet) obj;
-		if (bounds == null)
-		{
-			if (other.bounds != null) return false;
-		}
-		else if (!bounds.equals(other.bounds)) return false;
-		if (color == null)
-		{
-			if (other.color != null) return false;
-		}
-		else if (!color.equals(other.color)) return false;
-		if (Double.doubleToLongBits(damage) != Double
-				.doubleToLongBits(other.damage)) return false;
-		if (Double.doubleToLongBits(dx) != Double.doubleToLongBits(other.dx))
-			return false;
-		if (Double.doubleToLongBits(dy) != Double.doubleToLongBits(other.dy))
-			return false;
-		if (isDead != other.isDead) return false;
-		if (startTime != other.startTime) return false;
-		return true;
 	}
 
 	public boolean isDead()

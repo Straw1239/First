@@ -35,13 +35,13 @@ public class DefaultSpawner implements Spawner
 		double x = rand.nextDouble() * (getGameWidth() - 200) + 100, y = rand.nextDouble() * (getGameHeight() - 200) + 100;
 		if(d.time - lastSpawn >= 60)
 		{
-			//spawns.add(rand.nextBoolean() ? new BasicEnemy(x, y) : new MovingEnemy(x, y));
+			spawns.add(rand.nextBoolean() ? new BasicEnemy(x, y) : new MovingEnemy(x, y));
 			lastSpawn = d.time;
 		}
 		if(d.time - lastBoss >= 2000)
 		{
-			//spawns.add(new Charger(x, y));
-			spawns.add(new MannyEnemy(x, y));
+			spawns.add(new Charger(x, y));
+			//spawns.add(new MannyEnemy(x, y));
 			//spawns.add(new SpawningEnemy(x, y));
 			lastBoss = d.time;
 			x = rand.nextDouble() * (getGameWidth() - 200) + 100; 
@@ -49,7 +49,7 @@ public class DefaultSpawner implements Spawner
 		}
 		if(d.time - boss >= 10000)
 		{
-			//spawns.add(new FirstBoss(x, y));
+			spawns.add(new FirstBoss(x, y));
 			boss = d.time;
 		}
 		return spawns;

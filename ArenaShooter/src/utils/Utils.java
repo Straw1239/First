@@ -103,7 +103,7 @@ public class Utils
 	
 	public static double interpolate(double first, double second, double ratio)
 	{
-		return ((1 - ratio) * first + ratio * second) / 2;
+		return ((1 - ratio) * first + ratio * second);
 	}
 	
 	public static <T> Stream<T> stream(Iterable<T> in) 

@@ -28,6 +28,7 @@ public class FirstBoss extends Enemy
 		super(x, y);
 		maxHealth = 2000;
 		health = maxHealth;
+		mass = 5;
 	}
 
 	@Override
