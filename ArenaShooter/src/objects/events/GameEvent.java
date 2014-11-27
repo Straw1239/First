@@ -91,7 +91,7 @@ public abstract class GameEvent implements EventDataHolder
 		}
 		catch (CloneNotSupportedException e)
 		{
-			throw new InternalError(e);
+			throw new RuntimeException(e);
 		}
 	}
 	
@@ -100,7 +100,7 @@ public abstract class GameEvent implements EventDataHolder
 	{
 		out.writeDouble(x);
 		out.writeDouble(y);
-		out.writeInt(faction.ordinal());
+		out.writeObject(faction);
 	}
 
 	@Override
@@ -108,7 +108,7 @@ public abstract class GameEvent implements EventDataHolder
 	{
 		x = in.readDouble();
 		y = in.readDouble();
-		faction = Faction.values()[in.readInt()];
+		faction = (Faction) in.readObject();
 		
 	}
 	

@@ -78,7 +78,7 @@ public class Player extends Entity implements PlayerDataHolder
 		action = a;
 	}
 
-	public Collection<? extends GameEvent> onDeath()
+	public Collection<GameEvent> onDeath()
 	{
 		return Collections.singleton(new GameEvent(this)
 		{
@@ -285,15 +285,18 @@ public class Player extends Entity implements PlayerDataHolder
 		if(!isDead()) MainGame.sleep((long)(damage * 40));
 	}
 	
-	public static int getCoinsCollected(){
+	public static int getCoinsCollected()
+	{
 		return coinsCollected;
 	}
 	
-	public static double getRawScore(){
+	public static double getRawScore()
+	{
 		return score;
 	}
 	
 	public static void incrementCoins(){
+		
 		coinsCollected++;
 	}
 

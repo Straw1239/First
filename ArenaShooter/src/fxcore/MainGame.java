@@ -197,8 +197,17 @@ public class MainGame extends Application
 		long frameNanoTime = (1_000_000_000L / UPS);
 		compute.scheduleAtFixedRate(() -> 
 		{
-			if(!paused)
-			engine.update();
+			try
+			{
+				if(!paused)
+					engine.update();
+			}
+			catch(Throwable t)
+			{
+				t.printStackTrace();
+				engine.reset();
+			}
+			
 		}, 0, frameNanoTime, TimeUnit.NANOSECONDS);
 		
 	}

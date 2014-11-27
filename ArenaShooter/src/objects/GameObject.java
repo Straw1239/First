@@ -50,22 +50,22 @@ public abstract class GameObject implements ObjectDataHolder
 	
 	public abstract Bounds bounds();
 	
-	public Collection<? extends GameEvent> events(State d)
+	public Collection<GameEvent> events(State d)
 	{
 		return Collections.emptyList();
 	}
 	
-	public Collection<? extends GameEvent> onDeath(State d)
+	public Collection<GameEvent> onDeath(State d)
 	{
 		return onDeath();
 	}
 	
-	public Collection<? extends GameEvent> onEntry(State s)
+	public Collection<GameEvent> onEntry(State s)
 	{
 		return Collections.emptyList();
 	}
 	
-	public Collection<? extends GameEvent> onDeath()
+	public Collection<GameEvent> onDeath()
 	{
 		return Collections.emptyList();
 	}
@@ -169,7 +169,7 @@ public abstract class GameObject implements ObjectDataHolder
 	{
 		out.writeDouble(x);
 		out.writeDouble(y);
-		out.writeInt(faction.ordinal());
+		out.writeObject(faction);
 	}
 
 	@Override
@@ -177,7 +177,7 @@ public abstract class GameObject implements ObjectDataHolder
 	{
 		x = in.readDouble();
 		y = in.readDouble();
-		faction = Faction.values()[in.readInt()];
+		faction = (Faction) in.readObject();
 		
 	}
 	
@@ -229,7 +229,7 @@ public abstract class GameObject implements ObjectDataHolder
 	
 	public Impact collideWith(GameObject other)
 	{
-		return null;
+		return Impact.NONE;
 	}
 	
 	public static final class Change
@@ -246,8 +246,10 @@ public abstract class GameObject implements ObjectDataHolder
 	
 	public static final class Impact
 	{
-		public GameObject source;
-		public Collection<Change> changes;
+		
+		public static final Impact NONE = new Impact(null, Collections.emptyList());
+		public final GameObject source;
+		public final Collection<Change> changes;
 		
 		
 		
@@ -266,9 +268,9 @@ public abstract class GameObject implements ObjectDataHolder
 		{
 			this(origin, new ArrayList<>(Arrays.asList(changes)));
 		}
-		
-		
 	}
+	
+	
 	
 	
 	/**
@@ -280,14 +282,8 @@ public abstract class GameObject implements ObjectDataHolder
 	{
 		Impact forOther = obj.collideWith(other);
 		Impact forObj = other.collideWith(obj);
-		if(forOther != null)
-		{
-			other.hitBy(forOther);
-		}
-		if(forObj != null)
-		{
-			obj.hitBy(forObj);
-		}
+		other.hitBy(forOther);
+		obj.hitBy(forObj);
 	}
 	
 	

@@ -76,7 +76,7 @@ public class MannyEnemy extends Enemy
 	
 	
 	long nextSpawn = getTime() + 7 * UPS;
-	public Collection<? extends GameEvent> events(State s)
+	public Collection<GameEvent> events(State s)
 	{
 		Collection<GameEvent> spawns = Collections.emptyList();
 		if(s.time >= nextSpawn)

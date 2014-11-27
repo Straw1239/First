@@ -58,18 +58,16 @@ public class FirstBoss extends Enemy
 		double maxV = 7;
 		if(hypot >= maxV)
 		{
-			dx = dx * maxV / hypot;
-			dy = dy * maxV / hypot;
+			dx *= maxV / hypot;
+			dy *= maxV / hypot;
 		}
-		
-		
 		super.update(d);
 	}
 	
 	private List<GameEvent> nextEvents = new ArrayList<>();
 	long lastMinionSpawn = 0;
 	
-	public Collection<? extends GameEvent> events(State s)
+	public Collection<GameEvent> events(State s)
 	{
 		if(s.time - lastMinionSpawn >= 30)
 		{
@@ -148,7 +146,7 @@ public class FirstBoss extends Enemy
 		public void draw(GraphicsContext g)
 		{
 			g.setFill(color);
-			g.fillOval(x - radius, y - radius, radius * 2, radius * 2);
+			bounds().fill(g);
 		}
 
 
@@ -157,19 +155,16 @@ public class FirstBoss extends Enemy
 		{
 			super.update(d);
 			double distance = Utils.distance(this, FirstBoss.this);
-			distance = Utils.clamp(distance, 50, Double.POSITIVE_INFINITY);
-			double distanceSqrd = distance * distance;
-			double force = 10000 / distanceSqrd;
+			//distance = Utils.clamp(distance, 50, Double.POSITIVE_INFINITY);
+			//double distanceSqrd = distance * distance;
+			double force = distance / 1000;
 			dx -= force * (x - FirstBoss.this.x) / distance;
 			dy -= force * (y - FirstBoss.this.y) / distance;
 			
 		}
-
-		@Override
-		public Bounds bounds()
+		
+		private Bounds bounds = new Circle()
 		{
-			return new Circle()
-			{
 				@Override
 				public double centerX()
 				{
@@ -188,13 +183,18 @@ public class FirstBoss extends Enemy
 					return radius;
 				}
 				
-			};
+		};
+
+		@Override
+		public Bounds bounds()
+		{
+			return bounds;
 		}
 		
 		public Collection<GameEvent> onDeath()
 		{
 			numMinions--;
-			return Collections.emptyList();
+			return super.onDeath();
 		}
 		
 	}

@@ -67,7 +67,7 @@ public class PiercingBullet extends MovingObject // Should this extend Bullet?
 					new Change(Entity.DAMAGE, damage), 
 					new Change(MovingObject.FORCE, new Vector(dx * mass * momentumTransfer, dy * mass * momentumTransfer)));
 		}
-		return null;
+		return Impact.NONE;
 	}
 	
 	public Bounds bounds()

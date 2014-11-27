@@ -16,25 +16,29 @@ import bounds.Circle;
 import engine.State;
 import fxcore.MainGame;
 //BUG: stops game after a little bit
-public class RunningMinion extends MovingEnemy{
+public class RunningMinion extends MovingEnemy
+{
 
 	private static double radius = 10;
 	private double spawnTime = MainGame.getTime();
 	private boolean timeOut = false;
 	
-	public RunningMinion(double x, double y) {
+	public RunningMinion(double x, double y) 
+	{
 		super(x, y, 7, 0.5);
 	}
 	
 	@Override
-	public void draw(GraphicsContext g) {
+	public void draw(GraphicsContext g) 
+	{
 		g.setFill(Color.DARKCYAN);
 		bounds().fill(g);
 		
 	}
 	
 	@Override
-	public Bounds bounds() {
+	public Bounds bounds() 
+	{
 		return Circle.of(x, y, radius);
 	}
 	
@@ -44,7 +48,8 @@ public class RunningMinion extends MovingEnemy{
 		return new Impact(this, new Change(DAMAGE, contactDamage));
 	}
 	
-	public void update(State s){
+	public void update(State s)
+	{
 		 super.update(s);
 		 if(s.time - spawnTime == MainGame.UPS * 5){
 			 isDead = true;
@@ -52,7 +57,8 @@ public class RunningMinion extends MovingEnemy{
 		 }
 	}
 	
-	public Collection<? extends GameEvent> onDeath(){
+	public Collection<GameEvent> onDeath()
+	{
 		if(isDead)
 			return Collections.singleton(new Explosion(x, y, Faction.Enemy, 30, 5));
 		return null;

@@ -67,7 +67,7 @@ public class Charger extends Enemy
 		{
 			return new Impact(this, new Change(DAMAGE, .1));
 		}
-		return null;
+		return Impact.NONE;
 	}
 	
 	public void handleChange(Change c, GameObject source)
@@ -115,7 +115,7 @@ public class Charger extends Enemy
 		if(!isDead()) heal(.1);
 	}
 	
-	public Collection<? extends GameEvent> events(State s)
+	public Collection<GameEvent> events(State s)
 	{
 		return nextEvents;
 	}
@@ -126,7 +126,7 @@ public class Charger extends Enemy
 		 return bounds;
 	}
 	
-	public Collection<? extends GameEvent> onDeath(){
+	public Collection<GameEvent> onDeath(){
 		ArrayList<GameEvent> coins = new ArrayList<GameEvent>();
 		for(int i = 0; i < 5; i++){
 			coins.add(GameEvent.spawnerOf((new Coin(x + MainGame.rand.nextInt((int)(2 * radius)) - radius, y + MainGame.rand.nextInt((int)(2 * radius)) - radius))));

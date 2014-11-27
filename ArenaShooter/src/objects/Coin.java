@@ -68,9 +68,7 @@ public class Coin extends GameObject{
 			isDead = true;
 			Player.incrementCoins();
 		}
-			
-		
-		return null;
+		return Impact.NONE;
 	}
 	//TODO: eventually add an effect for when the coin is collected
 //	public Collection<? extends GameEvent> onDeath(){

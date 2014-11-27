@@ -13,6 +13,11 @@ public final class Vector implements Locatable
 		this.y = y;
 	}
 	
+	public Vector(Locatable l)
+	{
+		this(l.getX(), l.getY());
+	}
+
 	public double getX()
 	{
 		return x;

@@ -17,7 +17,8 @@ public class SpawningEnemy extends Enemy {
 	public static final double radius = 50;
 	public static final double maxHealth = 200;
 	
-	public SpawningEnemy(double x, double y) {
+	public SpawningEnemy(double x, double y) 
+	{
 		super(x, y);
 		health = maxHealth;
 		super.maxHealth = maxHealth;
@@ -26,18 +27,21 @@ public class SpawningEnemy extends Enemy {
 	}
 
 	@Override
-	public void draw(GraphicsContext g) {
+	public void draw(GraphicsContext g) 
+	{
 		g.setFill(Color.DARKORANGE);
 		bounds().fill(g);
 
 	}
 
 	@Override
-	public Bounds bounds(){
+	public Bounds bounds()
+	{
 		return Circle.of(x, y, radius);
 	}
 	
-	public Collection<? extends GameEvent> events(State s){
+	public Collection<GameEvent> events(State s)
+	{
 		Collection<GameEvent> spawns = Collections.emptyList();
 		spawns = new ArrayList<>(5);
 		if(s.time % 400 == 0){

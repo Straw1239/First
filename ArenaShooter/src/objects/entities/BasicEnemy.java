@@ -86,7 +86,7 @@ public class BasicEnemy extends Enemy
 		return bounds;
 	}
 
-	public Collection<? extends GameEvent> onDeath(){
+	public Collection<GameEvent> onDeath(){
 		Coin coin = new Coin(x + MainGame.rand.nextInt((int)radius), y + MainGame.rand.nextInt((int)radius));
 		return Collections.singleton(GameEvent.spawnerOf(coin));
 	}

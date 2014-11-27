@@ -13,7 +13,7 @@ import bounds.Circle;
 import engine.State;
 import fxcore.MainGame;
 /**
- * Represents a bullet in the game. Provides many contructors for easy building.
+ * Represents a bullet in the game. Provides a builder for easy customization.
  * Automatically moves itself by dx and dy each time update() is called.
  * Subclasses may want to override various methods for different behavior.
  * @author Rajan
@@ -23,7 +23,6 @@ public class Bullet extends MovingObject implements BulletDataHolder
 {
 	public Color color;
 	public double damage = 1;
-	
 	protected long startTime;
 	protected boolean isDead = false;
 	protected double radius;
@@ -199,11 +198,11 @@ public class Bullet extends MovingObject implements BulletDataHolder
 	{
 		protected Locatable start;
 		protected Faction faction;
-		protected double dy, dx;
+		protected double dy = 0, dx = 0;
 		protected Locatable target = null;
-		protected Color color;
-		protected double radius;
-		protected boolean piercing;
+		protected Color color = Color.RED;
+		protected double radius =5;
+		protected double damage = 1;
 		
 		public Bullet build()
 		{
@@ -212,13 +211,61 @@ public class Bullet extends MovingObject implements BulletDataHolder
 				Bullet b = new Bullet(start.getX(), start.getY(), dx, dy, radius, color);
 				b.color = color;
 				b.faction = faction;
+				b.damage = damage;
 				return b;
 			}
 			else
 			{
-				return new Bullet(GameObject.dataOf(start.getX(), start.getY(), faction), target, dx, dx, color);
+				Bullet b = new Bullet(GameObject.dataOf(start.getX(), start.getY(), faction), target, dx, dx, color);
+				b.damage = damage;
+				return b;
 			}
 		}
+		
+		public Builder setLocation(Locatable l)
+		{
+			start = new Vector(l);
+			return this;
+		}
+		
+		public Builder setFaction(Faction f)
+		{
+			faction = f;
+			return this;
+		}
+		
+		public Builder setVelocity(Vector v)
+		{
+			dy = v.y;
+			dx = v.x;
+			target = null;
+			return this;
+		}
+		
+		public Builder setColor(Color c)
+		{
+			color = c;
+			return this;
+		}
+		
+		public Builder setRadius(double r)
+		{
+			radius = r;
+			return this;
+		}
+		
+		public Builder from(ObjectDataHolder source)
+		{
+			return setLocation(source).setFaction(source.getFaction());
+		}
+		
+		public Builder setTarget(Locatable l)
+		{
+			target = new Vector(l);
+			return this;
+		}
+		
+		
 	}
 	
 	
