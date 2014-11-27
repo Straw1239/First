@@ -57,7 +57,7 @@ public class Player extends Entity implements PlayerDataHolder
 			return radius;
 		}
 	};
-	//Hi
+	
 	public Player(double x, double y) 
 	{
 		super(x, y);
@@ -174,8 +174,6 @@ public class Player extends Entity implements PlayerDataHolder
 			{
 				
 				Bullet bullet = new Bullet(this, GameObject.dataOf(x, y, faction), 10, 10, color);
-				Bullet.Builder builder = Bullet.builder();
-				//builder.from(this)
 				bullet.damage = 2;
 				bullet.spread(Math.toRadians(5)) ;
 				nextEvents.add(GameEvent.spawnerOf(bullet));

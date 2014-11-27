@@ -5,7 +5,6 @@ package objects;
 import static fxcore.MainGame.rand;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import objects.Bullet.Builder;
 import objects.entities.Entity;
 import utils.Utils;
 import utils.Vector;
@@ -267,11 +266,6 @@ public class Bullet extends MovingObject implements BulletDataHolder
 		}
 		
 		
-	}
-
-	public static Builder builder()
-	{
-		return new Builder();
 	}
 	
 	
