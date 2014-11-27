@@ -30,6 +30,16 @@ public interface Circle extends Bounds
 		};
 	}
 	
+	public default boolean isContainedByLine(Line l)
+	{
+		return l.containsCircle(this);
+	}
+	
+	public default boolean intersectsLine(Line l)
+	{
+		return l.intersectsCircle(this);
+	}
+	
 	public default boolean isContainedByCircle(Circle c)
 	{
 		return c.containsCircle(this);

@@ -1,5 +1,8 @@
 package utils;
 
+
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
 import objects.Locatable;
 
 public final class Vector implements Locatable
@@ -63,9 +66,19 @@ public final class Vector implements Locatable
 		return new Vector(-y, x);
 	}
 	
+	public Vector scaleAdd(double scale, Vector other)
+	{
+		return new Vector(x * scale + other.x, y * scale + other.y);
+	}
+	
+	public Vector addScaled(Vector other, double scale)
+	{
+		return new Vector(x + scale * other.x, y + scale * other.y);
+	}
+	
 	public Vector reflect(Vector normal)
 	{
-		return normal.scale(dotProduct(this, normal) / normal.lengthSquared() * 2).sub(this);
+		return normal.scaleAdd(-2 * dotProduct(this, normal) / normal.lengthSquared(), this);
 	}
 	
 	public Vector inverse()
@@ -82,6 +95,11 @@ public final class Vector implements Locatable
 	public static double dotProduct(Vector vec1, Vector vec2)
 	{
 		return vec1.x * vec2.x + vec1.y * vec2.y;
+	}
+	
+	public static Vector fromPolar(double radius, double radians)
+	{
+		return new Vector(cos(radians) * radius, sin(radians) * radius);
 	}
 
 	public Vector normalized(double d)

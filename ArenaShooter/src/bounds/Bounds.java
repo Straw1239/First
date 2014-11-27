@@ -2,10 +2,11 @@ package bounds;
 
 import java.io.Serializable;
 
+import objects.Locatable;
 import javafx.scene.canvas.GraphicsContext;
 import utils.Vector;
 
-public interface Bounds extends Serializable
+public interface Bounds extends Serializable, Locatable
 {
 	public boolean isContainedBy(Bounds b);
 	
@@ -21,10 +22,17 @@ public interface Bounds extends Serializable
 	
 	public boolean containsRectangle(Rectangle r);
 	
+	public default boolean containsLine(Line l)
+	{
+		return l.isContainedBy(this);
+	}
+	
 	public default boolean contains(Vector v)
 	{
 		return contains(v.x, v.y);
 	}
+	
+	
 	
 	public default Vector center()
 	{
@@ -34,6 +42,16 @@ public interface Bounds extends Serializable
 	public double centerX();
 	
 	public double centerY();
+	
+	public default double getX()
+	{
+		return centerX();
+	}
+	
+	public default double getY()
+	{
+		return centerY();
+	}
 	
 	public double distanceAtAngle(double angle);
 	
@@ -136,11 +154,41 @@ public interface Bounds extends Serializable
 			// Nothing
 			
 		}
+
+		@Override
+		public double getX()
+		{
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		@Override
+		public double getY()
+		{
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		@Override
+		public boolean isContainedByLine(Line line)
+		{
+			return false;
+		}
+
+		@Override
+		public boolean intersectsLine(Line line)
+		{
+			return false;
+		}
 	};
 	
 	public void fill(GraphicsContext g);
 	
 	public void stroke(GraphicsContext g);
+
+	public boolean isContainedByLine(Line line);
+
+	public boolean intersectsLine(Line line);
 	
 	
 	

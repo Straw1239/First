@@ -140,6 +140,16 @@ public interface Rectangle extends Bounds
 		};
 	}
 	
+	public default boolean isContainedByLine(Line l)
+	{
+		return l.containsRectangle(this);
+	}
+	
+	public default boolean intersectsLine(Line l)
+	{
+		return l.intersectsRectangle(this);
+	}
+	
 	public default void stroke(GraphicsContext g)
 	{
 		g.strokeRect(getX(), getY(), width(), height());
