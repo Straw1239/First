@@ -1,6 +1,10 @@
 package utils;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.IdentityHashMap;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -167,6 +171,72 @@ public class Utils
 		if(value <= min) return min;
 		if(value >= max) return max;
 		return value;
+	}
+	
+	private static class DeepCopyier
+	{
+		IdentityHashMap<Object, Object> encounteredObjects = new IdentityHashMap<Object, Object>();
+		public <T> T deepCopy(T value)
+		{
+			ArrayList<Field> fields = allFields(value);
+			for(Field f : fields)
+			{
+				boolean access = f.isAccessible();
+				try
+				{
+					f.setAccessible(true);
+					try
+					{
+						Copyable<?> data = (Copyable<?>) f.get(value);
+						if(data != null)
+						{
+							if(!encounteredObjects.containsKey(data))
+							{
+								encounteredObjects.put(data, deepCopy(data));
+							}
+							f.set(value, encounteredObjects.get(data));
+						}
+						else
+						{
+							f.set(value, null);
+						}
+					}
+					catch(ClassCastException e)
+					{
+						//Not copyable, use default object clone instead
+					}	
+				}
+				catch (IllegalArgumentException | IllegalAccessException e)
+				{
+					throw new RuntimeException(e);
+				}
+				finally
+				{
+					f.setAccessible(access);
+				}
+			}
+			return value;
+		}
+		
+	}
+	
+	public static <T> T deepCopy(T value)
+	{
+		DeepCopyier d = new DeepCopyier();
+		return d.deepCopy(value);
+		
+	}
+	
+	private static ArrayList<Field> allFields(Object o)
+	{
+		Class<?> searcher = o.getClass();
+		ArrayList<Field> fields = new ArrayList<>();
+		while(!searcher.equals(Object.class))
+		{
+			fields.addAll(Arrays.asList(searcher.getDeclaredFields()));
+			searcher = searcher.getSuperclass();
+		}
+		return fields;
 	}
 	
 	

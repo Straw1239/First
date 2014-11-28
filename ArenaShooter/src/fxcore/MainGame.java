@@ -190,13 +190,13 @@ public class MainGame extends Application
 		runEngine();
 		runGraphics();
 	}
-	
 	private void runEngine()
 	{
 		Thread.setDefaultUncaughtExceptionHandler((t, e) -> e.printStackTrace(System.err));
 		long frameNanoTime = (1_000_000_000L / UPS);
 		compute.scheduleAtFixedRate(() -> 
 		{
+			
 			try
 			{
 				if(!paused)
@@ -205,8 +205,10 @@ public class MainGame extends Application
 			catch(Throwable t)
 			{
 				t.printStackTrace();
-				engine.reset();
+				System.exit(-1);
 			}
+			
+			
 			
 		}, 0, frameNanoTime, TimeUnit.NANOSECONDS);
 		

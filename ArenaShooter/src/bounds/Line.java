@@ -7,7 +7,10 @@ import utils.Vector;
 
 public class Line implements Bounds
 {
-	private final double x1, y1, x2, y2;
+	public final double x1;
+	public final double y1;
+	public final double x2;
+	public final double y2;
 	
 	public Line(double x1, double y1, double x2, double y2)
 	{
@@ -103,7 +106,7 @@ public class Line implements Bounds
 	@Override
 	public boolean intersectsCircle(Circle circle)
 	{
-		return distanceSquared(circle.centerX(), circle.centerY()) <= circle.radius();
+		return distanceSquared(circle.centerX(), circle.centerY()) <= circle.radius() * circle.radius();
 	}
 
 	@Override
@@ -115,13 +118,13 @@ public class Line implements Bounds
 	@Override
 	public void fill(GraphicsContext g)
 	{
-		g.strokeLine(x1, y1, x2, y1);
+		g.strokeLine(x1, y1, x2, y2);
 	}
 
 	@Override
 	public void stroke(GraphicsContext g)
 	{
-		g.strokeLine(x1, y1, x2, y1);
+		g.strokeLine(x1, y1, x2, y2);
 	}
 	
 	public double length()
@@ -139,8 +142,8 @@ public class Line implements Bounds
 		double lSqrd = lengthSquared();
 		if(lSqrd == 0.0) return Utils.distanceSquared(x1, y1, x, y);
 		double t = ((x - x1) * (x2 - x1) + (y - y1) * (y2 - y1)) / lSqrd;
-		if(t < 0) return Utils.distanceSquared(x, y, x1, y1);
-		if(t > 0) return Utils.distanceSquared(x, y, x2, y2);
+		if(t < 0.0) return Utils.distanceSquared(x, y, x1, y1);
+		if(t > 1.0) return Utils.distanceSquared(x, y, x2, y2);
 		return Utils.distanceSquared(x, y, x1 + t * (x2 - x1), y1 + t * (y2 - y1));
 	}
 	

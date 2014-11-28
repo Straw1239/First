@@ -235,7 +235,7 @@ public final class Engine
 	{
 		public Collection<GameEvent> newEvents = new ArrayList<>();
 		@Override
-		public Collection<? extends GameObject> getAll() 
+		public Collection<GameObject> getAll() 
 		{
 			return new Concatenator<GameObject>(Collections.singleton(player), objects.values())
 			{
@@ -260,7 +260,7 @@ public final class Engine
 		}
 
 		@Override
-		public Collection<? extends GameEvent> getAllEvents() 
+		public Collection<GameEvent> getAllEvents() 
 		{
 			return events;
 		}
@@ -282,13 +282,13 @@ public final class Engine
 		}
 
 		@Override
-		public Collection<? extends GameObject> objectsOfFaction(Faction f) 
+		public Collection<GameObject> objectsOfFaction(Faction f) 
 		{
 			return objects.get(f);
 		}
 
 		@Override
-		public Collection<? extends GameEvent> eventsOfFaction(Faction f) 
+		public Collection<GameEvent> eventsOfFaction(Faction f) 
 		{
 			return Collections.unmodifiableCollection(events.stream().filter(e -> e.getFaction() == f).collect(Collectors.toList()));
 		}

@@ -45,7 +45,7 @@ public class Renderer
 		d.gameBounds.fill(g);
 		drawObjects(d);
 		drawEvents(d);
-		drawPlayer(d);
+		//drawPlayer(d);
 		g.restore();
 		displayHUD(d);
 		

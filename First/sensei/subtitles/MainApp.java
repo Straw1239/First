@@ -40,17 +40,12 @@ public class MainApp extends Application
 				player.seek(Duration.ZERO);
 			}
 		});
-		player.rateProperty().set(2);
+		player.rateProperty().set(.9);
 		StackPane p = new StackPane();
 		p.getChildren().add(view);	
 		Scene scene = new Scene(p, 500, 500);			
 		primaryStage.setScene(scene);
 		primaryStage.show();
-	
-		
-		
-		
-		
 	}
 
 }

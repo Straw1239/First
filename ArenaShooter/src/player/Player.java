@@ -10,13 +10,14 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
-import objects.Bullet;
 import objects.Faction;
 import objects.GameObject;
 import objects.entities.Entity;
 import objects.events.GameEvent;
+import utils.Vector;
 import bounds.Bounds;
 import bounds.Circle;
+import bounds.Line;
 import engine.EventHandler;
 import engine.State;
 import fxcore.KeyTracker;
@@ -163,20 +164,54 @@ public class Player extends Entity implements PlayerDataHolder
 			}
 		}
 		
-		if(state.time - fireTime >= 5)
+		if(state.time - fireTime >= 2)
 		if(action.isShooting())
 		{
 			double x = action.targetX(), y = action.targetY();
 			//double distance = distance(this.x, this.y, x, y);
 			//double speed = 10;
 			//double ratio = speed / distance;
-			for(int i = 0; i < 3; i++)
+			//for(int i = 0; i < 3; i++)
 			{
+				Vector t = new Vector(x, y);
+				Line fire = new Line(this, t.addScaled(t.sub(new Vector(this)), 100000));
+				GameEvent shot = new GameEvent(this)
+				{
+
+					private boolean done = false;
+
+					@Override
+					public void effects(EventHandler handler)
+					{
+						done = true;
+						for(GameObject o : handler.objectsOfFaction(Faction.Enemy))
+						{
+							if(o.bounds().intersects(fire)) 
+							{
+								o.hitBy(new Impact(Player.this, Collections.singleton(new Change(Entity.DAMAGE, 10.0))));
+							}
+						}
+					}
+
+					@Override
+					public void draw(GraphicsContext g)
+					{
+						g.setStroke(Color.ORANGERED);
+						fire.fill(g);
+					}
+
+					@Override
+					public boolean hasExpired()
+					{
+						return done;
+					}
+				};
+				nextEvents.add(shot);
 				
-				Bullet bullet = new Bullet(this, GameObject.dataOf(x, y, faction), 10, 10, color);
-				bullet.damage = 2;
-				bullet.spread(Math.toRadians(5)) ;
-				nextEvents.add(GameEvent.spawnerOf(bullet));
+				//Bullet bullet = new Bullet(this, GameObject.dataOf(x, y, faction), 10, 10, color);
+				//bullet.damage = 2;
+				//bullet.spread(Math.toRadians(5)) ;
+				//nextEvents.add(GameEvent.spawnerOf(bullet));
 				
 				//PiercingBullet bullet = new PiercingBullet(this, 0, 0, 2);
 				//bullet.setTarget(new Vector(x, y), 20);

@@ -33,8 +33,8 @@ import com.google.common.collect.ImmutableList;
  */
 public class State implements Externalizable
 {
-	public final ImmutableCollection<? extends EventDataHolder> events;
-	public final ImmutableCollection<? extends ObjectDataHolder> objects;
+	public final ImmutableCollection<EventDataHolder> events;
+	public final ImmutableCollection<ObjectDataHolder> objects;
 	public final PlayerDataHolder player;
 	public final Bounds gameBounds;
 	public final double width, height;
@@ -43,9 +43,9 @@ public class State implements Externalizable
 	
 	public State(PlayerDataHolder player, Iterable<? extends EventDataHolder> events, Iterable<? extends ObjectDataHolder> objects, double width, double height, Bounds bounds, long time)
 	{
-		this.events = ImmutableList.copyOf(Utils.stream(events).map(e -> (EventDataHolder) e.clone()).iterator());
-		this.objects = ImmutableList.copyOf(Utils.stream(objects).map(e -> (ObjectDataHolder) e.clone()).iterator());
-		this.player = Cloner.clone(player);
+		this.events = ImmutableList.copyOf(Utils.stream(events).map(e -> e.copy()).iterator());
+		this.objects = ImmutableList.copyOf(Utils.stream(objects).map(e -> e.copy()).iterator());
+		this.player = player.copy();
 		this.gameBounds = bounds;
 		this.width = width;
 		this.height = height;
@@ -91,8 +91,8 @@ public class State implements Externalizable
 	{
 		double width, height;
 		long time;
-		ImmutableCollection<? extends ObjectDataHolder> objects;
-		ImmutableCollection<? extends EventDataHolder> events;
+		ImmutableCollection<ObjectDataHolder> objects;
+		ImmutableCollection<EventDataHolder> events;
 		Bounds bounds;
 		PlayerDataHolder player;
 		
@@ -132,8 +132,8 @@ public class State implements Externalizable
 			height = in.readDouble();
 			time = in.readLong();
 			player = (PlayerDataHolder) in.readObject();
-			events = (ImmutableCollection<? extends EventDataHolder>) in.readObject();
-			objects = (ImmutableCollection<? extends ObjectDataHolder>) in.readObject();
+			events = (ImmutableCollection<EventDataHolder>) in.readObject();
+			objects = (ImmutableCollection<ObjectDataHolder>) in.readObject();
 			bounds = (Bounds) in.readObject();
 			
 		}

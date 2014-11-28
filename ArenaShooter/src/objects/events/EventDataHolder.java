@@ -2,7 +2,10 @@ package objects.events;
 
 import javafx.scene.canvas.GraphicsContext;
 import objects.ObjectDataHolder;
+import utils.Utils;
 import engine.EventHandler;
+
+import static utils.Utils.*;
 /**
  * Root interface for all events. An event represents something which has effects on engine objects,
  * such as the player, bullets, enemies, and other events. An event can therefore be used to modify the game state
@@ -25,5 +28,10 @@ public interface EventDataHolder extends ObjectDataHolder
 	}
 	
 	public long startTime();
+	
+	public default EventDataHolder copy()
+	{
+		return cast(deepCopy());
+	}
 		
 }

@@ -2,10 +2,10 @@ package objects;
 
 import java.io.Externalizable;
 
-import utils.Cloner;
+import utils.Copyable;
 import fxcore.Renderable;
 
-public interface ObjectDataHolder extends Cloner, Locatable, Renderable, Externalizable
+public interface ObjectDataHolder extends Copyable<ObjectDataHolder>, Locatable, Renderable, Externalizable
 {
 	public Faction getFaction();
 	
