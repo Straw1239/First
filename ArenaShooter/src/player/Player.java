@@ -1,7 +1,6 @@
 package player;
 
 
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -10,8 +9,12 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import objects.Bullet;
 import objects.Faction;
 import objects.GameObject;
+import objects.Locatable;
+import objects.ReadableObject;
 import objects.entities.Entity;
 import objects.events.GameEvent;
 import utils.Vector;
@@ -30,15 +33,23 @@ import fxcore.MouseTracker;
  * @author Rajan
  *
  */
-public class Player extends Entity implements PlayerDataHolder
+public class Player extends Entity implements ReadablePlayer
 {
 	public static double radius = 30;
 	public static Color color = Color.rgb(170, 0, 170);
+	public static volatile boolean laserING = false;
+	public static ReadablePlayer THE;
+	
+	private static ArrayList<Gun<?>> guns = new ArrayList<>();
+	
 	private long fireTime;
 	private Action action;
 	private Collection<GameEvent> nextEvents = new ArrayList<>();
-	private static int coinsCollected;
-	private static double score;
+	
+	private int coinsCollected;
+	private double score;
+	
+	
 	private Circle bounds = new Circle()
 	{
 		@Override
@@ -67,6 +78,7 @@ public class Player extends Entity implements PlayerDataHolder
 		//maxHealth = Double.POSITIVE_INFINITY;
 		health = maxHealth;
 		score = 0;
+		THE = this;
 	}
 	
 	public Player()
@@ -83,11 +95,10 @@ public class Player extends Entity implements PlayerDataHolder
 	{
 		return Collections.singleton(new GameEvent(this)
 		{
-			long time = 5;
 			@Override
 			public void effects(EventHandler handler)
 			{
-				time--;
+			
 				
 			}
 
@@ -98,14 +109,6 @@ public class Player extends Entity implements PlayerDataHolder
 				g.setFill(Color.color(c.getRed(), c.getGreen(), c.getBlue(), .15));
 				g.fillRect(0, 0, MainGame.getGameWidth(), MainGame.getGameHeight());
 			}
-			
-			
-			@Override
-			public boolean hasExpired()
-			{
-				return time == 0;
-			}
-			
 		});
 	}
 	
@@ -125,7 +128,7 @@ public class Player extends Entity implements PlayerDataHolder
 			if(m.isPressed(MouseButton.PRIMARY))
 			{
 				action = new Action(k.isKeyPressed(KeyCode.W), k.isKeyPressed(KeyCode.S), 
-						k.isKeyPressed(KeyCode.A), k.isKeyPressed(KeyCode.D), m.gameX(d), m.gameY(d));
+						k.isKeyPressed(KeyCode.A), k.isKeyPressed(KeyCode.D), m.gameX(this), m.gameY(this));
 			}
 			else
 			{
@@ -164,64 +167,47 @@ public class Player extends Entity implements PlayerDataHolder
 			}
 		}
 		
-		if(state.time - fireTime >= 2)
+		if(state.time - fireTime >= (laserING ? 2 : 5))
 		if(action.isShooting())
 		{
 			double x = action.targetX(), y = action.targetY();
 			//double distance = distance(this.x, this.y, x, y);
 			//double speed = 10;
 			//double ratio = speed / distance;
-			//for(int i = 0; i < 3; i++)
-			{
-				Vector t = new Vector(x, y);
-				Line fire = new Line(this, t.addScaled(t.sub(new Vector(this)), 100000));
-				GameEvent shot = new GameEvent(this)
+			//
+			{	Vector t = new Vector(x, y);
+				Gun<?> g;
+				if(laserING)
 				{
-
-					private boolean done = false;
-
-					@Override
-					public void effects(EventHandler handler)
-					{
-						done = true;
-						for(GameObject o : handler.objectsOfFaction(Faction.Enemy))
-						{
-							if(o.bounds().intersects(fire)) 
-							{
-								o.hitBy(new Impact(Player.this, Collections.singleton(new Change(Entity.DAMAGE, 10.0))));
-							}
-						}
-					}
-
-					@Override
-					public void draw(GraphicsContext g)
-					{
-						g.setStroke(Color.ORANGERED);
-						fire.fill(g);
-					}
-
-					@Override
-					public boolean hasExpired()
-					{
-						return done;
-					}
-				};
-				nextEvents.add(shot);
+					g = new LaserGun();
+				}
+				else 
+				{
+					g = new BasicGun();
+				}
+				g.setLocation(this);
+				g.setTarget(GameObject.dataOf(x, y, Faction.Enemy));
+				nextEvents.add(g.fire());
 				
-				//Bullet bullet = new Bullet(this, GameObject.dataOf(x, y, faction), 10, 10, color);
-				//bullet.damage = 2;
-				//bullet.spread(Math.toRadians(5)) ;
-				//nextEvents.add(GameEvent.spawnerOf(bullet));
-				
-				//PiercingBullet bullet = new PiercingBullet(this, 0, 0, 2);
-				//bullet.setTarget(new Vector(x, y), 20);
-				//bullet.color = color;
-				//bullet.radius = 10;
-				//bullet.spread(Math.toRadians(5));
-				//nextEvents.add(GameEvent.spawnerOf(bullet));
 			}
 			fireTime = state.time;
 		}
+	}
+	
+	public void renderHUD(GraphicsContext g)
+	{
+		double healthBar = 300;
+		g.setFill(Player.color);
+		g.fillRect(0, 0, healthBar * health() /maxHealth(), 50);
+		g.setStroke(Color.WHITE);
+		g.strokeRect(0, 0, healthBar, 50);
+		g.setFill(Color.YELLOW);
+		g.setFont(Font.font("Verdana", 75));
+		g.setFill(Color.YELLOW);
+		g.fillText(getCoinsCollected() + "", MainGame.getScreenWidth() - 150, 75); //Eventually autosize spacing to the width of the number
+		g.setFont(Font.font("Verdana", 50));
+		g.setFill(Color.WHITE);
+		g.fillText("Score: "  + MainGame.getTime() + "", 0, 100);
 	}
 	
 	@Override
@@ -320,20 +306,18 @@ public class Player extends Entity implements PlayerDataHolder
 		if(!isDead()) MainGame.sleep((long)(damage * 40));
 	}
 	
-	public static int getCoinsCollected()
+	public int getCoinsCollected()
 	{
 		return coinsCollected;
 	}
 	
-	public static double getRawScore()
+	public double getRawScore()
 	{
 		return score;
 	}
 	
-	public static void incrementCoins(){
-		
+	public void incrementCoins()
+	{
 		coinsCollected++;
 	}
-
-
 }

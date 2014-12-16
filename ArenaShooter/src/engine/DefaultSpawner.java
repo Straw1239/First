@@ -14,7 +14,6 @@ import objects.entities.Charger;
 import objects.entities.FirstBoss;
 import objects.entities.MannyEnemy;
 import objects.entities.MovingEnemy;
-import objects.entities.SpawningEnemy;
 
 public class DefaultSpawner implements Spawner
 {
@@ -29,7 +28,7 @@ public class DefaultSpawner implements Spawner
 	private long lastBoss = -10000;// Spawn immediately for testing
 	private long boss = -10000; // Spawn immediately for testing
 	@Override
-	public Collection<? extends GameObject> spawn(State d)
+	public Collection<GameObject> spawn(State d)
 	{
 		List<GameObject> spawns = new ArrayList<>();
 		double x = rand.nextDouble() * (getGameWidth() - 200) + 100, y = rand.nextDouble() * (getGameHeight() - 200) + 100;
@@ -47,11 +46,12 @@ public class DefaultSpawner implements Spawner
 			x = rand.nextDouble() * (getGameWidth() - 200) + 100; 
 			y = rand.nextDouble() * (getGameHeight() - 200) + 100;
 		}
+		/*
 		if(d.time - boss >= 10000)
 		{
-			spawns.add(new FirstBoss(x, y));
+			//spawns.add(new FirstBoss(x, y));
 			boss = d.time;
-		}
+		}*/
 		return spawns;
 	}
 

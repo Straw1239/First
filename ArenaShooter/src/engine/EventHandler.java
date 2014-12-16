@@ -14,7 +14,7 @@ public interface EventHandler
 	 * 
 	 * @return all GameObjects in the engine
 	 */
-	public Collection<? extends GameObject> getAll();
+	public Collection<GameObject> getAll();
 	
 	public Player getPlayer();
 	
@@ -41,8 +41,8 @@ public interface EventHandler
 		}
 	}
 	
-	public Collection<? extends GameObject> objectsOfFaction(Faction f);
+	public Collection<GameObject> objectsOfFaction(Faction f);
 	
-	public Collection<? extends GameEvent> eventsOfFaction(Faction f);
+	public Collection<GameEvent> eventsOfFaction(Faction f);
 	
 }

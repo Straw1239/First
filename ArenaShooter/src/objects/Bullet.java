@@ -19,7 +19,7 @@ import fxcore.MainGame;
  * @author Rajan
  *
  */
-public class Bullet extends MovingObject implements BulletDataHolder
+public class Bullet extends MovingObject implements ReadableBullet
 {
 	public Color color;
 	public double damage = 1;
@@ -56,7 +56,7 @@ public class Bullet extends MovingObject implements BulletDataHolder
 		mass = .03;
 	}
 	
-	protected Bullet(ObjectDataHolder entity)
+	protected Bullet(ReadableObject entity)
 	{
 		this(entity.getX(), entity.getY());
 		faction = entity.getFaction();
@@ -86,7 +86,7 @@ public class Bullet extends MovingObject implements BulletDataHolder
 		this(x,y,dx,dy,radius,Color.RED);
 	}
 		
-	public Bullet(ObjectDataHolder source, Locatable target, double speed, double radius, Color color)
+	public Bullet(ReadableObject source, Locatable target, double speed, double radius, Color color)
 	{
 		this(source);
 		double distance = Utils.distance(source,target);
@@ -96,7 +96,7 @@ public class Bullet extends MovingObject implements BulletDataHolder
 		this.color = color;
 	}
 	
-	public Bullet(ObjectDataHolder source, double angle, double speed, double radius, Color color)
+	public Bullet(ReadableObject source, double angle, double speed, double radius, Color color)
 	{
 		this(source);
 		dx = Math.cos(angle) * speed;
@@ -105,7 +105,7 @@ public class Bullet extends MovingObject implements BulletDataHolder
 		this.color = color;
 	}
 	
-	public Bullet(ObjectDataHolder source, Locatable target, double speed, double radius, Color color, double damage)
+	public Bullet(ReadableObject source, Locatable target, double speed, double radius, Color color, double damage)
 	{
 		this(source);
 		double distance = Utils.distance(source,target);
@@ -176,7 +176,7 @@ public class Bullet extends MovingObject implements BulletDataHolder
 	public void draw(GraphicsContext g)
 	{
 		g.setFill(color);
-		g.fillOval(x - bounds.radius(), y - bounds.radius(), 2 * bounds.radius(), 2 * bounds.radius());
+		bounds().fill(g);
 	}
 
 	@Override
@@ -201,8 +201,9 @@ public class Bullet extends MovingObject implements BulletDataHolder
 		protected double dy = 0, dx = 0;
 		protected Locatable target = null;
 		protected Color color = Color.RED;
-		protected double radius =5;
+		protected double radius = 5;
 		protected double damage = 1;
+		protected double speed = 1;
 		
 		public Bullet build()
 		{
@@ -216,7 +217,7 @@ public class Bullet extends MovingObject implements BulletDataHolder
 			}
 			else
 			{
-				Bullet b = new Bullet(GameObject.dataOf(start.getX(), start.getY(), faction), target, dx, dx, color);
+				Bullet b = new Bullet(GameObject.dataOf(start.getX(), start.getY(), faction), target, speed, radius, color);
 				b.damage = damage;
 				return b;
 			}
@@ -225,6 +226,12 @@ public class Bullet extends MovingObject implements BulletDataHolder
 		public Builder setLocation(Locatable l)
 		{
 			start = new Vector(l);
+			return this;
+		}
+		
+		public Builder setLocation(double x, double y)
+		{
+			start = new Vector(x, y);
 			return this;
 		}
 		
@@ -254,7 +261,7 @@ public class Bullet extends MovingObject implements BulletDataHolder
 			return this;
 		}
 		
-		public Builder from(ObjectDataHolder source)
+		public Builder from(ReadableObject source)
 		{
 			return setLocation(source).setFaction(source.getFaction());
 		}
@@ -262,6 +269,18 @@ public class Bullet extends MovingObject implements BulletDataHolder
 		public Builder setTarget(Locatable l)
 		{
 			target = new Vector(l);
+			return this;
+		}
+		
+		public Builder setDamage(double damage)
+		{
+			this.damage = damage;
+			return this;
+		}
+		
+		public Builder setSpeed(double speed)
+		{
+			this.speed = speed;
 			return this;
 		}
 		

@@ -4,7 +4,7 @@ import javafx.scene.paint.Color;
 
 
 
-public interface BulletDataHolder extends MoverDataHolder
+public interface ReadableBullet extends ReadableMover
 {
 	public double getRadius();
 	

@@ -7,7 +7,7 @@ import java.io.ObjectOutput;
 import utils.Vector;
 import engine.State;
 
-public abstract class MovingObject extends GameObject implements MoverDataHolder
+public abstract class MovingObject extends GameObject implements ReadableMover
 {
 	protected double dx, dy;
 	protected double mass = 1;
@@ -32,8 +32,7 @@ public abstract class MovingObject extends GameObject implements MoverDataHolder
 		this.faction = faction;
 	}
 
-	public MovingObject(double x, double y, double dx, double dy,
-			Faction faction, double mass)
+	public MovingObject(double x, double y, double dx, double dy, Faction faction, double mass)
 	{
 		this(x, y, dx, dy, faction);
 		this.mass = mass;
@@ -57,25 +56,7 @@ public abstract class MovingObject extends GameObject implements MoverDataHolder
 		dx = 0;
 		dy = 0;
 	}
-	
-	public void writeExternal(ObjectOutput out) throws IOException
-	{
-		super.writeExternal(out);
-		out.writeDouble(dx);
-		out.writeDouble(dy);
-		out.writeDouble(mass);
-	}
-	
-	public void readExternal(ObjectInput in) throws ClassNotFoundException, IOException
-	{
-		super.readExternal(in);
-		dx = in.readDouble();
-		dy = in.readDouble();
-		mass = in.readDouble();
-	}
-	
-		
-	
+
 	public double getDX()
 	{
 		return dx;

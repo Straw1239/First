@@ -3,7 +3,7 @@ package fxcore;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import engine.State;
+import objects.ReadableObject;
 
 /**
  * Keeps track of mouse position, and current state of all mouse buttons, 
@@ -39,14 +39,14 @@ public class MouseTracker implements EventHandler<MouseEvent>
 		return x;
 	}
 	
-	public double gameX(State t)
+	public double gameX(ReadableObject center)
 	{
-		return x + t.player.getX() - MainGame.getScreenWidth() / 2;
+		return x + center.getX() - MainGame.getScreenWidth() / 2;
 	}
 	
-	public double gameY(State t)
+	public double gameY(ReadableObject center)
 	{
-		return y + t.player.getY() - MainGame.getScreenHeight() / 2;
+		return y + center.getY() - MainGame.getScreenHeight() / 2;
 	}
 	
 	public double y()

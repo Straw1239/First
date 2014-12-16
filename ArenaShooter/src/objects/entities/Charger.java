@@ -10,6 +10,7 @@ import javafx.scene.paint.Color;
 import objects.Bullet;
 import objects.Coin;
 import objects.GameObject;
+import objects.ReadableObject;
 import objects.events.GameEvent;
 import utils.Utils;
 import bounds.Bounds;
@@ -83,9 +84,10 @@ public class Charger extends Enemy
 	private void lunge(State s)
 	{
 		double speed = 20;
-		double distance = Utils.distance(this, s.player);
-		double x = s.player.getX() - this.x;
-		double y = s.player.getY() - this.y;
+		ReadableObject target = findTarget(s);
+		double distance = Utils.distance(this, target);
+		double x = target.getX() - this.x;
+		double y = target.getY() - this.y;
 		x = speed * x / distance;
 		y = speed * y / distance;
 		dx = x;
@@ -107,7 +109,7 @@ public class Charger extends Enemy
 		{
 			double bulletSpeed = 5;
 			//if(health / maxHealth < .5) bulletSpeed = 10;
-			Bullet b = new Bullet(this, d.player, bulletSpeed, 5, Color.BLUE);
+			Bullet b = new Bullet(this, findTarget(d), bulletSpeed, 5, Color.BLUE);
 			b.damage = .5;
 			b.spread(Math.toRadians(20));
 			nextEvents.add(GameEvent.spawnerOf(b));

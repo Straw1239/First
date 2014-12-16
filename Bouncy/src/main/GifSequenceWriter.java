@@ -34,7 +34,7 @@ protected IIOMetadata imageMetaData;
 *
 * @author Elliot Kroo (elliot[at]kroo[dot]net)
 */
-public GifSequenceWritermaxm(
+public GifSequenceWriter(
   ImageOutputStream outputStream,
   int imageType,
   int timeBetweenFramesMS,

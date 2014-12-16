@@ -7,7 +7,7 @@ public class HomingBullet extends Bullet
 {
 	protected double speed;
 	protected Locatable target;
-	public HomingBullet(ObjectDataHolder source, Locatable target, double speed, double radius, Color color)
+	public HomingBullet(ReadableObject source, Locatable target, double speed, double radius, Color color)
 	{
 		super(source, target, speed, radius, color);
 		this.speed = speed;

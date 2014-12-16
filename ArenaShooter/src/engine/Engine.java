@@ -99,7 +99,7 @@ public final class Engine
 	
 	private void generateState()
 	{
-		state = new State(player, events, objects.values(), width, height, bounds, updates);
+		state = new State(events, objects.values(), width, height, bounds, updates);
 	}
 	
 	/**
@@ -208,7 +208,7 @@ public final class Engine
 	 */
 	public void addEvent(GameEvent e)
 	{
-		if(e.hasExpired()) throw new IllegalArgumentException("Event has already expired");
+		//if(e.hasExpired()) throw new IllegalArgumentException("Event has already expired");
 		handler.addEvent(e);
 	}
 	
@@ -218,14 +218,8 @@ public final class Engine
 		while(it.hasNext())
 		{
 			GameEvent e = it.next();
-			if(e.hasExpired())
-			{
-				it.remove();
-			}
-			else
-			{
-				e.effects(handler);
-			}
+			e.effects(handler);
+			it.remove();
 		}
 		events.addAll(handler.newEvents);
 		handler.newEvents.clear();

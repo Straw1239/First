@@ -1,12 +1,10 @@
 package bounds;
 
-import java.io.Serializable;
-
-import objects.Locatable;
 import javafx.scene.canvas.GraphicsContext;
+import objects.Locatable;
 import utils.Vector;
 
-public interface Bounds extends Serializable, Locatable
+public interface Bounds extends Locatable
 {
 	public boolean isContainedBy(Bounds b);
 	

@@ -1,53 +1,81 @@
 package objects;
 
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.EnumSet;
-import java.util.Set;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.Effect;
 import objects.events.GameEvent;
-import utils.Utils;
 import utils.Vector;
 import bounds.Bounds;
 import engine.State;
 /**
  * Base object of the object hierarchy.
- * Each game object has an x, y, and Faction.
- * 
+ * Each game object has an x, y, and Faction. 
+ *
  * @author Rajan Troll
  *
  */
-public abstract class GameObject implements ObjectDataHolder
+public abstract class GameObject implements ReadableObject
 {
+	/**
+	 * Represents the position of this object
+	 */
 	protected double x, y;
+	/**
+	 * The faction of this object
+	 */
 	protected Faction faction;
 	
+	/**
+	 * Initializes the position of this to (x, y)
+	 * @param x
+	 * @param y
+	 */
 	protected GameObject(double x, double y)
 	{
 		this.x = x;
 		this.y = y;
 	}
 	
+	/**
+	 * Initializes the position and faction of this to (x, y) and faction
+	 * @param x
+	 * @param y
+	 * @param faction
+	 */
 	protected GameObject(double x, double y, Faction faction)
 	{
 		this(x, y);
 		this.faction = faction;
 	}
 	
+	/**
+	 * Advances this object one tick, with regard to the provided game state.
+	 * 
+	 * Subclasses should override this method to implement their behavior;
+	 * because it will be called each engine tick, it is the primary place to perform 
+	 * basic operations such as movement.
+	 * @param state
+	 */
 	public abstract void update(State d);
 	
+	/**
+	 * Checks if this object collides with the provided object.
+	 * @param entity
+	 * @return true if we collide, otherwise false
+	 */
 	public boolean collidesWith(GameObject entity)
 	{
 		return bounds().intersects(entity.bounds());
 	}
 	
+	/**
+	 * The physical bounds of this object in the game world.
+	 * Subclasses should implement this to change their collision size and shape. 
+	 */
 	public abstract Bounds bounds();
 	
 	public Collection<GameEvent> events(State d)
@@ -87,14 +115,7 @@ public abstract class GameObject implements ObjectDataHolder
 	{
 		return faction;
 	}
-	
-	public Set<Faction> collidableFactions()
-	{
-		EnumSet<Faction> set = EnumSet.allOf(Faction.class);
-		set.remove(faction);
-		return set;
-	}
-	
+
 	@Override
 	public Object clone()
 	{
@@ -106,18 +127,6 @@ public abstract class GameObject implements ObjectDataHolder
 		{
 			throw new InternalError(e);
 		}
-	}
-	
-	
-	
-	public double angleTo(ObjectDataHolder o)
-	{
-		return Utils.angle(this, o);
-	}
-	
-	public Collection<Effect> specialEffects()
-	{
-		return Collections.emptyList();
 	}
 	
 	public void renderHUD(GraphicsContext g)
@@ -162,25 +171,11 @@ public abstract class GameObject implements ObjectDataHolder
 	{
 		return String.format("GameObject of faction %s at:(%f, %f)", faction.toString(), x, y);
 	}
-	
-	
-	@Override
-	public void writeExternal(ObjectOutput out) throws IOException
-	{
-		out.writeDouble(x);
-		out.writeDouble(y);
-		out.writeObject(faction);
-	}
-
-	@Override
-	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException
-	{
-		x = in.readDouble();
-		y = in.readDouble();
-		faction = (Faction) in.readObject();
-		
-	}
-	
+	/**
+	 * Applies the effects of the impact to this object. Although it is likely that a change will occur if the impact specifies it,
+	 * this object is free to ignore or change any of the impact's effects.
+	 * @param impact to apply to this object
+	 */
 	public void hitBy(Impact impact)
 	{
 		for(Change c : impact.changes)
@@ -189,9 +184,21 @@ public abstract class GameObject implements ObjectDataHolder
 		}
 	}
 	
-	
+	/**
+	 * Represents a change in which the position is set.
+	 * The data for this change must be a Locatable which specifies the new location of the object.
+	 */
 	public static final int SETPOSITION = 0;
+	
+	/**
+	 * Change which sets the faction of the object.
+	 * The data for this change must be a Faction.
+	 */
 	public static final int SETFACTION = 1;
+	/**
+	 * Change which moves an object a specified offset.
+	 * Data for this change must be a Vector representing the move.
+	 */
 	public static final int MOVE = 7;
 	
 	public boolean supportsOperation(int code)
@@ -202,10 +209,21 @@ public abstract class GameObject implements ObjectDataHolder
 		case SETFACTION:
 		case MOVE:
 			return true;
+		default: return false;
 		}
-		return false;
+		
 	}
 	
+	/**
+	 * Applies a change to this object, the type of which is specified in the change.
+	 * This object is free to interpret given changes however it wishes and may even ignore requested changes.
+	 * This is called by default on each change in an Impact to apply that impact to this object.
+	 * 
+	 * Subclasses can override this method to modify the way in which change requests are processed, or to add/remove types of changes.
+	 * A typical implementation might handle the changes it knows, then call super.handleChange(), so any change handling implementation can be inherited by subclasses.
+	 * @param Change to apply
+	 * @param Source which is requesting the change, or null if a change has no source.
+	 */
 	protected void handleChange(Change change, GameObject source)
 	{
 		switch(change.code)
@@ -246,8 +264,11 @@ public abstract class GameObject implements ObjectDataHolder
 	
 	public static final class Impact
 	{
-		
+		/**
+		 * Represents an Impact which has no effect on the target object.
+		 */
 		public static final Impact NONE = new Impact(null, Collections.emptyList());
+		
 		public final GameObject source;
 		public final Collection<Change> changes;
 		
@@ -274,7 +295,7 @@ public abstract class GameObject implements ObjectDataHolder
 	
 	
 	/**
-	 * Collides the two specified game objects. 
+	 * Collides the two given game objects. 
 	 * @param obj
 	 * @param other
 	 */

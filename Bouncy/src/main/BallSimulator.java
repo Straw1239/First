@@ -23,7 +23,7 @@ public class BallSimulator
 	{
 		this.dimensions = dimensions;
 		balls = new LinkedList<>();
-		state = ImmutableList.of(new Ball(dimensions, dimensions, 0, Color.PURPLE));
+		state = ImmutableList.of();
 	}
 	
 	public BallSimulator(double width, double height)
@@ -41,7 +41,7 @@ public class BallSimulator
 		return state;
 	}
 	
-	public synchronized void update(double dt)
+	public void update(double dt)
 	{
 		for(Ball b : balls)
 		{

@@ -9,7 +9,6 @@ public interface Circle extends Bounds
 	{
 		return new Circle()
 		{
-			private static final long serialVersionUID = 184698356L;
 			@Override
 			public double centerX()
 			{

@@ -10,7 +10,7 @@ public class HankSpawner implements Spawner
 {
 	long lastSpawn = 0;
 	@Override
-	public Collection<? extends GameObject> spawn(State d)
+	public Collection<GameObject> spawn(State d)
 	{
 		Collection<GameObject> spawns = new ArrayList<>();
 		if(d.time > lastSpawn + 180)

@@ -51,11 +51,10 @@ public class MannyEnemy extends Enemy
 	
 	public void update(State s)
 	{
-		
-		Locatable player = s.player;
-		Vector distance = new Vector(x - player.getX(), y - player.getY());
-		Vector normal = distance.perpindicular().normalized(2);
-		double d2 = Utils.distanceSquared(this, player);
+		Locatable target = findTarget(s);
+		Vector distance = new Vector(x - target.getX(), y - target.getY());
+		Vector normal = distance.perpendicular().normalized(2);
+		double d2 = Utils.distanceSquared(this, target);
 		double o2 = orbitRadius * orbitRadius;
 		Vector correction = Vector.ZERO;
 		double correctionFactor = 1;

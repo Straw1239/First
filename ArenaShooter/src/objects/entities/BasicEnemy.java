@@ -8,6 +8,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import objects.Bullet;
 import objects.Coin;
+import objects.ReadableObject;
 import objects.events.GameEvent;
 import bounds.Bounds;
 import bounds.Circle;
@@ -74,9 +75,10 @@ public class BasicEnemy extends Enemy
 	public Collection<GameEvent> events(State d)
 	{
 		if(MainGame.getTime() < shotTime + fireTime) return Collections.emptyList();
-		if(d.player.isDead()) return Collections.emptyList();
+		ReadableObject target = findTarget(d);
+		if(target.isDead()) return Collections.emptyList();
 		shotTime = MainGame.getTime();
-		return Collections.singleton(GameEvent.spawnerOf(new Bullet(this, d.player, 5, 10, Color.GREEN, 1 + (0.5 * level))));
+		return Collections.singleton(GameEvent.spawnerOf(new Bullet(this, target, 5, 10, Color.GREEN, 1 + (0.5 * level))));
 		
 	}
 

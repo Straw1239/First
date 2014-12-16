@@ -23,7 +23,7 @@ public class PiercingBullet extends MovingObject // Should this extend Bullet?
 		// TODO Auto-generated constructor stub
 	}
 	
-	public PiercingBullet(ObjectDataHolder odh, double dx, double dy, double mass)
+	public PiercingBullet(ReadableObject odh, double dx, double dy, double mass)
 	{
 		this(odh.getX(), odh.getY(), dx, dy, odh.getFaction(), mass);
 	}

@@ -1,11 +1,10 @@
 package objects.events;
 
-import javafx.scene.canvas.GraphicsContext;
-import objects.ObjectDataHolder;
-import utils.Utils;
+import objects.Factioned;
+import objects.Locatable;
+import utils.Copyable;
 import engine.EventHandler;
-
-import static utils.Utils.*;
+import fxcore.Renderable;
 /**
  * Root interface for all events. An event represents something which has effects on engine objects,
  * such as the player, bullets, enemies, and other events. An event can therefore be used to modify the game state
@@ -13,25 +12,13 @@ import static utils.Utils.*;
  * @author Rajan
  *
  */
-public interface EventDataHolder extends ObjectDataHolder
+public interface ReadableEvent extends Renderable, Copyable<ReadableEvent>, Locatable, Factioned
 {
 	public void effects(EventHandler handler);
 	
-	@Override
-	public void draw(GraphicsContext g);
-	
-	public boolean hasExpired();
-	
-	public default boolean isDead()
+	public default ReadableEvent copy()
 	{
-		return hasExpired();
-	}
-	
-	public long startTime();
-	
-	public default EventDataHolder copy()
-	{
-		return cast(deepCopy());
+		return this;
 	}
 		
 }

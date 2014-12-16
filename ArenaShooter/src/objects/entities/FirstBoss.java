@@ -4,12 +4,12 @@ import static fxcore.MainGame.rand;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import objects.GameObject;
+import objects.ReadableObject;
 import objects.events.GameEvent;
 import utils.Utils;
 import utils.Vector;
@@ -50,8 +50,8 @@ public class FirstBoss extends Enemy
 	public void update(State d)
 	{
 		nextEvents.clear();
-		
-		Vector accel = new Vector(x - d.player.getX(), y - d.player.getY()).normalized(.1).inverse();
+		ReadableObject target = findTarget(d);
+		Vector accel = new Vector(x - target.getX(), y - target.getY()).normalized(.1).inverse();
 		dx += accel.x;
 		dy += accel.y;
 		double hypot = Math.hypot(dx, dy);
@@ -115,7 +115,7 @@ public class FirstBoss extends Enemy
 			health = maxHealth;
 			numMinions++;
 			boolean clockwise = rand.nextBoolean();
-			Vector direction = new Vector(x - FirstBoss.this.x, y - FirstBoss.this.y).perpindicular().normalized().scale(8);
+			Vector direction = new Vector(x - FirstBoss.this.x, y - FirstBoss.this.y).perpendicular().normalized(8);
 			if(clockwise) direction = direction.inverse();
 			dx = direction.x + FirstBoss.this.dx;
 			dy = direction.y + FirstBoss.this.dy;

@@ -59,20 +59,6 @@ public abstract class Entity extends MovingObject implements EntityDataHolder
 		health = Math.max(0, Math.min(health, maxHealth));
 	}
 	
-	public void writeExternal(ObjectOutput out) throws IOException
-	{
-		super.writeExternal(out);
-		out.writeDouble(health);
-		out.writeDouble(maxHealth);
-	}
-	
-	public void readExternal(ObjectInput in) throws ClassNotFoundException, IOException
-	{
-		super.readExternal(in);
-		health = in.readDouble();
-		maxHealth = in.readDouble();
-	}
-	
 	public static final int DAMAGE = 5;
 	public static final int SETHEALTH = 6;
 	

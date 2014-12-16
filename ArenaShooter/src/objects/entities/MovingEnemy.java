@@ -6,13 +6,11 @@ package objects.entities;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import objects.GameObject;
-import objects.MoverDataHolder;
-import player.PlayerDataHolder;
+import objects.ReadableObject;
 import utils.Utils;
 import bounds.Bounds;
 import bounds.Circle;
 import engine.State;
-import fxcore.MainGame;
 
 public class MovingEnemy extends Enemy 
 {
@@ -89,11 +87,11 @@ public class MovingEnemy extends Enemy
 	public void update(State d) 
 	{
 		speed += 1 / 1000.0;
-		PlayerDataHolder p = d.player;
-		double distance = Utils.distance(this, p);
+		ReadableObject target = findTarget(d);
+		double distance = Utils.distance(this, target);
 		double conservationRatio = 3;
-		dx = (dx * conservationRatio + (speed * (p.getX() - x) / distance)) / (1 + conservationRatio);
-		dy = (dy * conservationRatio + (speed * (p.getY() - y) / distance)) / (1 + conservationRatio);
+		dx = (dx * conservationRatio + (speed * (target.getX() - x) / distance)) / (1 + conservationRatio);
+		dy = (dy * conservationRatio + (speed * (target.getY() - y) / distance)) / (1 + conservationRatio);
 		super.update(d);
 	}
 

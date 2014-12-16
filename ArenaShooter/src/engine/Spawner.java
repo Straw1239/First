@@ -6,5 +6,5 @@ import objects.GameObject;
 
 public interface Spawner
 {
-	public Collection<? extends GameObject> spawn(State d);
+	public Collection<GameObject> spawn(State d);
 }

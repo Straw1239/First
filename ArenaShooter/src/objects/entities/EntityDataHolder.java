@@ -1,8 +1,8 @@
 package objects.entities;
 
-import objects.MoverDataHolder;
+import objects.ReadableMover;
 
-public interface EntityDataHolder extends MoverDataHolder
+public interface EntityDataHolder extends ReadableMover
 {
 	public boolean isDead();
 	

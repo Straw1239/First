@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import objects.Locatable;
-import objects.ObjectDataHolder;
+import objects.ReadableObject;
 import sun.misc.Unsafe;
 
 import com.google.common.util.concurrent.ListeningExecutorService;
@@ -153,10 +153,10 @@ public class Utils
 		return distanceSquared(g1,g2) < radius * radius;
 	}
 	
-	public static double angle(ObjectDataHolder g1, ObjectDataHolder g2)
+	public static double angle(Locatable locatable, Locatable other)
 	{
-		double x = g2.getX() - g1.getX();
-		double y = g2.getY() - g1.getY();
+		double x = other.getX() - locatable.getX();
+		double y = other.getY() - locatable.getY();
 		return Math.atan2(y, x);
 	}
 	

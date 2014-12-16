@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+import player.Player;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -31,23 +32,7 @@ public class MainGame extends Application
 	
 	private static MainGame app;
 	
-	/**
-	 * Absolute x coordinate of the mouse
-	 * @return
-	 */
-	public static double mouseX()
-	{
-		return app.mouse.x();
-	}
 	
-	/**
-	 * Absolute y coordinate of the mouse
-	 * @return
-	 */
-	public static double mouseY()
-	{
-		return app.mouse.y();
-	}
 	
 	/**
 	 * In-game virtual x coordinate of the mouse
@@ -55,7 +40,7 @@ public class MainGame extends Application
 	 */
 	public static double mouseGameX()
 	{
-		return app.mouse.gameX(app.engine.getState());
+		return app.mouse.gameX(Player.THE);
 	}
 	
 	/**
@@ -64,7 +49,7 @@ public class MainGame extends Application
 	 */
 	public static double mouseGameY()
 	{
-		return app.mouse.gameY(app.engine.getState());
+		return app.mouse.gameY(Player.THE);
 	}
 	
 	public static KeyTracker getKeyTracker()
@@ -149,6 +134,11 @@ public class MainGame extends Application
 			{
 				engine.reset();
 			}
+			
+			if(e.getCode() == KeyCode.TAB)
+			{
+				Player.laserING = !Player.laserING;
+			}
 		});
 		stage.addEventFilter(KeyEvent.ANY, keyTracker);
 		stage.addEventFilter(MouseEvent.ANY, mouse);
@@ -223,7 +213,7 @@ public class MainGame extends Application
 			@Override
 			public void handle(long now)
 			{
-				renderer.render(engine.getState());
+				renderer.render(engine.getState(), Player.THE);
 			}
 			
 		}.start();

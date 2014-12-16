@@ -4,7 +4,6 @@ package main;
 
 import static java.lang.Math.*;
 
-
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -19,6 +18,7 @@ import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.effect.BoxBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
@@ -42,6 +42,9 @@ public class Main extends Application
 	public static List<UnaryOperator<Double>> functions = new ArrayList<>();
 	public static void main(String[] args) 
 	{
+		//functions.add(d -> 100 * sqrt()));
+		functions.add(d -> 80 * sqrt(tan(d)));
+		functions.add((d) -> 200*cos(sin(d)));
 		functions.add((d) -> 250.0);
 		functions.add((d) -> 200 / sin(d * 2));
 		functions.add((d) -> 100 * tan(d));
@@ -78,6 +81,7 @@ public class Main extends Application
 	@Override
 	public void start(Stage s) throws Exception 
 	{
+		
 		//Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
 		//width = bounds.getWidth();
 		//height = bounds.getHeight();
@@ -126,6 +130,7 @@ public class Main extends Application
 			
 		});
 		renderer = new Renderer(width, height);
+		renderer.setEffect(new BoxBlur());
 		BorderPane pane = new BorderPane();
 		pane.setCenter(renderer);
 		scene = new Scene(pane);

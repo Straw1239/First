@@ -7,7 +7,7 @@ import java.util.Set;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import player.Player;
-import player.PlayerDataHolder;
+import player.ReadablePlayer;
 import bounds.Bounds;
 import bounds.Circle;
 import engine.State;
@@ -23,7 +23,7 @@ public class Coin extends GameObject{
 	public static final Faction FACTION = Faction.Neutral;
 	private final long spawnTime;
 	private boolean isDead = false;
-	private PlayerDataHolder player;
+	private ReadablePlayer player;
 	
 	/**
 	 * constructor is passed an x and y from the enemy where it last was when it died, which is
@@ -54,7 +54,6 @@ public class Coin extends GameObject{
 		if(d.time - spawnTime >= MainGame.UPS * 5){ //determines if the coin is > 5 seconds old
 			isDead = true;
 		}
-		player = d.player;
 	}
 	@Override
 	public Bounds bounds() 
@@ -66,7 +65,7 @@ public class Coin extends GameObject{
 		if(other instanceof Player)
 		{
 			isDead = true;
-			Player.incrementCoins();
+			((Player) other).incrementCoins();
 		}
 		return Impact.NONE;
 	}

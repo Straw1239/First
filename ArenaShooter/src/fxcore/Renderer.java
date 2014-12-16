@@ -10,8 +10,9 @@ import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.text.Font;
-import objects.ObjectDataHolder;
-import objects.events.EventDataHolder;
+import objects.Locatable;
+import objects.ReadableObject;
+import objects.events.ReadableEvent;
 import player.Player;
 import engine.State;
 
@@ -30,14 +31,14 @@ public class Renderer
 		this.height = height;
 	}
 	
-	public void render(State d)
+	public void render(State d, Locatable center)
 	{
 		g.save();
 		//g.setGlobalAlpha(.95);
 		//g.clearRect(0, 0, width, height);
 		g.setFill(Color.ORANGE);
 		g.fillRect(0, 0, width, height);
-		scaleGraphics(d);
+		scaleGraphics(center);
 		//g.setFill(Color.BLACK);
 		//g.setFill(new LinearGradient(0, 0, .1, .2, true, CycleMethod.REFLECT, new Stop(0, Color.BLACK), new Stop(.5, Color.SEAGREEN.darker()), new Stop(1, Color.DARKBLUE)));
 		g.setFill(new RadialGradient(0, 0, .5, .5, .05, true, CycleMethod.REFLECT, new Stop(0, Color.BLACK), new Stop(1, Color.DARKMAGENTA)));
@@ -49,11 +50,12 @@ public class Renderer
 		g.restore();
 		displayHUD(d);
 		
+		
 	}
 	
 	private void drawObjects(State d)
 	{
-		for(ObjectDataHolder obj : d.objects)
+		for(Renderable obj : d.objects)
 		{
 			obj.draw(g);
 		}
@@ -61,30 +63,15 @@ public class Renderer
 
 	private void displayHUD(State d)
 	{
-		double healthBar = 300;
-		g.setFill(Player.color);
-		g.fillRect(0, 0, healthBar * d.player.health() /d.player.maxHealth(), 50);
-		g.setStroke(Color.WHITE);
-		g.strokeRect(0, 0, healthBar, 50);
-		g.setFill(Color.YELLOW);
-		g.setFont(Font.font("Verdana", 75));
-		g.setFill(Color.YELLOW);
-		g.fillText(Player.getCoinsCollected() + "", MainGame.getScreenWidth() - 150, 75); //Eventually autosize spacing to the width of the number
-		g.setFont(Font.font("Verdana", 50));
-		g.setFill(Color.WHITE);
-		g.fillText("Score: "  + MainGame.getTime() + "", 0, 100);
+		for(Renderable r : d.objects)
+		{
+			r.renderHUD(g);
+		}
 	}
 	
-	
-
-	private void drawPlayer(State d)
+	private void scaleGraphics(Locatable center)
 	{
-		d.player.draw(g);
-	}
-	
-	private void scaleGraphics(State d)
-	{
-		double playerX = d.player.getX(), playerY = d.player.getY();
+		double playerX = center.getX(), playerY = center.getY();
 		g.translate(width / 2, height / 2);
 		//g.scale(width / d.width, height / d.height);
 		g.translate(-playerX , -playerY);
@@ -93,7 +80,7 @@ public class Renderer
 	
 	private void drawEvents(State d)
 	{
-		Iterator<? extends EventDataHolder> it = d.events.iterator();
+		Iterator<? extends ReadableEvent> it = d.events.iterator();
 		while(it.hasNext())
 		{
 			it.next().draw(g);

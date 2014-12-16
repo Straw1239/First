@@ -10,7 +10,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.Effect;
 import objects.Faction;
 import objects.GameObject;
-import objects.ObjectDataHolder;
+import objects.ReadableObject;
 import engine.EventHandler;
 import fxcore.MainGame;
 /**
@@ -20,40 +20,24 @@ import fxcore.MainGame;
  * @author Rajan
  *
  */
-public abstract class GameEvent implements EventDataHolder
+public abstract class GameEvent implements ReadableEvent
 {
-	@Override
-	public Collection<Effect> specialEffects()
-	{
-		return Collections.emptyList();
-	}
-
-	@Override
-	public void renderHUD(GraphicsContext g)
-	{
-		
-		
-	}
-
-
 	protected double x, y;
 	protected Faction faction;
-	private long startTime;
 	
 	protected GameEvent(double x, double y, Faction faction)
 	{
 		this.x = x;
 		this.y = y;
 		this.faction = faction;
-		startTime = MainGame.getTime();
 	}
 	
-	public boolean supportsOperation(int code)
+	protected GameEvent(ReadableObject source)
 	{
-		return false;
+		this(source.getX(), source.getY(), source.getFaction());
 	}
 	
-	protected GameEvent(ObjectDataHolder source)
+	protected GameEvent(ReadableEvent source)
 	{
 		this(source.getX(), source.getY(), source.getFaction());
 	}
@@ -76,72 +60,49 @@ public abstract class GameEvent implements EventDataHolder
 		return faction;
 	}
 	
-	@Override
-	public long startTime()
+	public void renderHUD(GraphicsContext g)
 	{
-		return startTime;
-	}
-	
-	@Override
-	public Object clone()
-	{
-		try
-		{
-			return super.clone();
-		}
-		catch (CloneNotSupportedException e)
-		{
-			throw new RuntimeException(e);
-		}
-	}
-	
-	@Override
-	public void writeExternal(ObjectOutput out) throws IOException
-	{
-		out.writeDouble(x);
-		out.writeDouble(y);
-		out.writeObject(faction);
-	}
-
-	@Override
-	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException
-	{
-		x = in.readDouble();
-		y = in.readDouble();
-		faction = (Faction) in.readObject();
-		
+		//No effects on HUD by default
 	}
 	
 	public static final GameEvent spawnerOf(GameObject obj)
 	{
 		return new GameEvent(obj)
 		{
-			boolean hasExpired = false;
 			@Override
 			public void effects(EventHandler handler)
 			{
-				if(!hasExpired) handler.add(obj);
-				hasExpired = true;
+				handler.add(obj);
+			}
+
+			public void draw(GraphicsContext g)
+			{
+				// TODO Auto-generated method stub
+				
+			}
+		};
+	}
+	
+	public static final GameEvent merge(GameEvent e, GameEvent other)
+	{
+		if(e.getX() != other.getX() || e.getY() != other.getY() || e.getFaction() != other.getFaction()) throw new IllegalArgumentException();
+		return new GameEvent(e)
+		{
+			@Override
+			public void effects(EventHandler handler)
+			{
+				e.effects(handler);
+				other.effects(handler);
 			}
 
 			@Override
 			public void draw(GraphicsContext g)
 			{
-				
+				e.draw(g);
+				other.draw(g);
 			}
-
-			@Override
-			public boolean hasExpired()
-			{
-				return hasExpired;
-			}
-
-			@Override
-			public boolean isDead()
-			{
-				return hasExpired();
-			}
-			
 		};
 	}
+	
+	
 }
