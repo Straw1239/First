@@ -42,18 +42,24 @@ public class Main extends Application
 	public static List<UnaryOperator<Double>> functions = new ArrayList<>();
 	public static void main(String[] args) 
 	{
-		//functions.add(d -> 100 * sqrt()));
+		functions.add(d -> 30 * pow(log(d), 1.5));
+		functions.add(d -> 30 * pow(log(tan(d)), 3));
+		functions.add(d -> 70 * log(tan(d)));
+		functions.add(d -> 30 * pow(1 / cos(d), 1.3));
+		functions.add(d ->  300* pow(sin(2 *d), 3));
+		functions.add(d -> 30 * pow(1 / cos(d), 2));
+		functions.add(d -> 30 * pow(tan(d), 2));
 		functions.add(d -> 80 * sqrt(tan(d)));
-		functions.add((d) -> 200*cos(sin(d)));
-		functions.add((d) -> 250.0);
-		functions.add((d) -> 200 / sin(d * 2));
-		functions.add((d) -> 100 * tan(d));
-		functions.add((d) -> 300 * sin(d));
-		functions.add((d) -> 300 / sin(d));
-		functions.add((d) -> log(d) * 200);
-		functions.add((d) -> 100 / tanh(d));
-		functions.add((d) -> 100 / sinh(d));
-		functions.add((d) -> 2 * sinh(d) + 40);
+		functions.add(d -> 200*cos(sin(d)));
+		functions.add(d -> 250.0);
+		functions.add(d -> 200 / sin(d * 2));
+		functions.add(d -> 100 * tan(d));
+		functions.add(d -> 300 * sin(d));
+		functions.add(d -> 300 / sin(d));
+		functions.add(d -> log(d) * 200);
+		functions.add(d -> 100 / tanh(d));
+		functions.add(d -> 100 / sinh(d));
+		functions.add(d -> 2 * sinh(d) + 40);
 		launch(args);
 	}
 	
@@ -130,7 +136,7 @@ public class Main extends Application
 			
 		});
 		renderer = new Renderer(width, height);
-		renderer.setEffect(new BoxBlur());
+		//renderer.setEffect(new BoxBlur());
 		BorderPane pane = new BorderPane();
 		pane.setCenter(renderer);
 		scene = new Scene(pane);

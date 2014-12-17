@@ -15,10 +15,12 @@ public class PigLatin
 			{
 				System.out.print(convertWord(splitter.next()) + " ");
 			}
+			splitter.close();
 			System.out.println();
 			System.out.print("phrase? (enter to quit)");
 			line = console.nextLine();
 		}
+		console.close();
 	}
 	public static String convertWord(String word)
 	{
@@ -28,7 +30,7 @@ public class PigLatin
 			if(isVowel(word.charAt(firstVowel))) break;
 			firstVowel++;
 		}
-		String endString = "-" + word.substring(0,firstVowel) + "ay";
+		String endString = "-" + word.substring(0, firstVowel) + "ay";
 		String startString = word.substring(firstVowel);
 		return startString + endString;
 	}
