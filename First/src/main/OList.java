@@ -14,6 +14,7 @@ public class OList <T>
 		this(8);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public OList(int capacity)
 	{
 		array = (T[]) new Object[capacity];

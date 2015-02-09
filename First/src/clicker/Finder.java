@@ -23,7 +23,7 @@ public class Finder
 		frame.setFocusable(true);
 		frame.setAlwaysOnTop(true);
 		frame.setVisible(true);
-		frame.addKeyListener(new KeyTracker());
+		//frame.addKeyListener(new KeyTracker());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		robot.setAutoDelay(0);
 		while(true)

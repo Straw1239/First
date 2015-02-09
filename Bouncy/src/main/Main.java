@@ -42,6 +42,16 @@ public class Main extends Application
 	public static List<UnaryOperator<Double>> functions = new ArrayList<>();
 	public static void main(String[] args) 
 	{
+		
+		functions.add(d -> 250.0);
+		functions.add(d -> 200 / sin(d * 2));
+		functions.add(d -> 100 * tan(d));
+		functions.add(d -> 300 * sin(d));
+		functions.add(d -> 300 / sin(d));
+		functions.add(d -> log(d) * 200);
+		functions.add(d -> 100 / tanh(d));
+		functions.add(d -> 100 / sinh(d)); 
+		functions.add(d -> 2 * sinh(d) + 40);
 		functions.add(d -> 30 * pow(log(d), 1.5));
 		functions.add(d -> 30 * pow(log(tan(d)), 3));
 		functions.add(d -> 70 * log(tan(d)));
@@ -51,15 +61,6 @@ public class Main extends Application
 		functions.add(d -> 30 * pow(tan(d), 2));
 		functions.add(d -> 80 * sqrt(tan(d)));
 		functions.add(d -> 200*cos(sin(d)));
-		functions.add(d -> 250.0);
-		functions.add(d -> 200 / sin(d * 2));
-		functions.add(d -> 100 * tan(d));
-		functions.add(d -> 300 * sin(d));
-		functions.add(d -> 300 / sin(d));
-		functions.add(d -> log(d) * 200);
-		functions.add(d -> 100 / tanh(d));
-		functions.add(d -> 100 / sinh(d));
-		functions.add(d -> 2 * sinh(d) + 40);
 		launch(args);
 	}
 	

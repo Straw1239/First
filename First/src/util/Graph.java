@@ -184,7 +184,7 @@ public class Graph<E> implements Set<E>
 	
 	public Iterator<E> shortestPathBetween(E a, E b)
 	{
-		
+		throw new UnsupportedOperationException();
 	}
 	
 	public int numLinks()

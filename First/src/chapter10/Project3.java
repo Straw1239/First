@@ -175,7 +175,7 @@ public class Project3
 			case 3: topCustomersMenu(); break;
 			case 4: statsMenu(); break;
 			case 5: return; //This will quit the program, escaping the while loop
-			default: throw new InternalError("missing case statement"); // This should never happen
+			default: throw new AssertionError("missing case statement"); // This should never happen
 			}
 		}
 	
@@ -194,7 +194,7 @@ public class Project3
 		}
 		catch (FileNotFoundException e) 
 		{
-			throw new InternalError("file not found", e); // Something is wrong with program setup...
+			throw new AssertionError("file not found", e); // Something is wrong with program setup...
 		}
 		input.useDelimiter("[\\s,]+");
 		Menu statsMenu = new Menu("Stats Log Menu... ", "Task Subtotals", "Day Subtotals", "Quit");
@@ -204,7 +204,7 @@ public class Project3
 		case 1: printTaskTotals(input); break;
 		case 2: printDayTotals(input); break;
 		case 3: input.close(); return;//return to main menu
-		default:  input.close(); throw new InternalError("missing case statement");// shouldn't ever happen
+		default:  input.close(); throw new AssertionError("missing case statement");// shouldn't ever happen
 		}
 		input.close();
 	}
@@ -279,7 +279,7 @@ public class Project3
 		case 1: f = new File(path + "transactions1.dat"); break;
 		case 2: f = new File(path + "transactions2.dat"); break;
 		case 3: return;
-		default: throw new InternalError("missing case statement");
+		default: throw new AssertionError("missing case statement");
 		}
 		InputStream s;
 		try 
@@ -288,7 +288,7 @@ public class Project3
 		}
 		catch (FileNotFoundException e) 
 		{
-			throw new InternalError("file not found", e); // Something is wrong with program configuration if we get here
+			throw new AssertionError("file not found", e); // Something is wrong with program configuration if we get here
 		}
 		ArrayList<Sale> sales = buildFromInput(s);
 		System.out.print("Number of top customers to display? ");
@@ -313,7 +313,7 @@ public class Project3
 		catch (FileNotFoundException e) // Should never happen, if it does, there is a serious problem, execution should be stopped. (Perhaps program is in incorrect folder)
 		{
 			System.err.println("File not found");
-			throw new InternalError(e);
+			throw new AssertionError(e);
 		}
 		while(s.hasNextLine())
 		{
@@ -339,7 +339,7 @@ public class Project3
 		case 4: queryMenu(path + "transactions1.dat"); break;
 		case 5: queryMenu(path + "transactions2.dat"); break;
 		case 6: return; // Return to the main menu
-			default: throw new InternalError("missing case statement"); // Should never happen
+			default: throw new AssertionError("missing case statement"); // Should never happen
 		}
 	}
 	
@@ -357,7 +357,7 @@ public class Project3
 		catch (FileNotFoundException e)
 		{
 			System.err.println("file not found");
-			throw new InternalError(e);
+			throw new AssertionError(e);
 		}
 		sales = combineDuplicates(sales);
 		Menu queryMenu = new Menu("Query options...", "Alphabetical order", "Ascending order", "Descending order", "Quit");
@@ -368,7 +368,7 @@ public class Project3
 		case 2: Collections.sort(sales, Sale.ASCENDING_ORDER); break;
 		case 3: Collections.sort(sales, Sale.DESCENDING_ORDER); break;
 		case 4: return; // Return to the fileGeneratorMenu() function, which will return to the main menu.
-		default: throw new InternalError("missing case statement"); // Should never happen
+		default: throw new AssertionError("missing case statement"); // Should never happen
 		}
 		printSales(sales);
 	}
@@ -402,7 +402,7 @@ public class Project3
 		case 4: entries = 53; break;
 		case 5: entries = 100; break;
 		case 6: return; // Return to calling function, fileGeneratorMenu(), which will return to the main menu
-		default: throw new InternalError("missing case statement"); // Should never happen
+		default: throw new AssertionError("missing case statement"); // Should never happen
 		}
 		buildRandomFile("src/chapter10/transactions2.dat", entries);
 	}
@@ -421,7 +421,7 @@ public class Project3
 		case 1: filename = "transactions1.dat"; break;
 		case 2: filename = "transactions2.dat"; break;
 		case 3: return;// Returns to main menu.
-		default: throw new InternalError("missing case statement"); //Should never happen
+		default: throw new AssertionError("missing case statement"); //Should never happen
 		}
 		filename = path + filename;
 		File f = new File(filename);
@@ -433,7 +433,7 @@ public class Project3
 		catch (FileNotFoundException e) // Shouldn't ever happen, if it does, program has been packaged incorrectly
 		{
 			System.out.println("Error: file not found"); 
-			throw new InternalError(e);
+			throw new AssertionError(e);
 		}
 		ArrayList<Sale> sales = buildFromInput(stream);
 		ArrayList<String> best = namesOfBestCustomers(values(sales), names(sales));

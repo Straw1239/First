@@ -22,7 +22,7 @@ public class Java1 {
 		System.out.println(Arrays.toString(foo));
 		int[] arg = {5,4,3,2,1};
 		System.out.println(Arrays.toString(iSort(arg)));
-		System.out.println((-5)%6);
+		
 		
 		/*JFrame frame = new JFrame("FrameDemo");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -165,11 +165,7 @@ public class Java1 {
 				counter++;
 			}
 		}
-		int[] output = new int[counter];
-		for (int i = 0; i < counter ; i++ )
-		{
-			output[i] = data[i];
-		}
+		int[] output = Arrays.copyOf(data, counter);
 		return output;
 	}
 

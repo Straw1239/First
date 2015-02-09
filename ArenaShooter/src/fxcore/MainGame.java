@@ -240,7 +240,4 @@ public class MainGame extends Application
 	{
 		return app.mouse;
 	}
-	
-	
-
 }

@@ -9,11 +9,11 @@ public class Test
 	
 	public static Pattern compile(String regex)
 	{
-		
+		return null;
 	}
 	
 	public static Pattern compile(String regex, int flags)
 	{
-		
+		return null;
 	}
 }
