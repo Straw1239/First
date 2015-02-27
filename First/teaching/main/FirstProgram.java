@@ -7,18 +7,17 @@ public class FirstProgram
 	
 	public static void main(String[] args)
 	{
-		int[] blah = calcFibonacci(10);
+		long[] blah = calcFibonacci(92);
 		for(int i = 0; i < blah.length; i++)
 		{
 			System.out.println(blah[i]);
 		}
 	}
 		
-	static int[] calcFibonacci(int f)
+	static long[] calcFibonacci(int f)
 	{
-		int[] result = new int[f];
-		int g = 1;
-		int h = 0;
+		long[] result = new long[f];
+		long g = 1, h = 0;
 		for(int i = 0; i < f; i++)
 		{
 			result[i] = g;

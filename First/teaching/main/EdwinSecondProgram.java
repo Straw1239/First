@@ -5,7 +5,7 @@ public class EdwinSecondProgram
 
 	public static void main(String[] args)
 	{
-		System.out.println(isPrime (777777777777773l));	
+		System.out.println(isPrime (777777777777773L));	
 
 	}
 	public static boolean isPrime(long n)
