@@ -100,6 +100,7 @@ public final class Engine
 	private void generateState()
 	{
 		state = new State(events, objects.values(), width, height, bounds, updates);
+		//System.out.println(state);
 	}
 	
 	/**

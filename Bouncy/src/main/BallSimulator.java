@@ -25,10 +25,15 @@ public class BallSimulator
 		balls = new LinkedList<>();
 		state = ImmutableList.of();
 	}
-	
+	/**
+	 * Makes a new ball simulator with the specified width and height for the bouncy walls
+	 * @param width
+	 * @param height
+	 */
 	public BallSimulator(double width, double height)
 	{
 		this(new Vector(width, height));
+		
 	}
 	
 	public void addBall(Ball b)

@@ -7,8 +7,5 @@ public interface ReadablePlayer extends EntityDataHolder
 {
 	public long fireTime();
 	
-	public default ReadablePlayer copy()
-	{
-		return cast(deepCopy());
-	}
+	
 }

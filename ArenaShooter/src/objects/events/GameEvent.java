@@ -25,6 +25,18 @@ public abstract class GameEvent implements ReadableEvent
 	protected double x, y;
 	protected Faction faction;
 	
+	public Object clone()
+	{
+		try
+		{
+			return super.clone();
+		}
+		catch (CloneNotSupportedException e)
+		{
+			throw new RuntimeException(e);
+		}
+	}
+	
 	protected GameEvent(double x, double y, Faction faction)
 	{
 		this.x = x;

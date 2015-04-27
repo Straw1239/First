@@ -1,9 +1,10 @@
 package objects;
 
+import utils.Cloner;
 import utils.Copyable;
 import fxcore.Renderable;
 
-public interface ReadableObject extends Copyable<ReadableObject>, Locatable, Renderable, Factioned
+public interface ReadableObject extends Cloner, Locatable, Renderable, Factioned
 {
 	/**
 	 * If the object is dead, return true. 

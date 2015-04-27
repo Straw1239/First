@@ -172,7 +172,7 @@ public class MainGame extends Application
 	private void createMenu()
 	{
 		runGame();
-		
+		System.out.println("RAN GAME");
 	}
 
 	private void runGame()

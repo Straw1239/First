@@ -3,14 +3,15 @@ package main;
 
 
 import static java.lang.Math.*;
+import static java.util.stream.Collectors.toCollection;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+import java.util.function.DoubleFunction;
+import java.util.function.DoubleUnaryOperator;
 import java.util.function.UnaryOperator;
 
 import javafx.animation.AnimationTimer;
@@ -18,7 +19,7 @@ import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
-import javafx.scene.effect.BoxBlur;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
@@ -27,22 +28,24 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Paint;
+import javafx.scene.paint.Stop;
+import javafx.scene.shape.ArcTo;
+import javafx.scene.shape.Path;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
 
 import utils.Random;
-
-import com.sun.imageio.plugins.gif.GIFImageReader;
-import com.sun.imageio.plugins.gif.GIFImageReaderSpi;
 public class Main extends Application
 {
-	public static List<UnaryOperator<Double>> functions = new ArrayList<>();
+	public static List<DoubleUnaryOperator> functions = new ArrayList<>();
 	public static void main(String[] args) 
 	{
-		
+		//functions.add(d -> 200*sin(20*d));
 		functions.add(d -> 250.0);
 		functions.add(d -> 200 / sin(d * 2));
 		functions.add(d -> 100 * tan(d));
@@ -75,7 +78,7 @@ public class Main extends Application
 	private List<Image> snapshots = new ArrayList<>();
 	private Rectangle2D bounds = Screen.getPrimary().getBounds();
 	private double width = bounds.getWidth(), height = bounds.getHeight();
-	
+	private DoubleFunction<Color> colorProfile;
 	public synchronized WritableImage snapshot()
 	{
 		paused = true;
@@ -131,8 +134,8 @@ public class Main extends Application
 			}
 			if(e.isControlDown() && e.getCode() == KeyCode.S)
 			{
-				//saveImage();
-				saveImageGroups();
+				saveImage();
+				//saveImageGroups();
 			}
 			
 		});
@@ -146,6 +149,87 @@ public class Main extends Application
 		stage.show();
 		runEngine();
 		animate();
+		
+		//exactAnimate();
+	}
+	static double calcPosition(double coord, double dim)
+	{
+		if(coord < 0)
+		{
+			coord += 2 * dim * (Math.ceil((coord / (2 * dim))) + 1);
+		}
+		coord %= (2 * dim);
+		if(coord > dim)
+		{
+			coord = 2*dim - coord;
+		}
+		
+		return coord;
+	}
+	
+	long startTime = System.nanoTime();
+	int divisions = 512;
+	void exactAnimate()
+	{
+		startTime = System.nanoTime();
+		new AnimationTimer() 
+		{
+			@Override
+			public void handle(long now)
+			{
+				long time = now - startTime; //+ 1_000_000_000L * 60 * 60 * 24;
+				//int divisions = (int)(time / 1_000_00000);
+				//if(divisions <= (time * 50) / 1_000_000_000) divisions *= 2;
+				double oldX = 0, oldY = 0;
+				double oldD = 0;
+				Color lastColor;
+				{
+					double angle = (divisions - 1) * 2 * Math.PI / divisions;
+					double v = functions.get(mode).applyAsDouble(angle);
+					double d = (v * time) / 1_000_000_0000l * 2.45;
+					double x = d * cos(angle), y = d * sin(angle);
+					x += width / 2;
+					y += height / 2;
+					x = calcPosition(x, width);
+					y = calcPosition(y, height);
+					oldD = d;
+					oldX = x;
+					oldY = y;
+					lastColor = colorProfile.apply(angle);
+				}
+				for(int i = 0; i < divisions; i++)
+				{
+					
+					double angle = i * 2 * Math.PI / divisions;
+					double v = functions.get(mode).applyAsDouble(angle);
+					double d = (v * time) / 1_000_000_0000l * 2.45;
+					double x = d * cos(angle), y = d * sin(angle);
+					x += width / 2;
+					y += height / 2;
+					x = calcPosition(x, width);
+					y = calcPosition(y, height);
+					
+					GraphicsContext g = renderer.getGraphicsContext2D();
+					double distance = Math.hypot(x - oldX, y - oldY);
+					Color c = colorProfile.apply(angle);
+					Paint p = new LinearGradient(oldX, oldY, x, y, false, CycleMethod.NO_CYCLE, new Stop(0, lastColor), new Stop(1, c));
+					//g.setStroke(colors.get(i % colors.size()));
+					g.setStroke(p);
+					g.setLineWidth(4);
+					g.beginPath();
+					g.moveTo(oldX, oldY);
+					g.lineTo(x, y);
+					g.stroke();
+					
+					oldD = d;
+					oldX = x;
+					oldY = y;
+					lastColor = c;
+				}
+				
+			}
+			
+		}.start();
 	}
 	
 	
@@ -181,20 +265,57 @@ public class Main extends Application
 		FXImages.writeInGroups(snapshots, 4);
 		paused = false;
 	}
-
+	 List<Color> colors = Arrays.asList("9211E9", "000000", "181EC3", "10C2FE").stream().map(Color::web).collect(toCollection(ArrayList::new));
+	
+	{
+		colorProfile = a -> genColorProfile(colors, log(((System.nanoTime() - startTime) / 1_000_000_000.0) / 2) % (2 * PI), 128).apply(a);
+		int inter = 3;
+		for(int i = 0; i < colors.size(); i++)
+		{
+			Color c1 = colors.get(i); 
+			Color c2 = colors.get((i + 1) % colors.size());
+			List<Color> between = new ArrayList<>();
+			for(int j = 1; j <= inter; j++)
+			{
+				between.add(c1.interpolate(c2, j * 1.0 / (inter + 1)));
+			}
+			colors.addAll((i + 1) % colors.size(), between);
+			i += inter;
+		}
+		
+	}
+	static DoubleFunction<Color> genColorProfile(List<Color> bases, double start, int repeats)
+	{
+		final double sectorAngle = 2 * Math.PI / repeats;
+		return (a -> 
+		{
+			a += start;
+			a += sectorAngle * (Math.round(a / sectorAngle) + 1);
+			a %= sectorAngle;
+			double section = a / sectorAngle;
+			int startIndex = (((int) (section * bases.size())) + bases.size() - 1) % bases.size();
+			Color c1 = bases.get(startIndex), c2 = bases.get((startIndex + 1) % bases.size());
+			double inter = (section % (1.0 / bases.size())) * bases.size();
+			return c1.interpolate(c2, inter);
+			
+		});
+	}
 	private void restart()
 	{
+		startTime = System.nanoTime();
 		renderer.getGraphicsContext2D().clearRect(0, 0, width, height);
 		paused = true;
 		simulation = new BallSimulator(width * 4, height * 4);
-		List<Color> colors = new ArrayList<>(Arrays.asList(Color.RED, Color.ORANGERED, Color.ORANGE, Color.YELLOW, Color.YELLOWGREEN, Color.GREEN, Color.TURQUOISE, Color.BLUE, Color.BLUEVIOLET, Color.INDIGO, Color.VIOLET));
-		List<Color> temp = new ArrayList<>(colors);
-		Collections.reverse(temp);
-		colors.addAll(temp);
+		//List<Color> colors = new ArrayList<>(Arrays.asList(Color.RED, Color.ORANGERED, Color.ORANGE, Color.YELLOW, Color.YELLOWGREEN, Color.GREEN, Color.TURQUOISE, Color.BLUE, Color.BLUEVIOLET, Color.INDIGO, Color.VIOLET));
+		//colors 
+		
+		//List<Color> temp = new ArrayList<>(colors);
+		//Collections.reverse(temp);
+		//colors.addAll(temp);
 		for(int i = 0; i < balls; i++)
 		{
 			double angle = i * 2 * Math.PI / balls;
-			Vector v = Vector.fromPolar(functions.get(mode).apply(angle), angle);
+			Vector v = Vector.fromPolar(functions.get(mode).applyAsDouble(angle), angle);
 			Color c = colors.get(i % colors.size());//new Color(rand.nextDouble(), rand.nextDouble(), rand.nextDouble(), rand.nextDouble());
 			simulation.addBall(new Ball(simulation.dimensions.scale(.5), v, 20, c));
 		}

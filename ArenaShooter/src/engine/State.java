@@ -1,22 +1,9 @@
 package engine;
 
-import java.io.Externalizable;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
-import java.io.ObjectStreamException;
 import java.util.Collection;
 
 import objects.ReadableObject;
 import objects.events.ReadableEvent;
-import player.ReadablePlayer;
-import utils.Cloner;
 import utils.Utils;
 import bounds.Bounds;
 
@@ -42,8 +29,8 @@ public class State
 	
 	public State( Iterable<? extends ReadableEvent> events, Iterable<? extends ReadableObject> objects, double width, double height, Bounds bounds, long time)
 	{
-		this.events = ImmutableList.copyOf(Utils.stream(events).map(e -> e.copy()).iterator());
-		this.objects = ImmutableList.copyOf(Utils.stream(objects).map(e -> e.copy()).iterator());
+		this.events = ImmutableList.copyOf(Utils.stream(events).map(e -> (ReadableEvent) e.clone()).iterator());
+		this.objects = ImmutableList.copyOf(Utils.stream(objects).map(e -> (ReadableObject) e.clone()).iterator());
 		this.gameBounds = bounds;
 		this.width = width;
 		this.height = height;

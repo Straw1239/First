@@ -18,16 +18,15 @@ public class BucketCalc
 
 	public static void main(String[] args)
 	{
-		for(int i = 1; i <= 10; i++)
+		for(int i = 1; i <= 100_000_000; i *= 10)
 		{
-			System.out.println(expectedValue(i));
+			//System.out.println(expectedValue(i) / i - predictedValue);
 		}
-		//int buckets = 100000000;
-		//System.out.println(predictedValue);
-		//System.out.println(expectedValue(buckets) / buckets);
-		//System.out.println(multiExperiment(25, 4, buckets) / buckets);
-
-		//System.out.println(simulate(100));
+		int buckets = 100000000;
+		System.out.println(predictedValue);
+		System.out.println(expectedValue(buckets) / buckets);
+		System.out.println(multiExperiment(25, 4, buckets) / buckets);
+		System.out.println(simulate(100));
 	}
 	
 	private static double multiExperiment(int tries, int multi, int buckets)
@@ -88,7 +87,7 @@ public class BucketCalc
 	private static int simulate(int numBuckets)
 	{
 		if(numBuckets <= 0) return 0;
-		if(numBuckets == 1) return 1;
+		if(numBuckets <= 2) return 1;
 		int coin = rand.nextInt(numBuckets);
 		return simulate(coin - 1) + simulate(numBuckets - coin - 2) + 1;
 	}

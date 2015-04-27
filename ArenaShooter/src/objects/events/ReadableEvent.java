@@ -2,7 +2,7 @@ package objects.events;
 
 import objects.Factioned;
 import objects.Locatable;
-import utils.Copyable;
+import utils.Cloner;
 import engine.EventHandler;
 import fxcore.Renderable;
 /**
@@ -12,13 +12,9 @@ import fxcore.Renderable;
  * @author Rajan
  *
  */
-public interface ReadableEvent extends Renderable, Copyable<ReadableEvent>, Locatable, Factioned
+public interface ReadableEvent extends Renderable, Cloner, Locatable, Factioned
 {
 	public void effects(EventHandler handler);
 	
-	public default ReadableEvent copy()
-	{
-		return this;
-	}
-		
+	
 }

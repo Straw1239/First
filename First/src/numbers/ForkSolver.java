@@ -41,7 +41,7 @@ public class ForkSolver
 			int moves = 0;
 			long time = 0;
 			int depth = 3;
-			double target = .01;
+			double target = .5;
 			long targetTime = (long)(target * 10000000000.0);
 			while(true)
 			{
@@ -212,9 +212,9 @@ public class ForkSolver
 		int horizontal = 0, vertical = 0;
 		for(int i = 0; i < s.size();i++)
 		{
-			byte[] h = new byte[]{s.getSquare(i, 0),s.getSquare(i, 1),s.getSquare(i, 2),s.getSquare(i, 3)};
+			byte[] h = {s.getSquare(i, 0),s.getSquare(i, 1),s.getSquare(i, 2),s.getSquare(i, 3)};
 			horizontal += /*abs(*/ordering(h) * max(h);//);
-			byte[] v = new byte[]{s.getSquare(0, i),s.getSquare(1, i),s.getSquare(2, i),s.getSquare(3, i)};
+			byte[] v = {s.getSquare(0, i),s.getSquare(1, i),s.getSquare(2, i),s.getSquare(3, i)};
 			vertical += /*abs(*/ordering(v) * max(v);//);
 		}
 		horizontal = abs(horizontal);

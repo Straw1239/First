@@ -32,7 +32,9 @@ public class BasicGun implements Gun<Void>
 		{
 			Bullet.Builder builder = new Bullet.Builder();
 			builder.setLocation(x, y).setColor(Player.color).setFaction(Faction.Player).setTarget(target).setDamage(2).setSpeed(10).setRadius(10);
+		
 			Bullet b = builder.build();
+			
 			b.spread(Math.toRadians(5));
 			GameEvent spawner = GameEvent.spawnerOf(b);
 			result = (result == null) ? spawner : GameEvent.merge(result, spawner);
