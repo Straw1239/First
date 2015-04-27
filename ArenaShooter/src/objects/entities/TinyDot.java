@@ -53,7 +53,7 @@ public class TinyDot extends Enemy
 	
 	
 	public void update(State s)
-	{a
+	{
 		Locatable target = findTarget(s);
 		double speed = 5;
 		Vector movement = new Vector(this).sub(new Vector(target)).normalized(speed);
