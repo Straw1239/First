@@ -82,7 +82,7 @@ public class FastState
 				{
 					for(byte m = 0; m < 16; m++)
 					{
-						int index = (FastSolver.getIndex(i, j, k, m));						
+						int index = (getIndex(i, j, k, m));						
 						tables[0][index] = calculate(i,j,k,m);
 						tables[1][index] = calculate(m,k,j,i);
 						reverse(tables[1][index]);
@@ -226,7 +226,7 @@ public class FastState
 	}
 	private static void collapse(byte[] column, boolean reverse)
 	{
-		int index = FastSolver.getIndex(column[0], column[1], column[2], column[3]);
+		int index = getIndex(column[0], column[1], column[2], column[3]);
 		byte[] data = tables[reverse ? 1 : 0][index];
 		for(int i = 0; i < data.length;i++)
 		{
@@ -366,5 +366,11 @@ public class FastState
 			return false;
 		return true;
 	}
+	
+	public static int getIndex(byte a, byte b, byte c, byte d)
+	{
+		return ((a) << 12) + ((b) << 8) + ((c) << 4) + (d);
+	}
+	
 }	
 

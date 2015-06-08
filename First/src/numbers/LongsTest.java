@@ -1,5 +1,8 @@
 package numbers;
 
+import util.ParallelRandom;
+import util.Random;
+
 
 public class LongsTest
 {

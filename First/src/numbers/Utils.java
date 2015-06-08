@@ -2,7 +2,10 @@ package numbers;
 
 public class Utils
 {
-	private static byte[] table = new byte[256];
+	/**
+	 * Contains precalculated reversed bytes for fast lookup. To find the byte with bits reversed of a given byte b, simply use reverseByteTable[b]
+	 */
+	private static byte[] reverseByteTable = new byte[256];
 	static
 	{
 		int[] itable = 
@@ -26,11 +29,16 @@ public class Utils
 		};
 		for(int i = 0; i < itable.length; i++)
 		{
-			table[i] = (byte) itable[i];
+			reverseByteTable[i] = (byte) itable[i];
 		}
 	}
+	/**
+	 * Reverses the bits in a short, which is treated as unsigned
+	 * @param x
+	 * @return unsigned short with bits reversed
+	 */
 	public static short reverseBits(short x)
 	{
-		return (short) ((table[x >>> 8]) | (table[x & 0xFF] << 8));
+		return (short) ((reverseByteTable[x >>> 8]) | (reverseByteTable[x & 0xFF] << 8));
 	}
 }

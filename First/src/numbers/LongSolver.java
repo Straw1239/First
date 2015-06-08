@@ -5,9 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.io.FileNotFoundException;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Scanner;
+
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -224,6 +222,7 @@ public class LongSolver
 	
 	private static int min(short v)
 	{
+		//nested inlined branchless min of each nibble in v
 		int a = v & 0x000F;
 		int b = (v >>> 4) & 0x000F;
 		int a1 = (v >>> 8) & 0x000F;

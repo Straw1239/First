@@ -2,6 +2,8 @@ package numbers;
 
 import java.util.Scanner;
 
+import util.Random;
+
 public class LongStates
 {
 	/**

@@ -12,7 +12,7 @@ import javax.swing.JFrame;
 
 
 
-public class ForkSolver 
+public class OldSolver 
 {
 	public static long evalTime = 0;
 	private static long positions = 0;
