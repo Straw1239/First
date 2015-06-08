@@ -83,20 +83,27 @@ public abstract class GameObject implements ReadableObject
 		return Collections.emptyList();
 	}
 	
+	/**
+	 * Specifies which, if any, events should be created on the death of this object
+	 * @param state in which the death occurred
+	 * @return collection of events to add to the game
+	 */
 	public Collection<GameEvent> onDeath(State d)
 	{
-		return onDeath();
+		return Collections.emptyList();
 	}
 	
+	/**
+	 * Specifies which, if any, events should be created on the entry of this object into the game world
+	 * @param state of the game in which the object is entering
+	 * @return new events to create
+	 * 
+	 */
 	public Collection<GameEvent> onEntry(State s)
 	{
 		return Collections.emptyList();
 	}
 	
-	public Collection<GameEvent> onDeath()
-	{
-		return Collections.emptyList();
-	}
 	
 	@Override
 	public double getX()
@@ -133,7 +140,14 @@ public abstract class GameObject implements ReadableObject
 	{
 		
 	}
-	
+	/**
+	 * Creates a 'dummy' game object with the specified position and faction. This object never considers itself dead, nor does it collide with any other objects.
+	 * Useful for functions which process GameObject as data packets of x, y, and faction.
+	 * @param x
+	 * @param y
+	 * @param f
+	 * @return
+	 */
 	public static GameObject dataOf(double x, double y, Faction f)
 	{
 		return new GameObject(x, y, f)
@@ -249,7 +263,11 @@ public abstract class GameObject implements ReadableObject
 	{
 		return Impact.NONE;
 	}
-	
+	/**
+	 * Represents a single change to a GameObject of any type, represented by the unique change ID and data corresponding to the change.
+	 * @author Rajan
+	 *
+	 */
 	public static final class Change
 	{
 		public final int code;
@@ -262,6 +280,12 @@ public abstract class GameObject implements ReadableObject
 		}
 	}
 	
+	/**
+	 * Represents an impact to an object by another object or some other source. 
+	 * Contains a list of changes the impact would have on an object, and the source of the impact. The object may choose to carry out these effects on itself, or modify them in any way.
+	 * @author Rajan
+	 *
+	 */
 	public static final class Impact
 	{
 		/**

@@ -191,10 +191,10 @@ public class FirstBoss extends Enemy
 			return bounds;
 		}
 		
-		public Collection<GameEvent> onDeath()
+		public Collection<GameEvent> onDeath(State d)
 		{
 			numMinions--;
-			return super.onDeath();
+			return super.onDeath(d);
 		}
 		
 	}

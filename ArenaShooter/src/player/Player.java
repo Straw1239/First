@@ -69,7 +69,11 @@ public class Player extends Entity implements ReadablePlayer
 			return radius;
 		}
 	};
-	//Hi
+	/**
+	 * Creates a new player at the specified coordinates
+	 * @param x
+	 * @param y
+	 */
 	public Player(double x, double y) 
 	{
 		super(x, y);
@@ -80,12 +84,17 @@ public class Player extends Entity implements ReadablePlayer
 		score = 0;
 		THE = this;
 	}
-	
+	/**
+	 * Creates a new player at (0, 0)
+	 */
 	public Player()
 	{
 		this(0, 0);
 	}
-	
+	/**
+	 * Specifies what action the player will take next tick
+	 * @param a
+	 */
 	public void setAction(Action a)
 	{
 		action = a;

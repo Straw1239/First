@@ -309,7 +309,7 @@ public final class Engine
 
 	public synchronized void reset()
 	{
-		synchronized(objects) 
+		synchronized(objects) // is this really neccesary... 
 		{
 			synchronized(events)
 			{
