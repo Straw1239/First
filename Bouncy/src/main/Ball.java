@@ -49,7 +49,7 @@ public class Ball implements Drawable, Cloner, Copyable<Ball>
 		}
 		catch (CloneNotSupportedException e) 
 		{
-			throw new InternalError(e);
+			throw new RuntimeException(e);
 		}
 	}
 

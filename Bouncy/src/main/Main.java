@@ -6,13 +6,15 @@ import static java.lang.Math.*;
 import static java.util.stream.Collectors.toCollection;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Scanner;
 import java.util.function.DoubleFunction;
 import java.util.function.DoubleUnaryOperator;
-import java.util.function.UnaryOperator;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -32,8 +34,6 @@ import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Paint;
 import javafx.scene.paint.Stop;
-import javafx.scene.shape.ArcTo;
-import javafx.scene.shape.Path;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -64,10 +64,63 @@ public class Main extends Application
 		functions.add(d -> 30 * pow(tan(d), 2));
 		functions.add(d -> 80 * sqrt(tan(d)));
 		functions.add(d -> 200*cos(sin(d)));
+		
 		launch(args);
 	}
 	
 	
+	private void readParams(String string)
+	{
+		File inf = new File(string);
+		if(inf.exists())
+		try(Scanner in = new Scanner(inf);)
+		{
+			while(in.hasNextLine())
+			{
+				Scanner line = new Scanner(in.nextLine());
+				String param = line.next();
+				String equals = line.findInLine("\\s*=\\s*");
+				if(!equals.trim().equals("=")) throw new IllegalArgumentException("Error: expecting = sign");
+				setParameter(param, line);
+				line.close();
+			}
+		}
+		catch (FileNotFoundException e)
+		{
+			throw new IllegalArgumentException(e);
+		}
+		
+		
+	}
+
+	int cycles = 64;
+	long jumpTime = 0;
+	double spinRate = 0;
+	private void setParameter(String param, Scanner line)
+	{
+		switch(param)
+		{
+		case "samples": balls = divisions = line.nextInt(); break;
+		case "colors" :
+				line.useDelimiter("[\\s,]+");
+				colors.clear();
+				while(line.hasNext())
+				{
+					colors.add(Color.web(line.next()));
+				}
+				line.reset();
+				break;
+		case "cycles": cycles = line.nextInt(); break;
+		case "time" : jumpTime = line.nextLong() * 1_000_000_000L; break;
+		case "spinrate": spinRate = line.nextDouble(); break;
+		case "pattern": mode = line.nextInt(); break;
+		case "speed": speed = line.nextDouble(); break;
+		default: System.err.println("Error: parameter \"" + param + "\" not recognized"); break;
+		}
+		
+	}
+
+
 	public static final Random rand = Random.create();
 	private Stage stage;
 	private Scene scene;
@@ -91,7 +144,7 @@ public class Main extends Application
 	@Override
 	public void start(Stage s) throws Exception 
 	{
-		
+		readParams("rainbow.config");
 		//Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
 		//width = bounds.getWidth();
 		//height = bounds.getHeight();
@@ -139,6 +192,7 @@ public class Main extends Application
 			}
 			
 		});
+		initColors();
 		renderer = new Renderer(width, height);
 		//renderer.setEffect(new BoxBlur());
 		BorderPane pane = new BorderPane();
@@ -152,11 +206,12 @@ public class Main extends Application
 		
 		//exactAnimate();
 	}
+	double speed = 1;
 	static double calcPosition(double coord, double dim)
 	{
 		if(coord < 0)
 		{
-			coord += 2 * dim * (Math.ceil((coord / (2 * dim))) + 1);
+			coord += 2 * dim * (Math.ceil((-coord / (2 * dim))) + 2);
 		}
 		coord %= (2 * dim);
 		if(coord > dim)
@@ -168,7 +223,7 @@ public class Main extends Application
 	}
 	
 	long startTime = System.nanoTime();
-	int divisions = 512;
+	int divisions = 256;
 	void exactAnimate()
 	{
 		startTime = System.nanoTime();
@@ -177,7 +232,7 @@ public class Main extends Application
 			@Override
 			public void handle(long now)
 			{
-				long time = now - startTime; //+ 1_000_000_000L * 60 * 60 * 24;
+				long time = now - startTime + jumpTime; 
 				//int divisions = (int)(time / 1_000_00000);
 				//if(divisions <= (time * 50) / 1_000_000_000) divisions *= 2;
 				double oldX = 0, oldY = 0;
@@ -186,7 +241,7 @@ public class Main extends Application
 				{
 					double angle = (divisions - 1) * 2 * Math.PI / divisions;
 					double v = functions.get(mode).applyAsDouble(angle);
-					double d = (v * time) / 1_000_000_0000l * 2.45;
+					double d = (v * time) / 1_000_000_0000l * 2.45 * speed;
 					double x = d * cos(angle), y = d * sin(angle);
 					x += width / 2;
 					y += height / 2;
@@ -202,7 +257,7 @@ public class Main extends Application
 					
 					double angle = i * 2 * Math.PI / divisions;
 					double v = functions.get(mode).applyAsDouble(angle);
-					double d = (v * time) / 1_000_000_0000l * 2.45;
+					double d = (v * time) / 1_000_000_0000l * 2.45 * speed;
 					double x = d * cos(angle), y = d * sin(angle);
 					x += width / 2;
 					y += height / 2;
@@ -265,10 +320,26 @@ public class Main extends Application
 		FXImages.writeInGroups(snapshots, 4);
 		paused = false;
 	}
-	 List<Color> colors = Arrays.asList("9211E9", "000000", "181EC3", "10C2FE").stream().map(Color::web).collect(toCollection(ArrayList::new));
-	
+	List<Color> colors = Arrays.asList("9211E9", "000000", "181EC3", "10C2FE").stream().map(Color::web).collect(toCollection(ArrayList::new));
+	private void initColors()
 	{
-		colorProfile = a -> genColorProfile(colors, log(((System.nanoTime() - startTime) / 1_000_000_000.0) / 2) % (2 * PI), 128).apply(a);
+		colorProfile = a -> 
+		{
+			double start = spinRate * log(((System.nanoTime() + 1 - startTime) / 1_000_000_000.0)) % (2 * PI);
+			double sectorAngle =  2 * PI / cycles;
+			List<Color> bases = colors;
+			a += start;
+			a += sectorAngle * (round(a / sectorAngle) + 1);
+			a %= sectorAngle;
+			double section = a / sectorAngle;
+			int startIndex = (((int) (section * bases.size())) + bases.size() - 1) % bases.size();
+			Color c1 = bases.get(startIndex), c2 = bases.get((startIndex + 1) % bases.size());
+			double inter = (section % (1.0 / bases.size())) * bases.size();
+			return c1.interpolate(c2, inter);
+			
+		};
+		//genColorProfile(colors,  , cycles).apply(a);
+		/*
 		int inter = 3;
 		for(int i = 0; i < colors.size(); i++)
 		{
@@ -282,15 +353,15 @@ public class Main extends Application
 			colors.addAll((i + 1) % colors.size(), between);
 			i += inter;
 		}
-		
+		*/
 	}
 	static DoubleFunction<Color> genColorProfile(List<Color> bases, double start, int repeats)
 	{
-		final double sectorAngle = 2 * Math.PI / repeats;
+		final double sectorAngle = 2 * PI / repeats;
 		return (a -> 
 		{
 			a += start;
-			a += sectorAngle * (Math.round(a / sectorAngle) + 1);
+			a += sectorAngle * (round(a / sectorAngle) + 1);
 			a %= sectorAngle;
 			double section = a / sectorAngle;
 			int startIndex = (((int) (section * bases.size())) + bases.size() - 1) % bases.size();
@@ -306,17 +377,17 @@ public class Main extends Application
 		renderer.getGraphicsContext2D().clearRect(0, 0, width, height);
 		paused = true;
 		simulation = new BallSimulator(width * 4, height * 4);
-		//List<Color> colors = new ArrayList<>(Arrays.asList(Color.RED, Color.ORANGERED, Color.ORANGE, Color.YELLOW, Color.YELLOWGREEN, Color.GREEN, Color.TURQUOISE, Color.BLUE, Color.BLUEVIOLET, Color.INDIGO, Color.VIOLET));
+		colors = new ArrayList<>(Arrays.asList(Color.RED, Color.ORANGERED, Color.ORANGE, Color.YELLOW, Color.YELLOWGREEN, Color.GREEN, Color.TURQUOISE, Color.BLUE, Color.BLUEVIOLET, Color.INDIGO, Color.VIOLET));
 		//colors 
 		
-		//List<Color> temp = new ArrayList<>(colors);
-		//Collections.reverse(temp);
-		//colors.addAll(temp);
+		List<Color> temp = new ArrayList<>(colors);
+		Collections.reverse(temp);
+		colors.addAll(temp);
 		for(int i = 0; i < balls; i++)
 		{
 			double angle = i * 2 * Math.PI / balls;
-			Vector v = Vector.fromPolar(functions.get(mode).applyAsDouble(angle), angle);
-			Color c = colors.get(i % colors.size());//new Color(rand.nextDouble(), rand.nextDouble(), rand.nextDouble(), rand.nextDouble());
+			Vector v = Vector.fromPolar(functions.get(mode).applyAsDouble(angle) * speed, angle);
+			Color c = colors.get(i % colors.size());//colorProfile.apply(angle);//new Color(rand.nextDouble(), rand.nextDouble(), rand.nextDouble(), rand.nextDouble());
 			simulation.addBall(new Ball(simulation.dimensions.scale(.5), v, 20, c));
 		}
 		paused = false;

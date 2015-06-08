@@ -41,14 +41,14 @@ public class ForkSolver
 			int moves = 0;
 			long time = 0;
 			int depth = 3;
-			double target = .5;
+			double target = .05;
 			long targetTime = (long)(target * 10000000000.0);
 			while(true)
 			{
 				painter.setState(state);
 				frame.repaint();
 				long a = System.nanoTime();
-				MoveDirection d = bestMove(state,depth);
+				Direction d = bestMove(state,depth);
 				long b = System.nanoTime() - a;
 				totalPositions += positions;
 				System.out.println("TPPS: " + ((totalPositions* 1000000.0)/(System.nanoTime() - startTime)) );
@@ -93,12 +93,12 @@ public class ForkSolver
 		return a > b ? a : b;
 	}
 	
-	public static MoveDirection bestMove(FastState s, int depth)
+	public static Direction bestMove(FastState s, int depth)
 	{
 		if(depth == 0) throw new IllegalArgumentException();
 		double best = Double.NEGATIVE_INFINITY;
-		MoveDirection result = null;
-		for(MoveDirection d : MoveDirection.values())
+		Direction result = null;
+		for(Direction d : Direction.values())
 		{
 			FastState after = s.move(d);
 			if(!after.equals(s))
@@ -131,9 +131,9 @@ public class ForkSolver
 		if(depth == 0) return evaluate(s);
 		double bestCase = Double.NEGATIVE_INFINITY;
 			
-		for(int i = 0; i < MoveDirection.values().length;i++)
+		for(int i = 0; i < Direction.values().length;i++)
 		{
-			FastState after = s.move(MoveDirection.values()[i]);
+			FastState after = s.move(Direction.values()[i]);
 			if(!after.equals(s))
 			{
 				Collection<FastState> possibleStates = after.possibleRandomAdditions();
@@ -209,6 +209,7 @@ public class ForkSolver
 		}
 		//Add points for ordering
 		double monotonicityWeight = .125;
+		//double monotonicityWeight = 1;
 		int horizontal = 0, vertical = 0;
 		for(int i = 0; i < s.size();i++)
 		{
@@ -221,6 +222,18 @@ public class ForkSolver
 		vertical = abs(vertical);
 		score += monotonicityWeight * (vertical + horizontal);
 		
+		
+		double edgeBonusWeight = .12;
+		double eScore = 0;
+		int highestFound = 0;
+		for(int i = 0; i < 4; i += 3)
+			for(int j = 0; j < 4; j += 3)
+			{
+				highestFound = Math.max(highestFound, s.getSquare(i, j));
+			}
+		
+		eScore += highestFound * highestFound;
+		score += eScore * edgeBonusWeight;
 		evalTime += System.nanoTime()-a;
 		return score;
 	}

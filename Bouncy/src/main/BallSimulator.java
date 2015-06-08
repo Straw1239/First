@@ -52,6 +52,7 @@ public class BallSimulator
 		{
 			b.update(dt);
 			wallBounce(b);
+			b.position = new Vector(Main.calcPosition(b.position.x - b.getRadius(), dimensions.x - b.getRadius() * 2) + b.getRadius(), Main.calcPosition(b.position.y - b.getRadius(), dimensions.y - b.getRadius() * 2) + b.getRadius());
 		}
 		state = ImmutableList.copyOf(balls.stream().map((b) -> b.copy()).iterator());
 		timeSimulated += dt;
@@ -66,7 +67,7 @@ public class BallSimulator
 		if(p.y >= maxY && v.y > 0)
 		{
 			b.velocity = b.velocity.reflect(BOTTOM_WALL);
-		}
+		} 
 		if(p.x >= maxX && v.x > 0)
 		{
 			b.velocity = b.velocity.reflect(RIGHT_WALL);

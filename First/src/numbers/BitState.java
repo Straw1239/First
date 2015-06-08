@@ -28,31 +28,31 @@ public class BitState
 		return (byte) ((byte) (state >>> (getIndex(row,column)) * 16) & mask);
 	}
 	
-	public BitState move(MoveDirection d)
+	public BitState move(Direction d)
 	{
 		BitState moved = new BitState(state);
-		if(d == MoveDirection.Left)
+		if(d == Direction.Left)
 		{
 			for(byte i = 0; i < 4; i++)
 			{
 				moved.state ^= tables[i][getIndex(true,i)];
 			}
 		}
-		else if (d == MoveDirection.Right)
+		else if (d == Direction.Right)
 		{
 			for(byte i = 0; i < 4; i++)
 			{
 				moved.state ^= tables[i + 8][getIndex(true,i)];
 			}
 		}
-		else if(d == MoveDirection.Down)
+		else if(d == Direction.Down)
 		{
 			for(byte i = 0; i < 4; i++)
 			{
 				moved.state ^= tables[i + 4][getIndex(false,i)];
 			}
 		}
-		else if(d == MoveDirection.Up)
+		else if(d == Direction.Up)
 		{
 			for(byte i = 0; i < 4; i++)
 			{
