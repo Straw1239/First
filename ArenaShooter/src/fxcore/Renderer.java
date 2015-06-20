@@ -1,6 +1,5 @@
 package fxcore;
 
-import java.text.DecimalFormat;
 import java.util.Iterator;
 
 import javafx.scene.canvas.Canvas;
@@ -9,11 +8,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
-import javafx.scene.text.Font;
 import objects.Locatable;
-import objects.ReadableObject;
 import objects.events.ReadableEvent;
-import player.Player;
 import engine.State;
 
 public class Renderer 
@@ -21,7 +17,9 @@ public class Renderer
 	public final Canvas canvas;
 	private final GraphicsContext g;
 	public final double width, height;
-	
+	{
+		
+	}
 	public Renderer(int width, int height)
 	{
 		canvas = new Canvas(width, height);
@@ -49,7 +47,7 @@ public class Renderer
 		//drawPlayer(d);
 		g.restore();
 		displayHUD(d);
-		
+	
 		
 	}
 	

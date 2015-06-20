@@ -7,14 +7,18 @@ import java.awt.Graphics;
 import java.io.FileNotFoundException;
 
 
+
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
 
 
+
 import static numbers.LongStates.*;
-public class LongSolver
+public class Expectimax
 {
+	private static final double LOSS_SCORE = -200_000;
+	private static final double PROB_THRESHOLD = 0;
 	public static long evalTime = 0;
 	private static long positions = 0;
 	
@@ -34,6 +38,9 @@ public class LongSolver
 		colorTable[10] = Color.yellow;
 		colorTable[11] = Color.blue;
 		colorTable[12] = Color.green;
+		colorTable[13] = Color.DARK_GRAY;
+		colorTable[14] = Color.BLACK;
+		colorTable[15] = Color.BLACK;
 	}
 	
 	private static int abs(int a)
@@ -65,14 +72,14 @@ public class LongSolver
 			int moves = 0;
 			long time = 0;
 			int depth = 3;
-			double target = .05;
+			double target = .2;
 			long targetTime = (long)(target * 10000000000.0);
 			while(true)
 			{
 				painter.setState(state);
 				frame.repaint();
 				long a = System.nanoTime();
-				int d = bestMove(state,depth);
+				int d = bestMove(state, depth);
 				long b = System.nanoTime() - a;
 				totalPositions += positions;
 				System.out.println("MPPS: " + ((totalPositions* 1000.0)/(System.nanoTime() - startTime)) );
@@ -125,7 +132,7 @@ public class LongSolver
 	public static int bestMove(long state, int depth)
 	{
 		if(depth == 0) throw new IllegalArgumentException();
-		double best = Double.NEGATIVE_INFINITY;
+		double best = 0;
 		int result = -1;
 		for(int i = 0; i < 4; i++)
 		{
@@ -133,35 +140,35 @@ public class LongSolver
 			if(after != state)
 			{
 				long[] possibleStates = possibleRandomAdditions(after);
-				double worstCase = Double.POSITIVE_INFINITY;
-				for(long it : possibleStates)
+				double cprob = 1.0 / (possibleStates.length / 2);
+				double averageCase = 0;
+				for(int j = 0; j < possibleStates.length; j++)
 				{
 					//results.add(executor.submit(new Evaluator(it.next(),depth-1,best)));
 					
 					double temp;
-					temp = bestWorstCase(it, depth-1,best);
-					worstCase = Math.min(worstCase, temp);
-					if(temp < best)
-					{
-						break;
-					}
-					
+					double weight =  0.1 / ((j & 0B1) + (1.0 / 9)); //Converts added twos to have weight 1, 4s 0.1
+					temp = bestWorstCase(possibleStates[j], depth-1, best, cprob * weight);
+					averageCase += temp * weight;
+				
+				
 				}
-				best = Math.max(best, worstCase);
-				if(best == worstCase) result = i;
+				averageCase /= (possibleStates.length / 2);
+				best = Math.max(best, averageCase);
+				if(best == averageCase) result = i;
 			}
 		}
 		return result;
 	}
 	
-	private static double bestWorstCase(long state, int depth, double currentBest)
+	private static double bestWorstCase(long state, int depth, double currentBest, double cprob)
 	{
-		if(depth == 0) 
+		if(depth == 0 | cprob < PROB_THRESHOLD) 
 		{
 			positions++;
-			return Heuristics.scoreWithTable(state, Heuristics.stolenTables);
+			return Heuristics.scoreWithTable(state, Heuristics.myTable);
 		}
-		double bestCase = Double.NEGATIVE_INFINITY;
+		double bestCase = 0;
 			
 		for(int i = 0; i < 4;i++)
 		{
@@ -169,19 +176,21 @@ public class LongSolver
 			if(after != state)
 			{
 				long[] possibleStates = possibleRandomAdditions(after);
-				
-				double worstCase = Double.POSITIVE_INFINITY;
-				for(long it : possibleStates)
+				double prob = cprob / (possibleStates.length / 2);
+				double averageCase = 0;
+				for(int j = 0; j < possibleStates.length; j++)
 				{
-					double temp = bestWorstCase(it ,depth-1,currentBest);
-					worstCase = Math.min(worstCase, temp);
-					if(temp < currentBest)
-					{
-						break;
-					}
+					//results.add(executor.submit(new Evaluator(it.next(),depth-1,best)));
+					
+					double temp;
+					double weight =  0.1 / ((j & 0B1) + (1.0 / 9)); //Converts added twos to have weight 1, 4s 0.1
+					temp = bestWorstCase(possibleStates[j], depth - 1, currentBest, prob * weight);
+					averageCase += temp * weight;
 				}
-				bestCase = Math.max(bestCase, worstCase);
+				averageCase /= (possibleStates.length / 2);
+				bestCase = Math.max(bestCase, averageCase);
 				currentBest = Math.max(currentBest, bestCase);
+				
 			}
 		}
 		return bestCase;
@@ -194,7 +203,7 @@ public class LongSolver
 		double score = 0;
 		//Add points for empty squares
 		
-		score += (16 - numTiles(state));
+		score += (16 - numTiles(state)) * .5;
 		/**
 		//Add points for ordering
 		double monotonicityWeight = .125;

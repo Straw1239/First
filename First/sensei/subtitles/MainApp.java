@@ -27,14 +27,14 @@ public class MainApp extends Application
 		Media media;
 		MediaPlayer player;
 		
-		//media = new Media(new File("D:\\Music\\prelude.mp4").toURI().toString());
+		media = new Media(new File("D:\\Music\\prelude.mp4").toURI().toString());
 		//media = new Media(new File("D:\\Music\\station.mp4").toURI().toString());
 		//media = new Media(new File("D:\\Music\\Mamizou.m4a").toURI().toString());
-		media = new Media(new File("D:\\Music\\Burning.m4a").toURI().toString());
+		//media = new Media(new File("D:\\Music\\Burning.m4a").toURI().toString());
 		player = new MediaPlayer(media);
 		player.setVolume(.12);
 		player.setAutoPlay(true);
-		player.startTimeProperty().set(Duration.seconds(5));
+		player.startTimeProperty().set(Duration.seconds(15));
 		MediaView view = new MediaView(player);
 		primaryStage.addEventFilter(KeyEvent.KEY_PRESSED, e ->
 		{
@@ -43,7 +43,7 @@ public class MainApp extends Application
 				player.seek(Duration.ZERO);
 			}
 		});
-		player.rateProperty().set(1);
+		player.rateProperty().set(.9);
 		player.setCycleCount(MediaPlayer.INDEFINITE);
 		StackPane p = new StackPane();
 		p.getChildren().add(view);	

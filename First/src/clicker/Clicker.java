@@ -31,7 +31,7 @@ public class Clicker
 		{
 			if(clicking)
 			{
-				Thread.sleep(5);
+				Thread.sleep(15);
 				click();
 				if(buying && counter == 0) buyStuff();
 			}

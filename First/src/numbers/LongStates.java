@@ -171,9 +171,9 @@ public class LongStates
 		return fromRows(table[Short.toUnsignedInt((short)(board))], table[Short.toUnsignedInt((short)(board >>> 16))], table[Short.toUnsignedInt((short)(board >>> 32))], table[Short.toUnsignedInt((short)(board >>> 48))]);
 	}
 	
-	public static short columnAt(long board, int index)
+	public static short columnAt(long board, int i)
 	{
-		index *= 4;
+		int index = 4 * i;
 		return (short) (((board >>> index) & 0B1111) | ((board >>> (16 + index)) & 0B1111) << 4 | ((board >>> (32 + index)) & 0B1111) << 8 | ((board >>> (48 + index)) & 0B1111) << 12);
 	}
 
