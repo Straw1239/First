@@ -24,6 +24,7 @@ public class LongStates
 			}
 		return result;
 	}
+	
 	public static void main(String[] args)
 	{
 		long board = of(new int[][]{{1, 0, 2, 2}, {3, 5, 4, 1}, {0, 0, 1, 2}, {1, 6, 4, 3}});
@@ -86,6 +87,7 @@ public class LongStates
 		long mask = ~(L0NIBB << index);
 		return (board & mask) | data;
 	}
+	
 	private static short calculate(short column)
 	{
 		boolean[] combinable = {true, true, true, true};
@@ -109,6 +111,7 @@ public class LongStates
 		return column;
 		
 	}
+	
 	public static int score(long board)
 	{
 		int score = 0;
@@ -146,15 +149,15 @@ public class LongStates
 		}
 	}
 	
-	public static short slideRight(short row)
-	{
-		return table[Short.toUnsignedInt(row)];
-	}
-	
-	public static short slideLeft(short row)
-	{
-		return Utils.reverseBits(table[Short.toUnsignedInt(Utils.reverseBits(row))]);
-	}
+//	public static short slideRight(short row)
+//	{
+//		return table[Short.toUnsignedInt(row)];
+//	}
+//	
+//	public static short slideLeft(short row)
+//	{
+//		return Utils.reverseBits(table[Short.toUnsignedInt(Utils.reverseBits(row))]);
+//	}
 	
 	public static short rowAt(long board, int index)
 	{
@@ -176,6 +179,35 @@ public class LongStates
 		int index = 4 * i;
 		return (short) (((board >>> index) & 0B1111) | ((board >>> (16 + index)) & 0B1111) << 4 | ((board >>> (32 + index)) & 0B1111) << 8 | ((board >>> (48 + index)) & 0B1111) << 12);
 	}
+	
+	public static short ULCorner(long board)
+	{
+		return (short) ((int)(board & 0xFF) | ((int)(board >>> 8) & 0xFF00)) ;
+	}
+	
+	public static short URCorner(long board)
+	{
+		int result = ((int)((board >>> 8) & 0xFF) | (int)((board >>> 16) & 0xFF00));
+		return (short) ((result & 0xF0F0 >>> 4) | (result & 0x0F0F) << 4);
+	}
+	
+	public static short LLCorner(long board)
+	{
+		int result = (((int)(board >>> 32) & 0xFF) | ((int)(board >>> 40) & 0xFF00));
+		return (short) ((result & 0xFF00 >>> 8) | (result & 0x00FF) << 8);
+	}
+	
+	public static short LRCorner(long board)
+	{
+		int result = (((int)(board >>> 40) & 0xFF) | ((int)(board >>> 48) & 0xFF00));
+		result = ((result & 0xF0F0 >>> 4) | (result & 0x0F0F) << 4);
+		return (short) ((result & 0xFF00 >>> 8) | (result & 0x00FF) << 8);
+	}
+	
+	public static short center(long board)
+	{
+		return (short)(((int)(board >>> 20) & 0xFF) | ((int)(board >>> 28) & 0xFF00));
+	}
 
 	public static long fromColumns(short c0, short c1, short c2, short c3)
 	{
@@ -190,7 +222,7 @@ public class LongStates
 		(c1 & L2NIBB) << 28 |
 		(c1 & L3NIBB) << 40 |
 		
-		(c2 & L0NIBB) << 8  | 
+		(c2 & L0NIBB) << 8  |
 		(c2 & L1NIBB) << 20 |
 		(c2 & L2NIBB) << 32 |
 		(c2 & L3NIBB) << 44 |
@@ -277,7 +309,7 @@ public class LongStates
 	public static long[] possibleRandomAdditions(long board)
 	{
 		int emptyTiles = 16 - numTiles(board);
-		if(emptyTiles == 0) throw new RuntimeException();
+		//if(emptyTiles == 0) throw new RuntimeException();
 		long[] result = new long[2 * emptyTiles];
 		for(int i = 0, index = 0; i < 16; i++)
 		{
@@ -296,6 +328,18 @@ public class LongStates
 	{
 		long[] t = possibleRandomAdditions(board);
 		return t[rand.nextInt(t.length)];
+	}
+	
+	public static int totalValue(long board)
+	{
+		int total = 0;
+		for(int i = 0; i < 4; i++)
+			for(int j = 0; j < 4; j++)
+		{
+			total += 1 << squareAt(board, i, j);
+		}
+		total -= (16 - numTiles(board));
+		return total;
 	}
 	//public static long move(long board, Direction d)
 	{

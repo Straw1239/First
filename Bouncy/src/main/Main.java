@@ -45,7 +45,9 @@ public class Main extends Application
 	public static List<DoubleUnaryOperator> functions = new ArrayList<>();
 	public static void main(String[] args) 
 	{
+		//functions.add(a -> );
 		//functions.add(d -> 200*sin(20*d));
+		functions.add(d -> 141 / pow(log(d), 2.72));
 		functions.add(d -> 250.0);
 		functions.add(d -> 200 / sin(d * 2));
 		functions.add(d -> 100 * tan(d));
@@ -64,6 +66,7 @@ public class Main extends Application
 		functions.add(d -> 30 * pow(tan(d), 2));
 		functions.add(d -> 80 * sqrt(tan(d)));
 		functions.add(d -> 200*cos(sin(d)));
+		
 		
 		launch(args);
 	}
@@ -93,7 +96,7 @@ public class Main extends Application
 		
 	}
 
-	int cycles = 64;
+	int cycles = 128;
 	long jumpTime = 0;
 	double spinRate = 0;
 	private void setParameter(String param, Scanner line)
@@ -339,7 +342,7 @@ public class Main extends Application
 			
 		};
 		//genColorProfile(colors,  , cycles).apply(a);
-		/*
+		
 		int inter = 3;
 		for(int i = 0; i < colors.size(); i++)
 		{
@@ -353,7 +356,7 @@ public class Main extends Application
 			colors.addAll((i + 1) % colors.size(), between);
 			i += inter;
 		}
-		*/
+		
 	}
 	static DoubleFunction<Color> genColorProfile(List<Color> bases, double start, int repeats)
 	{
@@ -387,7 +390,7 @@ public class Main extends Application
 		{
 			double angle = i * 2 * Math.PI / balls;
 			Vector v = Vector.fromPolar(functions.get(mode).applyAsDouble(angle) * speed, angle);
-			Color c = colors.get(i % colors.size());//colorProfile.apply(angle);//new Color(rand.nextDouble(), rand.nextDouble(), rand.nextDouble(), rand.nextDouble());
+			Color c = /*olors.get(i % colors.size());*/ colorProfile.apply(angle);//new Color(rand.nextDouble(), rand.nextDouble(), rand.nextDouble(), rand.nextDouble());
 			simulation.addBall(new Ball(simulation.dimensions.scale(.5), v, 20, c));
 		}
 		paused = false;

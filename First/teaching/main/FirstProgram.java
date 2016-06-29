@@ -7,10 +7,12 @@ public class FirstProgram
 	
 	public static void main(String[] args)
 	{
-		long[] blah = calcFibonacci(92);
+
+		long[] blah = calcFibonacci(150);
 		for(int i = 0; i < blah.length; i++)
 		{
 			System.out.println(blah[i]);
+			
 		}
 	}
 		
@@ -24,7 +26,9 @@ public class FirstProgram
 			g += h;
 			h = result[i];
 		}
+		
 		return result;
+		
 	}
 	
 	

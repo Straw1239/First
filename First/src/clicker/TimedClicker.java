@@ -2,10 +2,10 @@ package clicker;
 
 import java.awt.Robot;
 import java.awt.event.InputEvent;
-import java.math.RoundingMode;
+import java.util.Calendar;
+import java.util.Scanner;
+import java.util.TimeZone;
 import java.util.concurrent.locks.LockSupport;
-
-import com.google.common.math.LongMath;
 
 public class TimedClicker
 {
@@ -23,12 +23,27 @@ public class TimedClicker
 	}
 	public static void main(String[] args)
 	{
-		click(10);
+		Calendar c = Calendar.getInstance(TimeZone.getTimeZone("PST"));
+		Scanner s = new Scanner(args[0]);
+		s.useDelimiter("[:\n\r\t ]");
+		int hours = s.nextInt();
+		int minutes = s.nextInt();
+		int seconds = s.nextInt();
+		System.out.println(hours);
+		System.out.println(minutes);
+		System.out.println(seconds);
+		c.set(Calendar.HOUR_OF_DAY, hours);
+		c.set(Calendar.MINUTE, minutes);
+		c.set(Calendar.SECOND, seconds);
+		
+		s.close();
+		long millis = c.getTimeInMillis();
+		click(millis);
 
 	}
-	static void click(int minSeconds)
+	static void click(long time)
 	{
-		LockSupport.parkUntil(nextTime(minSeconds));
+		LockSupport.parkUntil(time);
 		robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
 		robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);	
 	}

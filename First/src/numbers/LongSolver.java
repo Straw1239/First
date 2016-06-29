@@ -34,6 +34,7 @@ public class LongSolver
 		colorTable[10] = Color.yellow;
 		colorTable[11] = Color.blue;
 		colorTable[12] = Color.green;
+		colorTable[13] = Color.green;
 	}
 	
 	private static int abs(int a)
@@ -65,7 +66,7 @@ public class LongSolver
 			int moves = 0;
 			long time = 0;
 			int depth = 3;
-			double target = .05;
+			double target = .1;
 			long targetTime = (long)(target * 10000000000.0);
 			while(true)
 			{
@@ -153,6 +154,13 @@ public class LongSolver
 		}
 		return result;
 	}
+	
+//	private static double fuzzyEval(long state, int depth, int evalDepth, double currentBest)
+//	{
+//		
+	//}
+	
+	
 	
 	private static double bestWorstCase(long state, int depth, double currentBest)
 	{

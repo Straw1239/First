@@ -12,6 +12,7 @@ import objects.GameObject;
 import objects.entities.BasicEnemy;
 import objects.entities.Charger;
 import objects.entities.FirstBoss;
+import objects.entities.MelEnemy;
 import objects.entities.MovingEnemy;
 import objects.entities.TinyDot;
 
@@ -36,6 +37,7 @@ public class DefaultSpawner implements Spawner
 		{
 			spawns.add(rand.nextBoolean() ? new BasicEnemy(x, y) : new MovingEnemy(x, y));
 			//spawns.add(new TinyDot(x, y));
+			spawns.add(new MelEnemy(x, y));
 			lastSpawn = d.time;
 		}
 		if(d.time - lastBoss >= 2000)
@@ -50,7 +52,7 @@ public class DefaultSpawner implements Spawner
 		
 		if(d.time - boss >= 10000)
 		{
-			spawns.add(new FirstBoss(x, y));
+			//spawns.add(new FirstBoss(x, y));
 			boss = d.time;
 		}
 		return spawns;

@@ -8,7 +8,6 @@ import java.util.Calendar;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-import player.Player;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -20,6 +19,7 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import player.Player;
 import utils.XRandom;
 import engine.Engine;
 
@@ -180,8 +180,13 @@ public class MainGame extends Application
 		runEngine();
 		runGraphics();
 	}
+	
+	
+	
+	
 	private void runEngine()
 	{
+		
 		Thread.setDefaultUncaughtExceptionHandler((t, e) -> e.printStackTrace(System.err));
 		long frameNanoTime = (1_000_000_000L / UPS);
 		compute.scheduleAtFixedRate(() -> 

@@ -1,10 +1,6 @@
 package main;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.NavigableMap;
-import java.util.TreeMap;
+import java.util.stream.IntStream;
 
 public class Test
 {
@@ -13,27 +9,36 @@ public class Test
 	{
 		
 	}
+	
+	static long root(long val)
+	{
+		int s = 32 - Long.numberOfLeadingZeros(val - 1) / 2;
+		long g0 = 1L << s;
+		long g1 = (g0 + (val >>> s)) >>> 1;
+		while(g1 < g0)
+		{
+			g0 = g1;
+			g1 = ( g0 + (val / g0)) >>> 1;
+		}
+		return g0;
+	}
 
+	static boolean isSquare(long v)
+	{
+		long k = root(v);
+		return k * k == v;
+	}	
+	
 	public static void main(String[] args)
 	{
-		char[] source = "hello whats up lets get cationing".toCharArray();
-		Map<String, Cell> lookups = new HashMap<>(); // Fill this with all mappings of groups of characters to Cells, including single characters
-		NavigableMap<Integer, Cell> results = new TreeMap<>();
-		int maxLength = 4;
-		for(int i =  maxLength; i > 0; i--)
+		double p = 1000;
+		int counter = 0;
+		while(p < 10000)
 		{
-			for(int j = 0; j <= source.length - i; j++)
-			{
-				String sub = String.copyValueOf(source, j, i);
-				Cell replacement = lookups.get(sub);
-				if(replacement != null)
-				{
-					Arrays.fill(source, j, j + i, '\0');
-					results.put(j, replacement);
-				}
-			}
+			p += 10000 / p;
+			counter++;
 		}
-
+		System.out.println(counter);
 	}
 
 }

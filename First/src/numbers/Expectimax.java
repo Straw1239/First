@@ -1,26 +1,36 @@
 package numbers;
 
+import static numbers.LongStates.addRandomTile;
+import static numbers.LongStates.columnAt;
+import static numbers.LongStates.move;
+import static numbers.LongStates.numTiles;
+import static numbers.LongStates.possibleRandomAdditions;
+import static numbers.LongStates.rowAt;
+import static numbers.LongStates.score;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.io.FileNotFoundException;
 
-
-
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
-
-
-
-import static numbers.LongStates.*;
+import net.openhft.koloboke.collect.map.hash.HashLongLongMap;
+import net.openhft.koloboke.collect.map.hash.HashLongLongMaps;
 public class Expectimax
 {
 	private static final double LOSS_SCORE = -200_000;
-	private static final double PROB_THRESHOLD = 0;
+	private static final double PROB_THRESHOLD = 0.00001;
 	public static long evalTime = 0;
 	private static long positions = 0;
+	
+	
+	
+	
+	
+	
 	
 	private static Color[] colorTable = new Color[16];
 	static
@@ -63,7 +73,7 @@ public class Expectimax
 		int score = 0;
 		long startTime = System.nanoTime();
 		long totalPositions = 0;
-		int reps = 20;
+		int reps = 10;
 		for(int i = 0; i < reps; i++)
 		{
 			long state = 0;
@@ -72,10 +82,11 @@ public class Expectimax
 			int moves = 0;
 			long time = 0;
 			int depth = 3;
-			double target = .2;
+			double target = .05;
 			long targetTime = (long)(target * 10000000000.0);
 			while(true)
 			{
+				//depth = 3;
 				painter.setState(state);
 				frame.repaint();
 				long a = System.nanoTime();
@@ -158,6 +169,7 @@ public class Expectimax
 				if(best == averageCase) result = i;
 			}
 		}
+		//System.out.println("Estimated Gain: " +  Heuristics.scoreWithAdvancedTables(state));
 		return result;
 	}
 	
@@ -165,8 +177,9 @@ public class Expectimax
 	{
 		if(depth == 0 | cprob < PROB_THRESHOLD) 
 		{
-			positions++;
+			//positions++;
 			return Heuristics.scoreWithTable(state, Heuristics.myTable);
+			//return Heuristics.scoreWithAdvancedTables(state);
 		}
 		double bestCase = 0;
 			
